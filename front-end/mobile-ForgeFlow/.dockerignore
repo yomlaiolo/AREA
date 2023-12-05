@@ -3,4 +3,4 @@ node_modules
 Dockerfile
 .dockerignore
 npm-debug.log
-shared
+app/shared

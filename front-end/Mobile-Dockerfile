@@ -1,6 +1,8 @@
 FROM node:20.9
 
-COPY . /app/
+COPY ./mobile-ForgeFlow /app/
+
+COPY ./shared /app/app/shared
 
 WORKDIR /app/
 

@@ -23,8 +23,8 @@ services:
   # Add mobile service
   client_web:
     build:
-      context: ./front-end/web-ForgeFlow
-      dockerfile: Dockerfile
+      context: ./front-end
+      dockerfile: Web-Dockerfile
     restart: always
     container_name: front-area
     ports:
