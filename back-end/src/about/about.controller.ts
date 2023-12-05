@@ -3,7 +3,7 @@ import { Controller, Get, Req } from '@nestjs/common';
 @Controller('about.json')
 export class AboutController {
   @Get()
-  getExample(@Req() request: any): any {
+  getAbout(@Req() request: any): any {
     return {
       client: {
         host: request.headers.host,
