@@ -2,7 +2,7 @@ FROM node:20.9
 
 COPY ./web-ForgeFlow /app/
 
-COPY ./shared /app/shared
+COPY ./mobile-ForgeFlow/app/shared /app/shared
 
 WORKDIR /app/
 
