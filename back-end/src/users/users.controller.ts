@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Delete, Param } from '@nestjs/common';
+import { Controller, Post, Body, Delete, Param, Get, BadRequestException } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User } from './user.schema';
 
@@ -11,8 +11,13 @@ export class UsersController {
     return this.usersService.create(userDto);
   }
 
-  @Delete(':id')
+  @Get('all')
   async findAll() {
     return this.usersService.findAll();
+  }
+
+  @Delete('all')
+  async deleteAll() {
+      return this.usersService.deleteAll();
   }
 }
