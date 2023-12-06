@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { View, TextInput, Image, StyleSheet, TouchableOpacity } from 'react-native';
-import SvgUri from 'react-native-svg-uri';
 
 interface TextBoxProps {
   placeholder: string;
@@ -11,8 +10,8 @@ interface TextBoxProps {
 }
 
 const TextBox: React.FC<TextBoxProps> = ({ placeholder, onChangeText, value, hideText, autocomplete }) => {
-  const hide = require('../res/hide.svg');
-  const show = require('../res/show.svg');
+  const hide = require('../res/hide.png');
+  const show = require('../res/show.png');
   const [ispassword, setIsPassword] = useState(hideText);
   const toggleShow = () => {
     setIsPassword(!ispassword);
@@ -32,7 +31,7 @@ const TextBox: React.FC<TextBoxProps> = ({ placeholder, onChangeText, value, hid
       {hideText && (
         <TouchableOpacity onPress={toggleShow}>
           <View style={{ padding: 10 }}>
-            <SvgUri width="24" height="24" source={ispassword ? show : hide}/>
+            <Image source={ispassword ? show : hide} style={{width:24, height:24}} />
           </View>
         </TouchableOpacity>
       )}
@@ -44,18 +43,12 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#1F1F1F',
     backgroundColor: '#F5F5F5',
     color: '#1F1F1F',
-    borderRadius: 5,
+    borderRadius: 12,
     padding: 10,
-    marginVertical: 20,
-  },
-  icon: {
-    marginRight: 10,
-    width: 24,
-    height: 24,
+    marginVertical: 10,
+    height: 60,
   },
   input: {
     flex: 1,
