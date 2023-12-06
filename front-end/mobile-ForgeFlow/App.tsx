@@ -1,69 +1,25 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
+import React, {useState, useEffect} from 'react';
+import {NavigationContainer, StackActions} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import { StyleSheet, Text, View, Image, ActivityIndicator } from 'react-native';
+import Loading from './src/loading';
+import LoginScreen from './src/login';
 
-import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  View,
-  useColorScheme,
-} from 'react-native';
+const Stack = createNativeStackNavigator();
 
-import { Colors } from 'react-native/Libraries/NewAppScreen';
-import { Counter } from './app/shared/components/counter';
-import AreaButton from './app/shared/components/button';
-
-function App(): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-    flex: 1,
-  };
-
+export default function App() {
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        contentContainerStyle={backgroundStyle}
-        style={backgroundStyle}>
-        <View style={{ width: '70%', height:'100%', backgroundColor:'white'}}>
-          <AreaButton onPress={() => {}} title="LOGIN" backgroundColor='#E88741' textColor='#1F1F1F' disabled={true}/>
-          <AreaButton onPress={() => {}} title="SIGN IN WITH GOOGLE" backgroundColor='#F5F5F5' textColor='#00000054' icon={require("./app/shared/res/google.png")} />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Loading" component={Loading} options={{title: 'Welcome', headerShown: false}}></Stack.Screen>
+        <Stack.Screen name="Login" component={LoginScreen} options={{title: 'Login', headerShown: false}}></Stack.Screen>
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
+  container: {
+    flex: 1,
   },
 });
-
-export default App;

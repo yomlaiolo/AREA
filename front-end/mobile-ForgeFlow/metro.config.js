@@ -1,11 +1,13 @@
-const {getDefaultConfig, mergeConfig} = require('@react-native/metro-config');
+const { getDefaultConfig, mergeConfig } = require('@react-native/metro-config');
+const path = require('path');
 
-/**
- * Metro configuration
- * https://facebook.github.io/metro/docs/configuration
- *
- * @type {import('metro-config').MetroConfig}
- */
-const config = {};
+const config = {
+  resolver: {
+    extraNodeModules: {
+      '@components': path.resolve(__dirname, 'app/shared/components'),
+      '@resources': path.resolve(__dirname, 'app/shared/res'),
+    },
+  },
+};
 
 module.exports = mergeConfig(getDefaultConfig(__dirname), config);
