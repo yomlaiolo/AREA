@@ -2,8 +2,6 @@ FROM node:20.9
 
 COPY ./mobile-ForgeFlow /app/
 
-COPY ./shared /app/app/shared
-
 WORKDIR /app/
 
 RUN npm install
