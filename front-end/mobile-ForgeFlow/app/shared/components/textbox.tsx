@@ -43,13 +43,12 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    borderWidth: 1,
-    borderColor: '#F5F5F5',
     backgroundColor: '#F5F5F5',
     color: '#1F1F1F',
-    borderRadius: 15,
+    borderRadius: 12,
     padding: 10,
     marginVertical: 10,
+    height: 60,
   },
   input: {
     flex: 1,
