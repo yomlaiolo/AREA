@@ -4,6 +4,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import { StyleSheet, Text, View, Image, ActivityIndicator } from 'react-native';
 import Loading from './src/loading';
 import LoginScreen from './src/login';
+import MiniFlow from '@components//mini_flow';
 
 const Stack = createNativeStackNavigator();
 

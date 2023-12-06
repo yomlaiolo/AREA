@@ -13,11 +13,11 @@ interface ButtonProps {
 const AreaButton: React.FC<ButtonProps> = ({ onPress, title, disabled, backgroundColor, textColor, icon }) => {
     return (
       <TouchableOpacity onPress={onPress} disabled={disabled} style={styles.touchable}>
-            <View style={[styles.container, { backgroundColor: backgroundColor }]}>
-                {icon && <Image source={icon} style={styles.icon} />}
-                <Text style={[styles.text, { color: textColor }]}>{title}</Text>
-            </View>
-        </TouchableOpacity>
+        <View style={[styles.container, { backgroundColor: backgroundColor }]}>
+          {icon && <Image source={icon} style={styles.icon} />}
+          <Text style={[styles.text, { color: textColor }]}>{title}</Text>
+        </View>
+      </TouchableOpacity>
     );
 };
 
