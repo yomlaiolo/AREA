@@ -12,11 +12,13 @@ import {
   ScrollView,
   StatusBar,
   StyleSheet,
+  View,
   useColorScheme,
 } from 'react-native';
 
 import { Colors } from 'react-native/Libraries/NewAppScreen';
-import { Counter } from './app/shared/components/couter';
+import { Counter } from './app/shared/components/counter';
+import AreaButton from './app/shared/components/button';
 
 function App(): JSX.Element {
   const isDarkMode = useColorScheme() === 'dark';
@@ -36,7 +38,10 @@ function App(): JSX.Element {
         contentInsetAdjustmentBehavior="automatic"
         contentContainerStyle={backgroundStyle}
         style={backgroundStyle}>
-        <Counter />
+        <View style={{ width: '70%', height:'100%', backgroundColor:'white'}}>
+          <AreaButton onPress={() => {}} title="LOGIN" backgroundColor='#E88741' textColor='#1F1F1F' disabled={true}/>
+          <AreaButton onPress={() => {}} title="SIGN IN WITH GOOGLE" backgroundColor='#F5F5F5' textColor='#00000054' icon={require("./app/shared/res/google.png")} />
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
