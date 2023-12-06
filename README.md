@@ -1,10 +1,17 @@
 # AREA
-The AREA mirror repo
+Area Repository
 
+## Application deployment
+Build
+```bash
+docker-compose build
+```
+Deploy
+```bash
+docker-compose up
+```
 
 ## API
-
-
 ### POST /register
 ```json
 {
