@@ -1,9 +1,14 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { View, Text, Button } from 'react-native'
+import { useNavigation } from "@react-navigation/native";
 
-export default function myHome() {
-    return (
-        <div>
-           <h1>Home</h1>
-        </div>
-    )
+export const Home = () => {
+  const navigation = useNavigation();
+
+  return (
+    <View>
+      <Text>HOME</Text>
+      <Button title="Va conter" onPress={() => navigation.navigate("Other_page")} />
+    </View>
+  )
 }
