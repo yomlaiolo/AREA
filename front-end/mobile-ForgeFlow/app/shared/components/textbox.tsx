@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { View, TextInput, Image, StyleSheet, TouchableOpacity } from 'react-native';
 
 interface TextBoxProps {
-  placeholder: string;
+  placeholder?: string;
   onChangeText: (text: string) => void;
   value: string;
-  hideText: boolean;
-  autocomplete: any;
+  hideText?: boolean;
+  autocomplete?: any;
 }
 
 const TextBox: React.FC<TextBoxProps> = ({ placeholder, onChangeText, value, hideText, autocomplete }) => {
