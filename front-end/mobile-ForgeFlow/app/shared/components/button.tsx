@@ -25,6 +25,8 @@ const styles = StyleSheet.create({
   touchable: {
     width: '100%',
     height: 60,
+    justifyContent: 'center',
+    marginVertical: 10,
   },
   container: {
     height: '100%',
@@ -34,7 +36,6 @@ const styles = StyleSheet.create({
     color: '#1F1F1F',
     borderRadius: 12,
     padding: 10,
-    marginVertical: 10,
     textAlign: 'center',
     textAlignVertical: 'center',
   },
@@ -42,7 +43,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     marginLeft: '3%',
     width: '9%',
-    height: '80%',
+    height: '85%',
   },
   text: {
     flex: 1,
