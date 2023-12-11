@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { View, Image, StyleSheet, Alert, Button, Text, ScrollView, StatusBar, SafeAreaView } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import {Animated} from 'react-native';
 import { Easing } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 // import { useLockOrientationPortrait } from './hooks/useOrientation';
 
-const App = () => {
+const LoadingScreen = () => {
     const navigation = useNavigation();
     // useLockOrientationPortrait();
 
@@ -52,5 +52,5 @@ const styles = StyleSheet.create({
     }
 });
   
-  export default App;
+  export default LoadingScreen;
   
