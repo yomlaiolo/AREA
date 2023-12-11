@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, StyleSheet, TouchableOpacity, Text, Image } from 'react-native';
 
 interface ButtonProps {
@@ -8,11 +8,12 @@ interface ButtonProps {
     backgroundColor?: string;
     textColor?: string;
     icon?: any;
+    activeOpacity?: number;
 }
 
-const AreaButton: React.FC<ButtonProps> = ({ onPress, title, disabled, backgroundColor, textColor, icon }) => {
+const AreaButton: React.FC<ButtonProps> = ({ onPress, title, disabled, backgroundColor, textColor, icon, activeOpacity }) => {
     return (
-      <TouchableOpacity onPress={onPress} disabled={disabled} style={styles.touchable}>
+      <TouchableOpacity onPress={onPress} disabled={disabled} style={styles.touchable} activeOpacity={activeOpacity}>
         <View style={[styles.container, { backgroundColor: backgroundColor }]}>
           {icon && <Image source={icon} style={styles.icon} />}
           <Text style={[styles.text, { color: textColor }]}>{title}</Text>
