@@ -3,7 +3,7 @@ import { View, Image, StyleSheet, Text, ScrollView, SafeAreaView, KeyboardAvoidi
 import TextBox from '../app/shared/components/textbox';
 import { useNavigation } from '@react-navigation/native';
 import AreaButton from '@components//button';
-import MiniFlow from '@components//mini_flow';
+import Flow from '@components//flow';
 
 const LoginScreen = () => {
   const [email, setEmail] = useState('');
