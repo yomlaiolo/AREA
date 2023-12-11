@@ -17,15 +17,11 @@ const Switch: React.FC<SwitchProps> = ({ backgroundColor, offColor, onColor, onS
 
   const handlePress = () => {
       setStatusValue(!statusValue);
-      console.log(statusValue);
-
     if (xPosition == 0) {
         setXPosition(40);
     } else {
         setXPosition(0);
     }
-    console.log(xPosition);
-    console.log(onColor, offColor);
     onSwitch();
   };
 
