@@ -9,7 +9,12 @@
         "noEmit": true,
         "skipLibCheck": true,
         "experimentalDecorators": true,
-        "emitDecoratorMetadata": true
+        "emitDecoratorMetadata": true,
+        "baseUrl": ".",
+        "paths" : {
+            "@ressources/*": ["shared/res/*"],
+            "@component-res/*": ["../res/*"],
+        }
     },
     "exclude": ["./node_modules",  "**/*.copy.tsx"]
 }
