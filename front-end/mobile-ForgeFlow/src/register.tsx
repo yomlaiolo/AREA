@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 import { View, Image, StyleSheet, Text, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import TextBox from '../app/shared/components/textbox';
-import { useNavigation } from '@react-navigation/native';
 import AreaButton from '@components//button';
 
-const RegisterScreen = () => {
-  const navigation = useNavigation();
+export default function RegisterScreen({navigation} : any) {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -68,5 +66,3 @@ const styles = StyleSheet.create({
     marginBottom: '10%',
   }
 });
-
-export default RegisterScreen;

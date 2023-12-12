@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import { View, Image, StyleSheet, Text, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import TextBox from '../app/shared/components/textbox';
-import { useNavigation } from '@react-navigation/native';
 import AreaButton from '@components//button';
 
-const LoginScreen = () => {
-  const navigation = useNavigation();
+function login(email: string, password: string, navigation: any) {
+  console.log("login");
+  navigation.navigate('Home');
+}
+
+export default function LoginScreen({navigation}: any) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -20,7 +23,7 @@ const LoginScreen = () => {
               <View style={styles.utils}>
                 <TextBox placeholder="E-mail" onChangeText={setEmail} value={email} hideText={false} autocomplete="email" />
                 <TextBox placeholder="Password" onChangeText={setPassword} value={password} hideText={true} autocomplete="password" />
-                <AreaButton title="Login" onPress={() => {}} backgroundColor='#E88741' textColor='#1F1F1F' activeOpacity={0.5}/>
+                <AreaButton title="Login" onPress={() => {login(email, password, navigation)}} backgroundColor='#E88741' textColor='#1F1F1F' activeOpacity={0.5}/>
                 <View style={styles.bar} />
                 <AreaButton title="Sign in with Google" onPress={() => {}} backgroundColor='#F5F5F5' textColor='#00000054' icon={require('@ressources/google.png')} activeOpacity={0.7}/>
                 <Text onPress={() => {navigation.navigate('Register')}} style={{color: '#1F1F1F', fontSize: 16, alignSelf: 'center', marginTop: '30%'}}>No account yet ? Register Here</Text>
@@ -66,5 +69,3 @@ const styles = StyleSheet.create({
     marginBottom: '10%',
   }
 });
-
-export default LoginScreen;

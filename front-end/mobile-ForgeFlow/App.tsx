@@ -5,6 +5,7 @@ import { StyleSheet} from 'react-native';
 import Loading from './src/loading';
 import LoginScreen from './src/login';
 import RegisterScreen from './src/register';
+import Home from 'src/home';
 
 const Stack = createNativeStackNavigator();
 
@@ -15,6 +16,7 @@ export default function App() {
         <Stack.Screen name="Loading" component={Loading} options={{title: 'Welcome', headerShown: false}} />
         <Stack.Screen name="Login" component={LoginScreen} options={{title: 'Login', headerShown: false}} />
         <Stack.Screen name="Register" component={RegisterScreen} options={{title: 'Register', headerShown: false}} />
+        <Stack.Screen name="Home" component={Home} options={{title: 'Home', headerShown: false}} />
       </Stack.Navigator>
     </NavigationContainer>
   );

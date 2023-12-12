@@ -2,28 +2,20 @@ import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import {Animated} from 'react-native';
 import { Easing } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 
-// import { useLockOrientationPortrait } from './hooks/useOrientation';
-
-const LoadingScreen = () => {
-    const navigation = useNavigation();
-    // useLockOrientationPortrait();
-
+export default function LoadingScreen({navigation} : any) {
     const spinValue = new Animated.Value(0);
 
-    // First set up animation 
     Animated.timing(
         spinValue,
     {
         toValue: 1,
         duration: 2000,
-        easing: Easing.linear, // Easing is an additional import from react-native
-        useNativeDriver: true  // To make use of native driver for performance
+        easing: Easing.linear,
+        useNativeDriver: true
     }
     ).start()
 
-    // Next, interpolate beginning and end values (in this case 0 and 1)
     const spin = spinValue.interpolate({
     inputRange: [0, 1],
     outputRange: ['-90deg', '360deg']
@@ -51,6 +43,3 @@ const styles = StyleSheet.create({
       alignItems: "center",
     }
 });
-  
-  export default LoadingScreen;
-  
