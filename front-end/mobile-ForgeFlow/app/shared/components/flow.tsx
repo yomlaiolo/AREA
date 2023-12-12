@@ -32,12 +32,12 @@ const Flow: React.FC<FlowProps> = ({ onPress, title, icons, disabled, background
           <TouchableOpacity onPress={onPress} onLongPress={handleLongPress} activeOpacity={0.8} disabled={disabled} style={styles.touchable}>
             {(longpress && (require('react-native').Platform).OS === 'android') && (
                 <TouchableOpacity style={[styles.delete, { backgroundColor: '#E88741' }]} activeOpacity={0.8}>
-                    <Image source={require('../res/delete.png')} style={[{ width: 25, height: 25 }]} />
+                    <Image source={require('@ressources/delete.png')} style={[{ width: 25, height: 25 }]} />
                 </TouchableOpacity>
             )}
             {((require('react-native').Platform).OS === 'web' || (require('react-native').Platform).OS === 'windows') && (
               <TouchableOpacity style={[styles.delete, { backgroundColor: '#E88741' }]} activeOpacity={0.8}>
-                <Image source={require('../res/delete.png')} style={[{ width: 25, height: 25 }]} />
+                <Image source={require('@ressources/delete.png')} style={[{ width: 25, height: 25 }]} />
               </TouchableOpacity>
             )}
             <View style={[styles.container, { backgroundColor: backgroundColor }]}>
