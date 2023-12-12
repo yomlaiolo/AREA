@@ -16,6 +16,7 @@ const LoginScreen = () => {
         <KeyboardAvoidingView behavior='position' style={{width: '100%', height:'100%'}}>
           <View style={styles.container}>
             <Text style={{color: 'black', fontSize: 60, fontWeight: 'bold', fontFamily: 'serif'}}>ForgeFlow</Text>
+            <Flow title="SPF1" description="Macarena ANEUNTONINEUH ( le mec qui vient pas à tek )" backgroundColor='#000000' textColor='#1F1F1F' icons={[require('@ressources/google.png'), require('@ressources/spotify.png')]} />
             <Image style={{width: 150, height: 150, marginTop: '10%'}} source={require('@ressources/logo.png')} />
               <View style={styles.utils}>
                 <TextBox placeholder="E-mail" onChangeText={setEmail} value={email} hideText={false} autocomplete="email" />
