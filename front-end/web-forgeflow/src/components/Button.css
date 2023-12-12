@@ -1,0 +1,48 @@
+.button-area {
+  display: flex;
+  flex-direction: column;
+  width: 310px;
+  height: 72px;
+}
+
+.button-area>button {
+  margin: 10px;
+  width: 100%;
+  height: 100%;
+  font-size: 20px;
+  font-weight: bold;
+  border-radius: 12px;
+  border: 0px solid #000;
+  background-color: #fff;
+  cursor: pointer;
+  display: flex;
+}
+
+  .button-area>button:active {
+    transition: background-color 0.1s ease;
+    background-color: #000;
+    opacity: 0.8;
+  }
+  
+    .button-area>button>p {
+      margin-left: 115px;
+      margin-top: 22px;
+    }
+
+.image-area {
+  display: flex;
+  flex-direction: row;
+  width: 310px;
+  height: 72px;
+}
+    
+  .image-area>img {
+    width: 32px;
+    height: 32px;
+    margin: 18px;
+  }
+
+  .image-area>p {
+    margin-left: 50px;
+    margin-top: 24px;
+  }
