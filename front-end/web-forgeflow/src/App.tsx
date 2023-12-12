@@ -6,8 +6,10 @@ import Button from './components/Button';
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
+      <div className="button-area">
         <Button onPress={() => {}} title="LOGIN" backgroundColor='#E88741' icon={require("./res/google.png")}/>
+      </div>
+      <header className="App-header">
         <p>
           Edit <code>src/App.tsx</code> and save to reload.
         </p>
