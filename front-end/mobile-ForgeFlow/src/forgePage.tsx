@@ -2,9 +2,9 @@ import React from "react";
 import { Text, View } from "react-native";
 
 export default function ForgePage() {
-    return (
-        <View style={{backgroundColor: 'blue'}} >
-            <Text>Forge Page</Text>
-        </View>
-    )
+  return (
+    <View style={{ backgroundColor: 'blue' }} >
+      <Text>Forge Page</Text>
+    </View>
+  )
 };
