@@ -4,6 +4,7 @@ import appstore from '../assets/AppStore.svg'
 import playstore from '../assets/PlayStore.svg'
 import mockup_iphone from '../assets/iMockup-iPhone.svg'
 import mockup_google from '../assets/iMockup-Google.svg'
+import Button from '../components/Button';
 
 export const Homepage = () => {
   return (
@@ -17,6 +18,12 @@ export const Homepage = () => {
         <img src={mockup_iphone} alt="mockup_iphone" style={{position:  "absolute", left: 430, top: 200, width: 270, height: 553}}/>
         <img src={mockup_google} alt="mockup_google" style={{position:  "absolute", left: 550, top: 390, width: 350, height: 570}}/>
       </header>
+        <div style={{position:  "absolute", left: 1100, top: -50}}>
+          <Button onPress={() => { }} title="SIGN IN" backgroundColor='rgba(0, 0, 0, 0)' />
+        </div>
+        <div style={{position:  "absolute", left: 1400, top: -50}}>
+          <Button onPress={() => { }} title="SIGN UP" backgroundColor='rgba(0, 0, 0, 0)' border={true} />
+        </div>
     </div>
   );
 }
