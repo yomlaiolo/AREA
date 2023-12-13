@@ -1,0 +1,33 @@
+.flow-area {
+    width: 150px;
+    height: 150px;
+    background-color: #1F1F1F;
+    border-radius: 30px;
+    cursor: pointer;
+}
+
+.flow-icon {
+    width: 90%;
+    height: 90%;
+    margin: 8px;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.flow-title {
+    background-color: #F5F5F5;
+    color: #1F1F1F;
+    width: 40%;
+    height: 20%;
+    border-radius: 10px;
+    font-family: 'Rowdies', sans-serif;
+    font-size: 18px;
+    font-weight: bold;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    margin-left: 44px;
+    display: flex;
+}
