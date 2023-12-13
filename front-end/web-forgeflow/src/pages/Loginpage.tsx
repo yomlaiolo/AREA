@@ -1,21 +1,16 @@
+import React from 'react';
+import Button from '../components/Button';
+import TextBox from '../components/TextBox';
+
 export const Loginpage = () => {
-    return (
-        <div className="App">
-      {/*<Button onPress={() => { }} title="LOGIN" backgroundColor='#E88741' icon={require("./res/google.png")} />
-      <TextBox onChangeText={setTest} value={test} hideText={true} />*/}
+  const [test, setTest] = React.useState<string>("");
+
+  return (
+    <div className="App">
       <header className="App-header">
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <Button onPress={() => { }} title="LOGIN" backgroundColor='#E88741' icon={require("../assets/google.png")} />
+        <TextBox onChangeText={setTest} value={test} hideText={true} />
       </header>
     </div>
-    );
+  );
 }

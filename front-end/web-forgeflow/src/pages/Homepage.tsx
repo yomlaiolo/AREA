@@ -10,7 +10,7 @@ export const Homepage = () => {
     <div className="App">
       <header className="App-header">
         <img src={logo} alt="logo" style={{position:  "absolute", left: 0, top: 0}}/>
-        <p style={{position:  "absolute", left: 150, top: 20, fontSize: '60px', lineHeight: '22px', fontFamily: '"Metamorphous", sans-serif', fontWeight: 400}}>ForgeFlow</p>
+        <p style={{position:  "absolute", left: 150, top: 20, fontSize: '60px', lineHeight: '22px', fontFamily: '"Metamorphous", sans-serif', color: '#000000', fontWeight: 400}}>ForgeFlow</p>
         <p style={{position:  "absolute", left: 50, top: 350, fontSize: '50px', fontFamily: '"Rowdies", regular', fontWeight: 600, color: '#000000', letterSpacing: '0.25px'}}>INSTALL<br/>FORGEFLOW<br/>ON PHONE.</p>
         <img src={appstore} alt="appstore" style={{position:  "absolute", left: 100, top: 800}}/>
         <img src={playstore} alt="playstore" style={{position:  "absolute", left: 350, top: 800}}/>
