@@ -19,37 +19,35 @@ const MiniFlow: React.FC<MiniFlowProps> = ({ onPress, title, icon, disabled, bac
   if (!textColor) {
       textColor = '#1F1F1F';
   }
-  const handlePress = () => {
-    setIsClicked(!isClicked);
-  };
-    return (
+
+  return (
+    <View>
+    {big_display && 
       <View>
-      {big_display && 
-        <View>
-          <TouchableOpacity onPress={onPress} activeOpacity={0.8} disabled={disabled} style={styles.big_touchable}>
-            <View style={[styles.container_big, { backgroundColor: backgroundColor }]}>
-              <Image source={icon} style={[styles.icon, { marginLeft: 190, marginTop: 30}]} />
-            </View>
-          </TouchableOpacity>
-          <Pressable style={styles.label_big}>
-            <Text style={[styles.text, { color: textColor }]}>{title}</Text>
-          </Pressable>
-        </View>
-      }
-      {!big_display &&
-        <View>
-          <TouchableOpacity  onPress={onPress} activeOpacity={0.8} disabled={disabled} style={styles.mini_touchable}>
-            <View style={[styles.container_mini, { backgroundColor: backgroundColor }]}>
-              <Image source={icon} style={styles.icon} />
-            </View>
-          </TouchableOpacity>
-          <Pressable style={styles.label_mini}>
-            <Text style={[styles.text, { color: textColor }]}>{title}</Text>
-          </Pressable>
-        </View>
-      }
+        <TouchableOpacity onPress={onPress} activeOpacity={0.8} disabled={disabled} style={styles.big_touchable}>
+          <View style={[styles.container_big, { backgroundColor: backgroundColor }]}>
+            <Image source={icon} style={[styles.icon, { marginLeft: 190, marginTop: 30}]} />
+          </View>
+        </TouchableOpacity>
+        <Pressable style={styles.label_big}>
+          <Text style={[styles.text, { color: textColor }]}>{title}</Text>
+        </Pressable>
       </View>
-    );
+    }
+    {!big_display &&
+      <View>
+        <TouchableOpacity  onPress={onPress} activeOpacity={0.8} disabled={disabled} style={styles.mini_touchable}>
+          <View style={[styles.container_mini, { backgroundColor: backgroundColor }]}>
+            <Image source={icon} style={styles.icon} />
+          </View>
+        </TouchableOpacity>
+        <Pressable style={styles.label_mini}>
+          <Text style={[styles.text, { color: textColor }]}>{title}</Text>
+        </Pressable>
+      </View>
+    }
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
