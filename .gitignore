@@ -4,3 +4,4 @@ yarn.lock
 node_modules
 .cache/
 note.txt
+dist/
