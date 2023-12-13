@@ -9,11 +9,13 @@ import {
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User } from './user.schema';
+import { Public } from '../auth/auth.decorator';
 
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+  @Public()
   @Post('register')
   async create(@Body() userDto: User) {
     return this.usersService.create(userDto);
