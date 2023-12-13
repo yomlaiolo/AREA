@@ -10,23 +10,19 @@ import { UsersService } from 'src/users/users.service';
 
 @Module({
     imports: [
+        
         UsersModule,
         JwtModule.registerAsync({
             imports: [ConfigModule],
             inject: [ConfigService],
             useFactory: async (configService: ConfigService) => ({
                 secret: configService.get<string>('JWT_SECRET'),
-                signOptions: { expiresIn: '60s' },
+                signOptions: { expiresIn: '6h' },
             }),
         }),
     ],
     providers: [
         AuthService,
-        UsersService,
-        {
-          provide: APP_GUARD,
-          useClass: AuthGuard,
-        },
     ],
     controllers: [AuthController],
     exports: [AuthService],

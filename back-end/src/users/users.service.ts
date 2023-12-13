@@ -29,8 +29,16 @@ export class UsersService {
     return returnedUser;
   }
 
-  async findOne(username: string): Promise<User> {
+  async findOneByUsername(username: string): Promise<User> {
     return this.userModel.findOne({username: username}).exec();
+  }
+
+  async findOneById(id: string): Promise<User> {
+    return this.userModel.findById(id).exec();
+  }
+
+  async findOneByEmail(email: string): Promise<User> {
+    return this.userModel.findOne({email: email}).exec();
   }
 
   async findAll(): Promise<User[]> {
