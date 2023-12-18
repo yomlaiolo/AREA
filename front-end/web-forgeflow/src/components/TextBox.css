@@ -1,7 +1,6 @@
 .box-area {
     display: flex;
     flex-direction: row;
-    width: 320px;
     height: 44px;
     border-radius: 10px;
     border: 0px solid #000;

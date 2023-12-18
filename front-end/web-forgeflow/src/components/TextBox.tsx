@@ -8,17 +8,20 @@ interface TextBoxProps {
   hideText?: boolean;
   autocomplete?: any;
   disabled?: boolean;
+  customwidth?: number;
 }
 
-const AreaTextBox: React.FC<TextBoxProps> = ({ placeholder, onChangeText, value, hideText, autocomplete, disabled }) => {
+const AreaTextBox: React.FC<TextBoxProps> = ({ placeholder, onChangeText, value, hideText, autocomplete, disabled, customwidth }) => {
   const hide = require('../assets/hide.png');
   const show = require('../assets/show.png');
   const [ispassword, setIsPassword] = useState(hideText);
   const toggleShow = () => {
     setIsPassword(!ispassword);
   };
+  if (!customwidth)
+    customwidth = 320;
   return (
-    <div className="box-area" style={{ opacity: disabled ? 0.5 : 1 }}>
+    <div className="box-area" style={{ opacity: disabled ? 0.5 : 1, width: customwidth }}>
       <input
         type={ispassword ? 'password' : 'text'}
         placeholder={placeholder}
