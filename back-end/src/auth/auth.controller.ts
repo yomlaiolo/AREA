@@ -2,10 +2,10 @@ import { Body, Controller, Post, HttpCode, HttpStatus } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { Public } from './auth.decorator';
 import { ApiBody, ApiProperty, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { LoginDto, LoginResponse } from './auth.dto';
+import { LoginDto, LoginResponse, RegisterDto } from './auth.dto';
 import { CreateUserDto, GetUserDto } from 'src/users/user.dto';
 import { UsersService } from 'src/users/users.service';
-import { AutoMap } from "@automapper/classes";
+import { AutoMap } from '@automapper/classes';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -31,10 +31,19 @@ export class AuthController {
   @ApiResponse({
     status: 201,
     description: 'CREATED - User created',
-    type: GetUserDto,
+    type: RegisterDto,
+  })
+  @ApiResponse({
+    status: 409,
+    description: 'CONFLICT - User already exists',
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'BAD REQUEST - Missing fields required for user creation',
   })
   @ApiTags('auth')
   async signUp(@Body() userDto: CreateUserDto) {
-    return this.usersService.create(userDto);
+    const user = await this.usersService.create(userDto);
+    return { id: user['_id'] };
   }
 }
