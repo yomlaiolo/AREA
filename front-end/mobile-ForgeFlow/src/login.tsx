@@ -1,12 +1,36 @@
 import React, { useState } from 'react';
-import { View, Image, StyleSheet, Text, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback } from 'react-native';
+import { View, Image, StyleSheet, Text, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback, Alert } from 'react-native';
 import TextBox from '../app/shared/components/textbox';
 import AreaButton from '@components//button';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-function login(email: string, password: string, navigation: any) {
-  console.log("login");
-  navigation.navigate('Home');
-  navigation.reset({ index: 0, routes: [{ name: 'Home' }] });
+async function login(email: string, password: string, navigation: any) {
+  let token = "";
+
+  fetch('http://10.15.191.104:8080/auth/login', {
+    method: 'POST',
+    headers: new Headers({
+      'Content-Type': 'application/json',
+    }),
+    body: JSON.stringify({
+      "email": email,
+      "password": password,
+    })
+  })
+    .then(response => response.json())
+    .then(async data => {
+      if (data.access_token) {
+        token = data.access_token;
+        console.log("Token: " + token);
+        await AsyncStorage.setItem('token', token);
+        navigation.reset({ index: 0, routes: [{ name: 'Home' }] });
+      } else {
+        Alert.alert("Error", "Bad Request - invalid data");
+      }
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
 }
 
 export default function LoginScreen({ navigation }: any) {
