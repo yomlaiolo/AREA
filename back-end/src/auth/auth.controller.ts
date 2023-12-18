@@ -15,6 +15,7 @@ export class AuthController {
     private readonly usersService: UsersService,
   ) {}
 
+  @HttpCode(HttpStatus.OK)
   @Public()
   @Post('login')
   @ApiResponse({
@@ -26,6 +27,7 @@ export class AuthController {
     return this.authService.signIn(loginDto.email, loginDto.password);
   }
 
+  @HttpCode(HttpStatus.CREATED)
   @Public()
   @Post('register')
   @ApiResponse({
