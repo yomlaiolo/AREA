@@ -16,3 +16,9 @@ export class LoginResponse {
   @AutoMap()
   access_token: string;
 }
+
+export class RegisterDto {
+  @ApiProperty()
+  @AutoMap()
+  id: string;
+}
