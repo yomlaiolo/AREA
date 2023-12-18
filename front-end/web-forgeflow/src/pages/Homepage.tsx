@@ -5,8 +5,11 @@ import playstore from '../assets/PlayStore.svg'
 import mockup_iphone from '../assets/iMockup-iPhone.svg'
 import mockup_google from '../assets/iMockup-Google.svg'
 import Button from '../components/Button';
+import { useNavigate } from 'react-router-dom';
 
 export const Homepage = () => {
+  const navigate = useNavigate();
+
   return (
     <div className="App">
       <header className="App-header">
@@ -19,10 +22,10 @@ export const Homepage = () => {
         <img src={mockup_google} alt="mockup_google" style={{position:  "absolute", left: 550, top: 390, width: 350, height: 570}}/>
       </header>
         <div style={{position:  "absolute", left: 1100, top: -50}}>
-          <Button onPress={() => { }} title="SIGN IN" backgroundColor='rgba(0, 0, 0, 0)' />
+          <Button onPress={() => navigate('/login')} title="SIGN IN" backgroundColor='rgba(0, 0, 0, 0)' />
         </div>
         <div style={{position:  "absolute", left: 1400, top: -50}}>
-          <Button onPress={() => { }} title="SIGN UP" backgroundColor='rgba(0, 0, 0, 0)' border={true} />
+          <Button onPress={() => navigate('/register')} title="SIGN UP" backgroundColor='rgba(0, 0, 0, 0)' border={true} />
         </div>
     </div>
   );
