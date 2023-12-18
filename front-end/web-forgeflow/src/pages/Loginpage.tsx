@@ -18,12 +18,12 @@ export const Loginpage = () => {
         <div className='Rectangle'>
           <div className='Element-Login'>
             <p>Email</p>
-            <TextBox onChangeText={setEmail} value={email} hideText={false} backgroundColor='#DFDFDF' />
+            <TextBox onChangeText={setEmail} value={email} hideText={false} backgroundColor='#DFDFDF' customwidth={400} />
             <p>Password</p>
-            <TextBox onChangeText={setPassword} value={Password} hideText={true} backgroundColor='#DFDFDF' />
+            <TextBox onChangeText={setPassword} value={Password} hideText={true} backgroundColor='#DFDFDF' customwidth={400} />
           </div>
           <div className='Button-Signin'>
-            <Button onPress={() => { }} title="SIGN IN" backgroundColor='#E88741' />
+            <Button onPress={() => navigate('/flows')} title="SIGN IN" backgroundColor='#E88741' />
           </div>
           <div className='Ligne'>
             <div className='Ligne1' />

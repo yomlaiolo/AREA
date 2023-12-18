@@ -4,7 +4,6 @@ import React from 'react';
 import NavigationBar from '../components/NavigationBar';
 import TextBox from '../components/TextBox';
 import Flow from '../components/Flow';
-import MiniFlow from '../components/MiniFlow';
 
 export const Flows = () => {
   const navigate = useNavigate();

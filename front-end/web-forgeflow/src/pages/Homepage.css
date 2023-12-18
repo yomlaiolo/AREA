@@ -1,0 +1,83 @@
+@import url("https://fonts.googleapis.com/css?family=Metamorphous");
+@import url("https://fonts.googleapis.com/css?family=Rowdies");
+
+.App-header {
+    background-image: url(../assets/background.png);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+}
+
+.Logo {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+
+.Title {
+    color: #000;
+    text-align: center;
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-family: Metamorphous;
+    font-size: 60px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 22px;
+    position: absolute;
+    top: 20px;
+    left: 150px;
+}
+
+.Text {
+    position: absolute;
+    left: 50px;
+    top: 350px;
+    font-size: 50px;
+    font-family: 'Rowdies', regular;
+    font-weight: 600;
+    color: #000000;
+    letter-spacing: 0.25px;
+}
+
+.mockup-iphone {
+    position: absolute;
+    left: 430px;
+    top: 200px;
+    width: 270px;
+    height: 553px;
+}
+
+.mockup-google {
+    position: absolute;
+    left: 550px;
+    top: 350px;
+    width: 350px;
+    height: 570px;
+}
+
+.playstore {
+    position: absolute;
+    left: 350px;
+    top: 800px;
+}
+
+.appstore {
+    position: absolute;
+    left: 100px;
+    top: 800px;
+}
+
+.button-login {
+    position: absolute;
+    left: 1100px;
+    top: -50px;
+}
+
+.button-register {
+    position: absolute;
+    left: 1400px;
+    top: -50px;
+}
