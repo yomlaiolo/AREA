@@ -11,8 +11,8 @@ interface TextBoxProps {
 }
 
 const AreaTextBox: React.FC<TextBoxProps> = ({ placeholder, onChangeText, value, hideText, autocomplete, disabled }) => {
-  const hide = require('../res/hide.png');
-  const show = require('../res/show.png');
+  const hide = require('../assets/hide.png');
+  const show = require('../assets/show.png');
   const [ispassword, setIsPassword] = useState(hideText);
   const toggleShow = () => {
     setIsPassword(!ispassword);
