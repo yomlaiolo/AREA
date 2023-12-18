@@ -5,6 +5,7 @@ import playstore from '../assets/PlayStore.svg'
 import mockup_iphone from '../assets/iMockup-iPhone.svg'
 import mockup_google from '../assets/iMockup-Google.svg'
 import Button from '../components/Button';
+import SocketHandler from '../components/websocket';
 import { useNavigate } from 'react-router-dom';
 
 export const Homepage = () => {
@@ -27,6 +28,7 @@ export const Homepage = () => {
         <div style={{position:  "absolute", left: 1400, top: -50}}>
           <Button onPress={() => navigate('/register')} title="SIGN UP" backgroundColor='rgba(0, 0, 0, 0)' border={true} />
         </div>
+        <SocketHandler />
     </div>
   );
 }

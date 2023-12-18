@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
+import { SocketIoAdapter } from './websocket/socket-io.adapter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -18,6 +19,11 @@ async function bootstrap() {
     deepScanRoutes: true,
   });
   SwaggerModule.setup('api', app, document);
+
+  app.enableCors();
+  const server = new SocketIoAdapter(app);
+  console.log(server.createIOServer(8080));
+  app.useWebSocketAdapter(server.createIOServer(8080));
 
   await app.listen(8080);
 }
