@@ -1,0 +1,83 @@
+@import url('https://fonts.googleapis.com/css?family=Rowdies');
+
+.App {
+    background-color: #F5F5F5;
+    width: 100%;
+    height: 930px;
+}
+
+.flow-header {
+    background-color: #F5F5F5;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.flow-text {
+    position: absolute;
+    font-family: 'Rowdies';
+    font-size: 35px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 0.25px;
+    text-transform: uppercase; 
+    color: #1F1F1F;
+    margin-left: 70px;
+    padding: 0px;
+    margin-bottom: 0px;
+    user-select: none;
+}
+
+.flow-text > h1 {
+    position: absolute;
+}
+
+.flow-search {
+    margin-left: 410px;
+    margin-top: 135px;
+}
+
+.separation {
+    position: absolute;
+    width: 2px;
+    height: 800px;
+    background-color: #DFDFDF;
+    margin-left: 1000px;
+    top: 110px;
+}
+
+.flow-list {
+    position: absolute;
+    top: 350px;
+    left: 120px;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+    display: flex;
+    column-gap: 80px;
+    row-gap: 40px;
+    width: 40%;
+    overflow-y: auto;
+    max-height: 500px;
+}
+
+.add-flow {
+    position: absolute;
+    top: 195px;
+    left: 1100px;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    flex-wrap: wrap;
+    display: flex;
+    column-gap: 40px;
+    row-gap: 10px;
+    width: 40%;
+}
+
+.addLogo:hover {
+    cursor:pointer;
+}
