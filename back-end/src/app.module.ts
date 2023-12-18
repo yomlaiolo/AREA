@@ -5,10 +5,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AboutModule } from './about/about.module';
 
-import { User, UserSchema } from './users/user.schema';
 import { UsersModule } from './users/users.module';
-import { UsersService } from './users/users.service';
-import { UsersController } from './users/users.controller';
 
 import { AuthModule } from './auth/auth.module';
 
