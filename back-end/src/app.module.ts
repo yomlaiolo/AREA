@@ -16,6 +16,8 @@ import { JwtModule } from '@nestjs/jwt';
 import { GithubModule } from './github-action/github.module';
 import { OpenAIModule } from './openai/openai.module';
 import { AreaModule } from './area/area.module';
+import { CronActionModule } from './cron-action/cron-action.module';
+import { CronActionController } from './cron-action/cron-action.controller';
 
 @Module({
   imports: [
@@ -39,9 +41,10 @@ import { AreaModule } from './area/area.module';
     AuthModule,
     GithubModule,
     OpenAIModule,
-    AreaModule
+    AreaModule,
+    CronActionModule,
   ],
-  controllers: [AppController],
+  controllers: [AppController, CronActionController],
   providers: [
     AppService,
     {
