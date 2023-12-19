@@ -10,7 +10,7 @@ export default function LoadingScreen({ navigation }: any) {
     spinValue,
     {
       toValue: 1,
-      duration: 200,
+      duration: 1000,
       easing: Easing.linear,
       useNativeDriver: true
     }
@@ -24,7 +24,7 @@ export default function LoadingScreen({ navigation }: any) {
   setTimeout(() => {
     navigation.navigate('Login');
     navigation.reset({ index: 0, routes: [{ name: 'Login' }] });
-  }, 200);
+  }, 1500);
 
   return (
     <View style={styles.all}>
