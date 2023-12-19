@@ -14,7 +14,7 @@ import { CreateUserDto, GetUserDto } from './user.dto';
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(private readonly usersService: UsersService) { }
 
   @Get()
   @ApiBearerAuth('access-token')
@@ -48,9 +48,6 @@ export class UsersController {
     description: 'OK - Get all users',
     isArray: true,
     type: GetUserDto,
-  })
-  @ApiBody({
-    type: CreateUserDto,
   })
   @ApiTags('users')
   async findAll() {

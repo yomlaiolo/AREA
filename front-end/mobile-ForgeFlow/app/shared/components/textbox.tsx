@@ -31,7 +31,7 @@ const TextBox: React.FC<TextBoxProps> = ({ placeholder, onChangeText, value, hid
       {hideText && (
         <TouchableOpacity onPress={toggleShow}>
           <View style={{ padding: 10 }}>
-            <Image source={ispassword ? show : hide} style={{width:24, height:24}} />
+            <Image source={ispassword ? show : hide} style={{ width: 24, height: 24 }} />
           </View>
         </TouchableOpacity>
       )}

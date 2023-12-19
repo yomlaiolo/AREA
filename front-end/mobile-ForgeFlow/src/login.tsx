@@ -2,12 +2,7 @@ import React, { useState } from 'react';
 import { View, Image, StyleSheet, Text, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import TextBox from '../app/shared/components/textbox';
 import AreaButton from '@components//button';
-
-function login(email: string, password: string, navigation: any) {
-  console.log("login");
-  navigation.navigate('Home');
-  navigation.reset({ index: 0, routes: [{ name: 'Home' }] });
-}
+import { login } from './api';
 
 export default function LoginScreen({ navigation }: any) {
   const [email, setEmail] = useState('');

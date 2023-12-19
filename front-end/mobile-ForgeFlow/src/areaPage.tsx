@@ -1,12 +1,21 @@
+import React, { useEffect, useState } from "react";
+import { FlatList, StyleSheet, View } from "react-native";
 import AreaButton from "@components//button";
 import Flow from "@components//flow";
-import React from "react";
-import { FlatList, StyleSheet, Text, View } from "react-native";
+import { getToken } from "./api";
 
 export default function AreaPage({ navigation }: any) {
+  const [token, setToken] = useState<string | null>(null);
+
+  useEffect(() => {
+    getToken().then(tokenValue => {
+      setToken(tokenValue);
+    });
+  }, []);
+
   let names = [{
     key: '1',
-    name: 'Forge',
+    name: 'Flow',
     desc: 'Create your own flows',
   }, {
     key: '2',

@@ -15,6 +15,7 @@ export class AuthController {
     private readonly usersService: UsersService,
   ) {}
 
+  @HttpCode(HttpStatus.OK)
   @Public()
   @Post('login')
   @ApiResponse({
@@ -22,10 +23,18 @@ export class AuthController {
     description: 'OK - User logged in',
     type: LoginResponse,
   })
+  @ApiResponse({
+    status: 401,
+    description: 'Unauthorized - invalid credentials',
+  })
+  @ApiBody({
+    type: LoginDto,
+  })
   async signIn(@Body() loginDto: LoginDto) {
     return this.authService.signIn(loginDto.email, loginDto.password);
   }
 
+  @HttpCode(HttpStatus.CREATED)
   @Public()
   @Post('register')
   @ApiResponse({
@@ -40,6 +49,21 @@ export class AuthController {
   @ApiResponse({
     status: 400,
     description: 'BAD REQUEST - Missing fields required for user creation',
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Bad Request - invalid data',
+  })
+  @ApiResponse({
+    status: 406,
+    description: 'Not Acceptable - invalid email / password',
+  })
+  @ApiResponse({
+    status: 409,
+    description: 'Conflict - user already exists',
+  })
+  @ApiBody({
+    type: CreateUserDto,
   })
   @ApiTags('auth')
   async signUp(@Body() userDto: CreateUserDto) {
