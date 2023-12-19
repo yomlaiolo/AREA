@@ -11,15 +11,6 @@
     font-size: calc(10px + 2vmin);
 }
 
-.Rectangle {
-    position: relative;
-    top: -30px;
-    width: 500px;
-    height: 700px;
-    border-radius: 50px;
-    background-color: #ffffff;
-}
-
 .Ligne {
     position: relative;
     top: 50px;
@@ -79,12 +70,29 @@
 
 .Button-Register_RP {
     position: relative;
-    top: -80px;
+    left: -250px;
+    top: -90px;
 }
 
-.Element-Login {
+.Rectangle_RP {
     position: relative;
-    left: 50px;
+    top: -30px;
+    width: 800px;
+    height: 700px;
+    border-radius: 50px;
+    background-color: #ffffff;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    display: flex;
+}
+
+.Element-Login_RP {
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    display: flex;
+    height: 70%;
 }
 
 .Other-Login_RP {
@@ -93,4 +101,14 @@
     align-items: center;
     justify-content: center;
     margin-top: 50px;
+}
+
+.mini_info {
+    color: #000;
+    font-family: Inter;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 0.5px;
 }

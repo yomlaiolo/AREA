@@ -23,14 +23,15 @@ export const Registerpage = () => {
         <img src={logo} alt="logo" className='Logo' />
         <p className='Title'>ForgeFlow</p>
         <p className='Text-Header'>Let’s create your account</p>
-        <div className='Rectangle'>
-          <div className='Element-Login'>
+        <div className='Rectangle_RP'>
+          <div className='Element-Login_RP'>
             <p>Username</p>
             <TextBox onChangeText={setUsername} value={username} hideText={false} backgroundColor='#DFDFDF' customwidth={400} />
             <p>Email</p>
             <TextBox onChangeText={setEmail} value={email} hideText={false} backgroundColor='#DFDFDF' customwidth={400} />
             <p>Password</p>
             <TextBox onChangeText={setPassword} value={password} hideText={true} backgroundColor='#DFDFDF' customwidth={400} />
+            <p className='mini_info'>Make sure it's at least 8 characters including a number and a uppercase letter.</p>
           </div>
           <div className='Button-Register_RP'>
             <Button onPress={() => connect()} title="JOIN US" backgroundColor='#E88741' />

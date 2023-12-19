@@ -15,6 +15,10 @@
     height: 600px;
     border-radius: 50px;
     background-color: #ffffff;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    display: flex;
 }
 
 .Ligne {
@@ -57,11 +61,14 @@
 .Button-Signin {
     position: relative;
     top: -90px;
+    left: -240px;
 }
 
 .Element-Login {
-    position: relative;
-    left: 50px;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    display: flex;
 }
 
 .Other-Login {
