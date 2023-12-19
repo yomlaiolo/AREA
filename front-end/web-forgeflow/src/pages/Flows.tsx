@@ -1,15 +1,21 @@
 import './Flows.css';
 import { useNavigate} from 'react-router-dom';
-import React from 'react';
+import React, { useState } from 'react';
 import NavigationBar from '../components/NavigationBar';
 import TextBox from '../components/TextBox';
 import Flow from '../components/Flow';
+import { getToken } from '../api';
 
 export const Flows = () => {
+  const [token, setToken] = useState<string | null>(null);
+  getToken().then(tokenValue => {
+    setToken(tokenValue);
+  });
+  console.log("mytoken " + token)
   const navigate = useNavigate();
   const [search, setSearch] = React.useState<string>("");
   const [selectedFlow, setSelectedFlow] = React.useState<string>("");
-  console.log(selectedFlow)
+  console.log("selected" + selectedFlow)
   return (
     <div className="App">
       <header className="flow-header">
