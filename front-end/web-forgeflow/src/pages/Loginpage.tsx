@@ -4,11 +4,17 @@ import TextBox from '../components/TextBox';
 import logo from '../assets/logo.svg'
 import { useNavigate, Link } from 'react-router-dom';
 import './Loginpage.css';
+import { login } from '../api';
 
 export const Loginpage = () => {
-  const [Password, setPassword] = React.useState<string>("");
+  const [password, setPassword] = React.useState<string>("");
   const [email, setEmail] = React.useState<string>("");
   const navigate = useNavigate();
+
+  const connect = () => {
+    console.log("email: " + email + " password: " + password);
+    login(email, password, navigate)
+  }
 
   return (
     <div>
@@ -20,10 +26,10 @@ export const Loginpage = () => {
             <p>Email</p>
             <TextBox onChangeText={setEmail} value={email} hideText={false} backgroundColor='#DFDFDF' customwidth={400} />
             <p>Password</p>
-            <TextBox onChangeText={setPassword} value={Password} hideText={true} backgroundColor='#DFDFDF' customwidth={400} />
+            <TextBox onChangeText={setPassword} value={password} hideText={true} backgroundColor='#DFDFDF' customwidth={400} />
           </div>
           <div className='Button-Signin'>
-            <Button onPress={() => navigate('/flows')} title="SIGN IN" backgroundColor='#E88741' />
+            <Button onPress={() => connect()} title="SIGN IN" backgroundColor='#E88741' />
           </div>
           <div className='Ligne'>
             <div className='Ligne1' />
