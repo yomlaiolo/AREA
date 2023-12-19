@@ -19,7 +19,8 @@ export const Loginpage = () => {
   return (
     <div>
       <header className="App-header">
-        <img src={logo} alt="logo" />
+        <img src={logo} alt="logo" className='Logo' />
+        <p className='Title'>ForgeFlow</p>
         <p className='Text-Header'>SIGN in to forgeflow</p>
         <div className='Rectangle'>
           <div className='Element-Login'>
