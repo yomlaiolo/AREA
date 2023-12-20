@@ -140,13 +140,6 @@ const config = {
 };
 
 export async function signInWithGithub() {
-<<<<<<< HEAD
-    try {
-        const result = await authorize(config);
-    } catch (error) {
-        console.error('GitHub Auth Error', error);
-    }
-=======
   try {
     const result = await authorize(config);
     console.log('Front: MyTOKEN', result.accessToken);
@@ -162,7 +155,6 @@ export async function signInWithGithub() {
   } catch (error) {
     console.error('GitHub Auth Error', error);
   }
->>>>>>> f46e92b (Add: github back-end implementation wip)
 }
 
 export async function getVar(key: string) {
