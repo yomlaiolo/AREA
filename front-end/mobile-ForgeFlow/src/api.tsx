@@ -1,16 +1,16 @@
-import {Alert} from 'react-native';
+import { Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { API, GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, GOOGLE_CLIENT_ID } from '@env';
 import { authorize } from 'react-native-app-auth';
 import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
 
 GoogleSignin.configure({
-    webClientId: GOOGLE_CLIENT_ID,
-    offlineAccess: true,
-    hostedDomain: '',
-    scopes: ['profile', 'email'],
-  });
-  
+  webClientId: GOOGLE_CLIENT_ID,
+  offlineAccess: true,
+  hostedDomain: '',
+  scopes: ['profile', 'email'],
+});
+
 export async function googleSignInFunc(navigation: any) {
   try {
     await GoogleSignin.hasPlayServices();
@@ -28,39 +28,39 @@ export async function googleSignInFunc(navigation: any) {
       // some other error happened
     }
   } finally {
-  
+
   }
 };
 
 export async function sendGoogleLogin(navigation: any, infos: any) {
-    fetch(API + '/auth/google', {
-        method: 'POST',
-        headers: new Headers({
-            'Content-Type': 'application/json',
-        }),
-        body: JSON.stringify({
-            "user": infos.user,
-            "server_auth_code": infos.serverAuthCode,
-            "id_token": infos.idToken,
-        })
+  fetch(API + '/auth/google', {
+    method: 'POST',
+    headers: new Headers({
+      'Content-Type': 'application/json',
+    }),
+    body: JSON.stringify({
+      "user": infos.user,
+      "server_auth_code": infos.serverAuthCode,
+      "id_token": infos.idToken,
     })
-        .then(response => {
-            if (response.status === 200)
-                return response.json();
-            else if (response.status === 401)
-                return null;
-        })
-        .then(async data => {
-            if (data && data.access_token) {
-                let token = data.access_token;
-                await setVar('token', token);
-                navigation.reset({ index: 0, routes: [{ name: 'Home' }] });
-            } else
-                Alert.alert("Error", "Unauthorized - invalid credentials");
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-        });
+  })
+    .then(response => {
+      if (response.status === 200)
+        return response.json();
+      else if (response.status === 401)
+        return null;
+    })
+    .then(async data => {
+      if (data && data.access_token) {
+        let token = data.access_token;
+        await setVar('token', token);
+        navigation.reset({ index: 0, routes: [{ name: 'Home' }] });
+      } else
+        Alert.alert("Error", "Unauthorized - invalid credentials");
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
 }
 
 export async function login(email: string, password: string, navigation: any) {
@@ -82,7 +82,7 @@ export async function login(email: string, password: string, navigation: any) {
       if (data && data.access_token) {
         let token = data.access_token;
         await setVar('token', token);
-        navigation.reset({index: 0, routes: [{name: 'Home'}]});
+        navigation.reset({ index: 0, routes: [{ name: 'Home' }] });
       } else Alert.alert('Error', 'Unauthorized - invalid credentials');
     })
     .catch(error => {
@@ -140,21 +140,23 @@ const config = {
 };
 
 export async function signInWithGithub() {
-  try {
-    const result = await authorize(config);
-    console.log('Front: MyTOKEN', result.accessToken);
-    fetch(API + '/github/token', {
-      method: 'POST',
-      headers: new Headers({
-        'Content-Type': 'application/json',
-      }),
-      body: JSON.stringify({
-        token: result.accessToken,
-      }),
+  const githubToken = await authorize(config);
+
+  fetch(API + '/github/token', {
+    method: 'POST',
+    headers: new Headers({
+      'Content-Type': 'application/json',
+    }),
+    body: JSON.stringify({
+      token: githubToken.accessToken,
+    }),
+  })
+    .then(response => {
+      console.log('Front: Response', response);
+    })
+    .catch(error => {
+      console.error('Error:', error);
     });
-  } catch (error) {
-    console.error('GitHub Auth Error', error);
-  }
 }
 
 export async function getVar(key: string) {
@@ -168,5 +170,5 @@ export async function setVar(key: string, token: string) {
 
 export async function logout(navigation: any) {
   await AsyncStorage.removeItem('token');
-  navigation.reset({index: 0, routes: [{name: 'Login'}]});
+  navigation.reset({ index: 0, routes: [{ name: 'Login' }] });
 }
