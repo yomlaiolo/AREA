@@ -1,7 +1,7 @@
 import { Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
-const API = 'http://10.15.191.104:8080'
+import { API, GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET } from '@env';
+import { authorize } from 'react-native-app-auth';
 
 export async function login(email: string, password: string, navigation: any) {
     fetch(API + '/auth/login', {
@@ -23,7 +23,7 @@ export async function login(email: string, password: string, navigation: any) {
         .then(async data => {
             if (data && data.access_token) {
                 let token = data.access_token;
-                await setToken(token);
+                await setVar('token', token);
                 navigation.reset({ index: 0, routes: [{ name: 'Home' }] });
             } else
                 Alert.alert("Error", "Unauthorized - invalid credentials");
@@ -63,13 +63,34 @@ export async function register(username: string, email: string, password: string
         });
 }
 
-export async function getToken() {
-    const token = await AsyncStorage.getItem('token');
+const config = {
+    clientId: GITHUB_CLIENT_ID,
+    clientSecret: GITHUB_CLIENT_SECRET,
+    redirectUrl: 'myapp://callback',
+    scopes: ['user', 'repo'],
+    serviceConfiguration: {
+        authorizationEndpoint: 'https://github.com/login/oauth/authorize',
+        tokenEndpoint: 'https://github.com/login/oauth/access_token',
+        revocationEndpoint: 'https://github.com/settings/connections/applications/' + GITHUB_CLIENT_ID,
+    },
+}
+
+export async function signInWithGithub() {
+    try {
+        const result = await authorize(config);
+        console.log('MyTOKEN', result.accessToken);
+    } catch (error) {
+        console.error('GitHub Auth Error', error);
+    }
+}
+
+export async function getVar(key: string) {
+    const token = await AsyncStorage.getItem(key);
     return token;
 }
 
-export async function setToken(token: string) {
-    await AsyncStorage.setItem('token', token);
+export async function setVar(key: string, token: string) {
+    await AsyncStorage.setItem(key, token);
 }
 
 export async function logout(navigation: any) {

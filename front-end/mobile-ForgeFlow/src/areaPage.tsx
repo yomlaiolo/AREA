@@ -2,13 +2,13 @@ import React, { useEffect, useState } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 import AreaButton from "@components//button";
 import Flow from "@components//flow";
-import { getToken } from "./api";
+import { getVar } from "./api";
 
 export default function AreaPage({ navigation }: any) {
   const [token, setToken] = useState<string | null>(null);
 
   useEffect(() => {
-    getToken().then(tokenValue => {
+    getVar('token').then(tokenValue => {
       setToken(tokenValue);
     });
   }, []);

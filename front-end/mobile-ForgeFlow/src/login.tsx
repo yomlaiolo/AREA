@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Image, StyleSheet, Text, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import TextBox from '../app/shared/components/textbox';
 import AreaButton from '@components//button';
-import { login } from './api';
+import { login, signInWithGithub } from './api';
 
 export default function LoginScreen({ navigation }: any) {
   const [email, setEmail] = useState('');
