@@ -13,6 +13,8 @@ import configuration from './config/configuration';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './auth/auth.guard';
 import { JwtModule } from '@nestjs/jwt';
+import { GithubService } from './github-action/github.service';
+import { HttpModule } from '@nestjs/axios';
 
 @Module({
   imports: [
@@ -30,6 +32,7 @@ import { JwtModule } from '@nestjs/jwt';
       inject: [ConfigService],
     }),
     AuthModule,
+    HttpModule,
   ],
   controllers: [AppController],
   providers: [
@@ -38,6 +41,7 @@ import { JwtModule } from '@nestjs/jwt';
       provide: APP_GUARD,
       useClass: AuthGuard,
     },
+    GithubService,
   ],
 })
 export class AppModule {}
