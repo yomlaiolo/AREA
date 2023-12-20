@@ -8,7 +8,6 @@ export class AboutController {
   @Public()
   @Get()
   getAbout(@Req() request: any): any {
-    console.log("About")
     return {
       client: {
         host: request.headers.host,
