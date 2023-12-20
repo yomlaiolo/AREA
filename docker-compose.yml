@@ -1,31 +1,31 @@
 version: '3'
 services:
-  # mongodb:
-  #   image: mongo:latest
-  #   restart: always
-  #   container_name: mongo-area
-  #   ports:
-  #     - "27017:27017"
-  #   networks:
-  #     - area-network
-  # server:
-  #   build:
-  #     context: ./back-end
-  #     dockerfile: Dockerfile
-  #   restart: always
-  #   container_name: back-area
-  #   ports:
-  #     - "8080:8080"
-  #   depends_on:
-  #     - mongodb
-  #   networks:
-  #     - area-network
-  # client_mobile:
-  #   build:
-  #     context: ./front-end
-  #     dockerfile: Mobile-Dockerfile
-  #   volumes:
-  #     - front-data:/app/apk
+  mongodb:
+    image: mongo:latest
+    restart: always
+    container_name: mongo-area
+    ports:
+      - "27017:27017"
+    networks:
+      - area-network
+  server:
+    build:
+      context: ./back-end
+      dockerfile: Dockerfile
+    restart: always
+    container_name: back-area
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mongodb
+    networks:
+      - area-network
+  client_mobile:
+    build:
+      context: ./front-end
+      dockerfile: Mobile-Dockerfile
+    volumes:
+      - front-data:/app/apk
     # deploy:
     #   mode: replicated
     #   replicas: 0
@@ -41,9 +41,9 @@ services:
       - "8081:3000"
     networks:
       - area-network
-    # depends_on:
-      # - server
-      # - client_mobile
+    depends_on:
+      - server
+      - client_mobile
 
 volumes:
   front-data:
