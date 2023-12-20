@@ -16,16 +16,15 @@ export class UsersService {
     const regexEmail = new RegExp("^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$");
 
     if (
-      createUserDto.username  == undefined ||
+      createUserDto.username == undefined ||
       createUserDto.firstname == undefined ||
-      createUserDto.lastname  == undefined ||
-      createUserDto.email     == undefined ||
-      createUserDto.password  == undefined
+      createUserDto.lastname == undefined ||
+      createUserDto.email == undefined || (createUserDto.password == undefined && createUserDto.is_google_oauth == false)
     ) {
       throw new BadRequestException("Missing fields required for user creation");
     }
 
-    if (!regexPassword.test(createUserDto.password)) {
+    if (!regexPassword.test(createUserDto.password) && createUserDto.password != undefined) {
       throw new NotAcceptableException("Password must contain at least 8 characters, 1 uppercase letter, 1 lowercase letter and 1 number");
     }
     if (!regexEmail.test(createUserDto.email)) {
@@ -33,16 +32,19 @@ export class UsersService {
     }
 
     // Check if user already exists
-    const user = await this.userModel.findOne({username: createUserDto.username}).exec();
+    const user = await this.userModel.findOne({ username: createUserDto.username }).exec();
     if (user)
       throw new ConflictException("User already exists");
-    const email = await this.userModel.findOne({email: createUserDto.email}).exec();
+    const email = await this.userModel.findOne({ email: createUserDto.email }).exec();
     if (email)
       throw new ConflictException("Email already exists");
 
     // encrypt password with bcrypt
-    const salt = await bcrypt.genSalt();
-    createdUser.password = await bcrypt.hash(createUserDto.password, salt);
+    createdUser.password = undefined;
+    if (createUserDto.password) {
+      const salt = await bcrypt.genSalt();
+      createdUser.password = await bcrypt.hash(createUserDto.password, salt);
+    }
 
     try {
       returnedUser = await createdUser.save();
@@ -53,7 +55,7 @@ export class UsersService {
   }
 
   async findOneByUsername(username: string): Promise<User> {
-    return this.userModel.findOne({username: username}).exec();
+    return this.userModel.findOne({ username: username }).exec();
   }
 
   async findOneById(id: string): Promise<User> {
@@ -61,7 +63,7 @@ export class UsersService {
   }
 
   async findOneByEmail(email: string): Promise<User> {
-    return this.userModel.findOne({email: email}).exec();
+    return this.userModel.findOne({ email: email }).exec();
   }
 
   async findAll(): Promise<User[]> {

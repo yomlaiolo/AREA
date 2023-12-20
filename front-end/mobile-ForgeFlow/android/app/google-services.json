@@ -1,0 +1,16 @@
+{
+    "web": {
+        "client_id": "871142138844-rm10amn21u0kkij3vs7fg1tusegnlni1.apps.googleusercontent.com",
+        "project_id": "hervea-408009",
+        "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+        "token_uri": "https://oauth2.googleapis.com/token",
+        "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+        "client_secret": "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",
+        "redirect_uris": [
+            "http://localhost:8081",
+            "http://localhost:8080",
+            "http://localhost:8080/auth/google/callback",
+            "https://developers.google.com/oauthplayground"
+        ]
+    }
+}

@@ -17,8 +17,17 @@ export class User {
     @Prop({ required: true, unique: true })
     email: string;
 
-    @Prop({ required: true })
+    @Prop()
+    is_google_oauth: boolean;
+
+    @Prop()
     password: string;
+
+    @Prop()
+    access_token: string;
+
+    @Prop()
+    refresh_token: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
