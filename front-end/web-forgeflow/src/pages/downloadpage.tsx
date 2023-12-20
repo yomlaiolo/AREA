@@ -12,7 +12,7 @@ export const Downloadpage = () => {
 
     return (
         <div>
-            <a href={'/forgeflow.apk'} download ref={linkRef} >si ça a pas download appui ici</a>
+            <a href={'/apk/forgeflow.apk'} download ref={linkRef} >si ça a pas download appui ici</a>
         </div>
     )
 }
