@@ -1,5 +1,4 @@
 import { Controller, Post, Body } from '@nestjs/common';
-import { CronActionService } from './cron-action.service';
 import { CronJob } from 'cron';
 import { CronDto } from './cron-action.dto';
 import { Public } from 'src/auth/auth.decorator';
