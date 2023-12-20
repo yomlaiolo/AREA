@@ -21,7 +21,7 @@ export default function LoginScreen({ navigation }: any) {
               <TextBox placeholder="Password" onChangeText={setPassword} value={password} hideText={true} autocomplete="password" />
               <AreaButton title="Login" onPress={() => { login(email, password, navigation) }} backgroundColor='#E88741' textColor='#1F1F1F' activeOpacity={0.5} />
               <View style={styles.bar} />
-              <AreaButton title="Sign in with Google" onPress={signInWithGithub} backgroundColor='#F5F5F5' textColor='#00000054' icon={require('@ressources/google.png')} activeOpacity={0.7} />
+              <AreaButton title="Sign in with Google" onPress={() => { }} backgroundColor='#F5F5F5' textColor='#00000054' icon={require('@ressources/google.png')} activeOpacity={0.7} />
               <Text onPress={() => { navigation.navigate('Register') }} style={{ color: '#1F1F1F', fontSize: 16, alignSelf: 'center', marginTop: '30%' }}>No account yet ? Register Here</Text>
             </View>
           </View>
