@@ -22,3 +22,43 @@ export class RegisterDto {
   @AutoMap()
   id: string;
 }
+
+export class GoogleUser {
+  @ApiProperty()
+  @AutoMap()
+  email: string;
+
+  @ApiProperty()
+  @AutoMap()
+  familyName: string;
+
+  @ApiProperty()
+  @AutoMap()
+  givenName: string;
+
+  @ApiProperty()
+  @AutoMap()
+  id: string;
+
+  @ApiProperty()
+  @AutoMap()
+  name: string;
+
+  @ApiProperty()
+  @AutoMap()
+  photo: string;
+}
+
+export class GoogleDto {
+  @ApiProperty()
+  @AutoMap()
+  user: GoogleUser;
+
+  @ApiProperty()
+  @AutoMap()
+  server_auth_code: string;
+
+  @ApiProperty()
+  @AutoMap()
+  id_token: string;
+}

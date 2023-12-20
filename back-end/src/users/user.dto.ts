@@ -21,6 +21,26 @@ export class CreateUserDto {
     @ApiProperty()
     @AutoMap()
     password: string;
+
+    @ApiProperty()
+    @AutoMap()
+    is_google_oauth: boolean;
+
+    @ApiProperty()
+    @AutoMap()
+    photo: string;
+
+    @ApiProperty()
+    @AutoMap()
+    id_token: string;
+
+    @ApiProperty()
+    @AutoMap()
+    access_token: string;
+
+    @ApiProperty()
+    @AutoMap()
+    refresh_token: string;
 }
 
 export class GetUserDto {
