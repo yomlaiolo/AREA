@@ -20,11 +20,21 @@ services:
       - mongodb
     networks:
       - area-network
-  # Add mobile service
+  client_mobile:
+    build:
+      context: ./front-end
+      dockerfile: Mobile-Dockerfile
+    volumes:
+      - front-data:/app/apk
+    # deploy:
+    #   mode: replicated
+    #   replicas: 0
   client_web:
     build:
       context: ./front-end
       dockerfile: Web-Dockerfile
+    volumes:
+      - front-data:/app/apk
     restart: always
     container_name: front-area
     ports:
@@ -33,7 +43,7 @@ services:
       - area-network
     depends_on:
       - server
-      # Add mobile dependency
+      - client_mobile
 
 volumes:
   front-data:

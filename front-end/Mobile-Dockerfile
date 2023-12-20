@@ -1,11 +1,13 @@
-FROM node:20.9
+FROM reactnativecommunity/react-native-android:v12.0
 
 COPY ./mobile-ForgeFlow /app/
+
+COPY mobileEntrypoint.sh /app/mobileEntrypoint.sh
 
 WORKDIR /app/
 
 RUN npm install
 
-RUN npm run build
+RUN chmod +x /app/mobileEntrypoint.sh
 
-CMD ["npm", "run", "start"]
+ENTRYPOINT ["/app/mobileEntrypoint.sh"]
