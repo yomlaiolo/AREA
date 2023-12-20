@@ -2,6 +2,4 @@ dist
 node_modules
 Dockerfile
 .dockerignore
-npm-debug.log
-app/shared
 package-lock.json
