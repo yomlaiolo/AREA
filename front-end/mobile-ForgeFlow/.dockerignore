@@ -4,3 +4,4 @@ Dockerfile
 .dockerignore
 npm-debug.log
 app/shared
+package-lock.json

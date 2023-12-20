@@ -9,11 +9,16 @@ async function bootstrap() {
     .setTitle('Area')
     .setDescription('Area API description')
     .setVersion('1.0')
-    .addTag('area')
+    .addBearerAuth(
+      { type: 'http', scheme: 'bearer', bearerFormat: 'JWT' },
+      'access-token',
+    )
     .build();
-  const document = SwaggerModule.createDocument(app, config);
+  const document = SwaggerModule.createDocument(app, config, {
+    deepScanRoutes: true,
+  });
   SwaggerModule.setup('api', app, document);
-
+  app.enableCors();
   await app.listen(8080);
 }
 bootstrap();

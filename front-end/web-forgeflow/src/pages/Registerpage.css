@@ -1,0 +1,114 @@
+@import url('https://fonts.googleapis.com/css?family=Rowdies');
+@import url("https://fonts.googleapis.com/css?family=Metamorphous");
+
+.App-header {
+    background-image: url(../assets/background.png);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+}
+
+.Ligne {
+    position: relative;
+    top: 50px;
+    height: 20px;
+    margin-Top: 20px;
+    margin-Bottom: 20px;
+}
+
+.Ligne1 {
+    border-Top: 2px solid black;
+    position: relative;
+    top: 50%;
+    width: 100%;
+}
+
+.Mini-Logo {
+    height: 50px;
+    width: 50px;
+}
+
+.Logo {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+}
+
+.Title {
+    color: #000;
+    text-align: center;
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-family: Metamorphous;
+    font-size: 60px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 22px;
+    position: absolute;
+    top: 20px;
+    left: 150px;
+}
+
+.Button-Signin_RP {
+    position: absolute;
+    left: 1400px;
+    top: -50px;
+}
+
+.Text-Header {
+    color: #000;
+    font-family: 'Rowdies';
+    font-size: 50px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 0.25px;
+    text-transform: uppercase;
+}
+
+.Button-Register_RP {
+    position: relative;
+    left: -250px;
+    top: -90px;
+}
+
+.Rectangle_RP {
+    position: relative;
+    top: -30px;
+    width: 800px;
+    height: 700px;
+    border-radius: 50px;
+    background-color: #ffffff;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    display: flex;
+}
+
+.Element-Login_RP {
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    display: flex;
+    height: 70%;
+}
+
+.Other-Login_RP {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 50px;
+}
+
+.mini_info {
+    color: #000;
+    font-family: Inter;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 0.5px;
+}

@@ -1,6 +1,6 @@
 FROM node:20.9
 
-COPY ./web-ForgeFlow /app/
+COPY ./web-forgeflow /app/
 
 COPY ./mobile-ForgeFlow/app/shared /app/shared
 

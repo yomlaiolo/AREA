@@ -1,14 +1,14 @@
 {
   "extends": "@tsconfig/react-native/tsconfig.json",
   "compilerOptions": {
-    "baseUrl": "." ,
-   "paths": {
+    "baseUrl": ".",
+    "paths": {
       "@ressources/*": [
         "app/shared/res*"
       ],
       "@components/*": [
         "app/shared/components*"
       ],
-   },
+    },
   }
 }

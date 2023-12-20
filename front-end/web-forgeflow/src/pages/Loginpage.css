@@ -1,0 +1,79 @@
+@import url('https://fonts.googleapis.com/css?family=Rowdies');
+
+.App-header {
+    background-image: url(../assets/background.png);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+}
+
+.Rectangle {
+    width: 500px;
+    height: 600px;
+    border-radius: 50px;
+    background-color: #ffffff;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    display: flex;
+}
+
+.Ligne {
+    position: relative;
+    top: 50px;
+    height: 20px;
+    margin-Top: 20px;
+    margin-Bottom: 20px;
+}
+
+.Ligne1 {
+    border-Top: 2px solid black;
+    position: relative;
+    top: 50%;
+    width: 100%;
+}
+
+.Mini-Logo {
+    height: 50px;
+    width: 50px;
+}
+
+.Button-Register {
+    position: absolute;
+    left: 1400px;
+    top: -50px;
+}
+
+.Text-Header {
+    color: #000;
+    font-family: 'Rowdies';
+    font-size: 50px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 0.25px;
+    text-transform: uppercase;
+}
+
+.Button-Signin {
+    position: relative;
+    top: -90px;
+    left: -240px;
+}
+
+.Element-Login {
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    display: flex;
+}
+
+.Other-Login {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
