@@ -125,6 +125,34 @@ export async function register(
     });
 }
 
+export async function userInfo() {
+  const token = await AsyncStorage.getItem('token');
+
+  fetch(API + '/users', {
+    method: 'GET',
+    headers: new Headers({
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + token,
+    }),
+  })
+    .then(response => {
+      if (response.status === 200)
+        return response.json();
+      else if (response.status === 401)
+        return null;
+    })
+    .then(data => {
+      if (data) {
+        setVar('username', data.username);
+        setVar('email', data.email);
+      } else
+        console.log('Unauthorized - invalid credentials');
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+}
+
 const config = {
   clientId: GITHUB_CLIENT_ID,
   clientSecret: GITHUB_CLIENT_SECRET,
@@ -164,8 +192,8 @@ export async function getVar(key: string) {
   return token;
 }
 
-export async function setVar(key: string, token: string) {
-  await AsyncStorage.setItem(key, token);
+export async function setVar(key: string, value: string) {
+  await AsyncStorage.setItem(key, value);
 }
 
 export async function logout(navigation: any) {
