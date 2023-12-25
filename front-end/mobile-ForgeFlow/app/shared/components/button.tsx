@@ -2,24 +2,24 @@ import React from 'react';
 import { View, StyleSheet, TouchableOpacity, Text, Image } from 'react-native';
 
 interface ButtonProps {
-    onPress: () => void;
-    title: string;
-    disabled?: boolean;
-    backgroundColor?: string;
-    textColor?: string;
-    icon?: any;
-    activeOpacity?: number;
+  onPress: () => void;
+  title: string;
+  disabled?: boolean;
+  backgroundColor?: string;
+  textColor?: string;
+  icon?: any;
+  activeOpacity?: number;
 }
 
 const AreaButton: React.FC<ButtonProps> = ({ onPress, title, disabled, backgroundColor, textColor, icon, activeOpacity }) => {
-    return (
-      <TouchableOpacity onPress={onPress} disabled={disabled} style={styles.touchable} activeOpacity={activeOpacity}>
-        <View style={[styles.container, { backgroundColor: backgroundColor }]}>
-          {icon && <Image source={icon} style={styles.icon} />}
-          <Text style={[styles.text, { color: textColor }]}>{title}</Text>
-        </View>
-      </TouchableOpacity>
-    );
+  return (
+    <TouchableOpacity onPress={onPress} disabled={disabled} style={styles.touchable} activeOpacity={activeOpacity}>
+      <View style={[styles.container, { backgroundColor: backgroundColor }]}>
+        {icon && <Image source={icon} style={styles.icon} />}
+        <Text style={[styles.text, { color: textColor }]}>{title}</Text>
+      </View>
+    </TouchableOpacity>
+  );
 };
 
 const styles = StyleSheet.create({

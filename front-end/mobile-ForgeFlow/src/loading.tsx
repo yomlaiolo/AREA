@@ -27,7 +27,6 @@ export default function LoadingScreen({ navigation }: any) {
   });
 
   setTimeout(() => {
-    console.log(token);
     if (token !== '')
       navigation.reset({ index: 0, routes: [{ name: 'Home' }] });
     else

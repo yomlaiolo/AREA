@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Image, Pressable, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import AreaButton from "@components//button";
 import { getVar, logout, userInfo } from "./api";
 import Switch from "@components//switch";
@@ -7,6 +7,7 @@ import Switch from "@components//switch";
 export default function ProfilePage({ navigation }: any) {
   const [username, setUsername] = useState<string | null>(null);
   const [email, setEmail] = useState<string | null>(null);
+  const separator = <View style={styles.separator} />;
 
   useEffect(() => {
     userInfo().then(() => {
@@ -32,21 +33,17 @@ export default function ProfilePage({ navigation }: any) {
           <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 20 }} >Notifications</Text>
           <Switch backgroundColor="#E7E7E7" offColor="#CECECE" onColor="#E88741" onSwitch={() => { }} status={true} />
         </View>
-        <View style={styles.separator} />
-        <View style={styles.settingCase} >
-          <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 20 }} >Modify email</Text>
-          <TouchableOpacity onPress={() => { navigation.navigate('ModifyEmail') }} >
-            <Image style={styles.chevron} source={require('@ressources/chevron.png')} />
-          </TouchableOpacity>
-        </View>
-        <View style={styles.separator} />
-        <View style={styles.settingCase} >
+        {separator}
+        <TouchableOpacity style={styles.settingCase} onPress={() => { navigation.navigate('ModifyProfile') }} >
+          <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 20 }} >Modify profile</Text>
+          <Image style={styles.chevron} source={require('@ressources/chevronR.png')} />
+        </TouchableOpacity>
+        {separator}
+        <TouchableOpacity style={styles.settingCase} onPress={() => { navigation.navigate('ModifyPassword') }} >
           <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 20 }} >Modify password</Text>
-          <TouchableOpacity onPress={() => { navigation.navigate('ModifyPassword') }} >
-            <Image style={styles.chevron} source={require('@ressources/chevron.png')} />
-          </TouchableOpacity>
-        </View>
-        <View style={styles.separator} />
+          <Image style={styles.chevron} source={require('@ressources/chevronR.png')} />
+        </TouchableOpacity>
+        {separator}
         <View style={styles.bottom} >
           <AreaButton backgroundColor="red" title="Disconnect" onPress={() => { logout(navigation) }} />
         </View>

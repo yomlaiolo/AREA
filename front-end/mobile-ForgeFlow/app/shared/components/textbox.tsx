@@ -7,18 +7,24 @@ interface TextBoxProps {
   value: string;
   hideText?: boolean;
   autocomplete?: any;
+  backgroundColor?: string;
+  borderColor?: string;
 }
 
-const TextBox: React.FC<TextBoxProps> = ({ placeholder, onChangeText, value, hideText, autocomplete }) => {
+const TextBox: React.FC<TextBoxProps> = ({ placeholder, onChangeText, value, hideText, autocomplete, backgroundColor, borderColor }) => {
   const hide = require('../res/hide.png');
   const show = require('../res/show.png');
   const [ispassword, setIsPassword] = useState(hideText);
   const toggleShow = () => {
     setIsPassword(!ispassword);
   };
+  if (borderColor == undefined)
+    borderColor = 'transparent';
+  if (backgroundColor == undefined)
+    backgroundColor = '#F5F5F5';
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: backgroundColor, borderColor: borderColor, borderWidth: 1 }]}>
       <TextInput
         placeholder={placeholder}
         placeholderTextColor={'#989898'}

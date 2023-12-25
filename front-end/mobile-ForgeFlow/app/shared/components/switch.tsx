@@ -10,7 +10,6 @@ interface SwitchProps {
   disabled?: boolean;
 }
 
-
 const Switch: React.FC<SwitchProps> = ({ backgroundColor, offColor, onColor, onSwitch, status, disabled }) => {
   const [statusValue, setStatusValue] = useState(status);
   const [xPosition, setXPosition] = useState(status ? 40 : 0);
