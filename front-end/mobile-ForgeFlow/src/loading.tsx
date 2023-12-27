@@ -2,13 +2,21 @@ import React, { useEffect, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Animated } from 'react-native';
 import { Easing } from 'react-native';
-import { getVar } from './api';
+import { getVar, removeVar, userInfo } from './api';
 
 export default function LoadingScreen({ navigation }: any) {
   const spinValue = new Animated.Value(0);
   const [token, setToken] = useState('');
+
   useEffect(() => {
-    getVar('token').then((value) => setToken(value || ''));
+    // Get token from AsyncStorage, if present, get the userInfos to check if the API token is still valid and that the API is still up
+    getVar('token').then(async (value): Promise<void> => {
+      await userInfo();
+      getVar('username').then(usernameValue => {
+        if (usernameValue !== null)
+          setToken(value || '');
+      })
+    });
   }, []);
 
   Animated.timing(
@@ -27,6 +35,7 @@ export default function LoadingScreen({ navigation }: any) {
   });
 
   setTimeout(() => {
+    // Autologin if token is present, else go to login page
     if (token !== '')
       navigation.reset({ index: 0, routes: [{ name: 'Home' }] });
     else

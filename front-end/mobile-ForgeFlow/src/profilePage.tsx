@@ -10,10 +10,25 @@ export default function ProfilePage({ navigation }: any) {
   const separator = <View style={styles.separator} />;
 
   useEffect(() => {
-    userInfo().then(() => {
-      getVar('username').then(usernameValue => { setUsername(usernameValue); })
-      getVar('email').then(emailValue => { setEmail(emailValue); })
-    });
+    // Get username and email from AsyncStorage, if not present, get them from the API
+    getVar('username').then(usernameValue => {
+      setUsername(usernameValue);
+      getVar('email').then(emailValue => {
+        setEmail(emailValue);
+
+        if (usernameValue === null || emailValue === null) {
+          userInfo().then(() => {
+            getVar('username').then(usernameValue => {
+              setUsername(usernameValue);
+              getVar('email').then(emailValue => {
+                setEmail(emailValue);
+              })
+            })
+          })
+        }
+
+      })
+    })
   });
 
   return (
@@ -45,7 +60,7 @@ export default function ProfilePage({ navigation }: any) {
         </TouchableOpacity>
         {separator}
         <View style={styles.bottom} >
-          <AreaButton backgroundColor="red" title="Disconnect" onPress={() => { logout(navigation) }} />
+          <AreaButton backgroundColor="red" textColor="black" title="Disconnect" onPress={() => { logout(navigation) }} />
         </View>
       </View>
     </View>

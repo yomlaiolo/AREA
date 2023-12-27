@@ -145,8 +145,11 @@ export async function userInfo() {
       if (data) {
         setVar('username', data.username);
         setVar('email', data.email);
-      } else
+      } else {
+        removeVar('username');
+        removeVar('email');
         console.log('Unauthorized - invalid credentials');
+      }
     })
     .catch(error => {
       console.error('Error:', error);
@@ -194,6 +197,10 @@ export async function getVar(key: string) {
 
 export async function setVar(key: string, value: string) {
   await AsyncStorage.setItem(key, value);
+}
+
+export async function removeVar(key: string) {
+  await AsyncStorage.removeItem(key);
 }
 
 export async function logout(navigation: any) {

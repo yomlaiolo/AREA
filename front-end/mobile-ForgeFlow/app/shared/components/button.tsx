@@ -50,7 +50,8 @@ const styles = StyleSheet.create({
     flex: 1,
     textAlign: 'center',
     textAlignVertical: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    fontWeight: 'bold',
   },
 });
 
