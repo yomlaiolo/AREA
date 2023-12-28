@@ -21,7 +21,7 @@ const MiniFlow: React.FC<MiniFlowProps> = ({ onPress, title, icon, disabled, bac
   }
 
   return (
-    <View style={{ marginBottom: 40 }}>
+    <View>
       {big_display &&
         <View>
           <TouchableOpacity onPress={onPress} activeOpacity={0.8} disabled={disabled} style={styles.big_touchable}>
@@ -103,8 +103,8 @@ const styles = StyleSheet.create({
   label_mini: {
     width: 110,
     height: 45,
-    top: 180,
-    left: 48,
+    top: 202,
+    left: 55,
     position: 'absolute',
     borderRadius: 30,
     backgroundColor: '#F5F5F5',
