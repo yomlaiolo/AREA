@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Image, Pressable, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import AreaButton from "@components//button";
-import { getVar, logout, userInfo } from "./api";
+import { getVar, logout, setVar, userInfo } from "./api";
 import Switch from "@components//switch";
 
 export default function ProfilePage({ navigation }: any) {
@@ -17,14 +17,14 @@ export default function ProfilePage({ navigation }: any) {
         setEmail(emailValue);
 
         if (usernameValue === null || emailValue === null) {
-          userInfo().then(() => {
-            getVar('username').then(usernameValue => {
-              setUsername(usernameValue);
-              getVar('email').then(emailValue => {
-                setEmail(emailValue);
-              })
-            })
+          userInfo().then((value) => {
+            setUsername(value.username);
+            setEmail(value.email);
+            setVar('username', value.username);
+            setVar('email', value.email);
           })
+        } else {
+          console.log("Username and email found in AsyncStorage: " + usernameValue + " " + emailValue);
         }
 
       })

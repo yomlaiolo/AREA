@@ -6,8 +6,8 @@ import TextBox from "@components//textbox";
 export default function ChangeProfilePage({ navigation }: any) {
   const [newUsername, setnewUsername] = useState<string>('');
   const [newEmail, setnewEmail] = useState<string>('');
-  const separator = <View style={styles.separator} />;
 
+  const separator = <View style={styles.separator} />;
   const explanations = "You can change your username and your email. You can't change your password here. " +
     "If you want to change your password, please go to the \"Modify password\" page.\n\nYou can change only one of the two fields, or both.";
 

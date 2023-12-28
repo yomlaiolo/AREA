@@ -10,12 +10,17 @@ export default function LoadingScreen({ navigation }: any) {
 
   useEffect(() => {
     // Get token from AsyncStorage, if present, get the userInfos to check if the API token is still valid and that the API is still up
-    getVar('token').then(async (value): Promise<void> => {
-      await userInfo();
-      getVar('username').then(usernameValue => {
-        if (usernameValue !== null)
-          setToken(value || '');
-      })
+    getVar('token').then(async (value) => {
+      if (value !== null) {
+        userInfo().then((uInfo) => {
+          if (uInfo !== null) {
+            setToken(value);
+          }
+          else {
+            removeVar('token');
+          }
+        });
+      }
     });
   }, []);
 

@@ -8,6 +8,8 @@ import RegisterScreen from './src/register';
 import Home from 'src/home';
 import ModifyPasswordPage from 'src/modifyPassword';
 import ModifyProfilePage from 'src/modifyProfile';
+import ActionPage from 'src/actionPage';
+import ReactionPage from 'src/reactionPage';
 
 const Stack = createNativeStackNavigator();
 
@@ -21,6 +23,8 @@ export default function App() {
         <Stack.Screen name="Home" component={Home} options={{ title: 'Home', headerShown: false }} />
         <Stack.Screen name="ModifyPassword" component={ModifyPasswordPage} options={{ title: 'Change password', headerShown: false }} />
         <Stack.Screen name="ModifyProfile" component={ModifyProfilePage} options={{ title: 'Change profile', headerShown: false }} />
+        <Stack.Screen name="Action" component={ActionPage} options={{ title: 'Action', headerShown: false }} />
+        <Stack.Screen name="Reaction" component={ReactionPage} options={{ title: 'Reaction', headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
