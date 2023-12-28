@@ -1,15 +1,48 @@
-import React, { useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View, Image, TouchableWithoutFeedback, Keyboard } from "react-native";
+import React, { useEffect, useState } from "react";
+import { StyleSheet, Text, TouchableOpacity, View, Image, TouchableWithoutFeedback, Keyboard, Alert } from "react-native";
 import AreaButton from "@components//button";
 import TextBox from "@components//textbox";
+import { getVar, modifyProfile } from "./api";
+import { showToast } from "./utils";
+
+async function processChanges(navigation: any, username: string, email: string, password: string) {
+  if (username === '' && email === '') {
+    Alert.alert("Error", "You must change at least one of the two fields.");
+    return;
+  }
+  if (password === '') {
+    Alert.alert("Error", "You must enter your password.");
+    return;
+  }
+  if (username === '')
+    username = await getVar('username') as string;
+  if (email === '')
+    email = await getVar('email') as string;
+  var response = await modifyProfile(username, email, password);
+  if (response === 0) {
+    showToast("Profile changed successfully.");
+    navigation.goBack();
+  } else {
+    Alert.alert("Error", response?.toString());
+  }
+}
 
 export default function ChangeProfilePage({ navigation }: any) {
   const [newUsername, setnewUsername] = useState<string>('');
   const [newEmail, setnewEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [actualUsername, setActualUsername] = useState<string>('');
+  const [actualEmail, setActualEmail] = useState<string>('');
 
   const separator = <View style={styles.separator} />;
   const explanations = "You can change your username and your email. You can't change your password here. " +
-    "If you want to change your password, please go to the \"Modify password\" page.\n\nYou can change only one of the two fields, or both.";
+    "If you want to change your password, please go to the \"Modify password\" page.\n\nYou can change only one of the two fields, or both.\n\n" +
+    "You need your password to confirm the changes.";
+
+  useEffect(() => {
+    getVar('username').then(usernameValue => { setActualUsername(usernameValue as string); })
+    getVar('email').then(emailValue => { setActualEmail(emailValue as string); })
+  });
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -25,15 +58,15 @@ export default function ChangeProfilePage({ navigation }: any) {
           <Text style={{ color: 'black', fontSize: 14, marginTop: 20, textAlign: 'justify' }} >{explanations}</Text>
         </View>
         <View style={styles.form} >
-          <TextBox placeholder="New username" backgroundColor="white" borderColor="#E2E2E2" value={newUsername} onChangeText={(text: string) => { setnewUsername(text) }} />
-          <TextBox placeholder="New email" backgroundColor="white" borderColor="#E2E2E2" value={newEmail} onChangeText={(text: string) => { setnewEmail(text) }} />
-          <AreaButton backgroundColor="#CECECE" textColor="black" title="Confirm profile change" onPress={() => { }} />
+          <TextBox placeholder={"New username. Actual one: " + actualUsername} backgroundColor="white" borderColor="#E2E2E2" value={newUsername} onChangeText={(text: string) => { setnewUsername(text) }} />
+          <TextBox placeholder={"New email. Actual one: " + actualEmail} backgroundColor="white" borderColor="#E2E2E2" value={newEmail} onChangeText={(text: string) => { setnewEmail(text) }} />
+          <TextBox hideText={true} placeholder="Password" backgroundColor="white" borderColor="#E2E2E2" value={password} onChangeText={(text: string) => { setPassword(text) }} />
+          <AreaButton backgroundColor="#CECECE" textColor="black" title="Confirm profile change" onPress={() => { processChanges(navigation, newUsername, newEmail, password) }} />
         </View>
       </View>
     </TouchableWithoutFeedback>
   )
 }
-
 
 const styles = StyleSheet.create({
   all: {

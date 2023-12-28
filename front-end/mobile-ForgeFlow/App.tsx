@@ -10,10 +10,12 @@ import ModifyPasswordPage from 'src/modifyPassword';
 import ModifyProfilePage from 'src/modifyProfile';
 import ActionPage from 'src/actionPage';
 import ReactionPage from 'src/reactionPage';
+import { useLockOrientationPortrait } from 'src/utils';
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
+  useLockOrientationPortrait();
   return (
     <NavigationContainer>
       <Stack.Navigator>

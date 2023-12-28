@@ -1,35 +1,27 @@
-import React, { useEffect, useState } from "react";
-import { Image, Pressable, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import React, { useState } from "react";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import AreaButton from "@components//button";
 import { getVar, logout, setVar, userInfo } from "./api";
 import Switch from "@components//switch";
+import { useFocusEffect } from "@react-navigation/native";
 
 export default function ProfilePage({ navigation }: any) {
   const [username, setUsername] = useState<string | null>(null);
   const [email, setEmail] = useState<string | null>(null);
   const separator = <View style={styles.separator} />;
 
-  useEffect(() => {
-    // Get username and email from AsyncStorage, if not present, get them from the API
-    getVar('username').then(usernameValue => {
-      setUsername(usernameValue);
-      getVar('email').then(emailValue => {
-        setEmail(emailValue);
-
-        if (usernameValue === null || emailValue === null) {
-          userInfo().then((value) => {
-            setUsername(value.username);
-            setEmail(value.email);
-            setVar('username', value.username);
-            setVar('email', value.email);
-          })
-        } else {
-          console.log("Username and email found in AsyncStorage: " + usernameValue + " " + emailValue);
-        }
-
-      })
-    })
-  });
+  const fetchData = async () => {
+    userInfo().then(() => {
+      getVar('username').then(usernameValue => { setUsername(usernameValue); })
+      getVar('email').then(emailValue => { setEmail(emailValue); })
+    });
+  };
+  fetchData();
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchData();
+    }, [])
+  );
 
   return (
     <View style={styles.all} >
