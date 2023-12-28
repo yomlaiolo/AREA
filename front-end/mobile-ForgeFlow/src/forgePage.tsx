@@ -4,16 +4,7 @@ import { Image, Platform, StyleSheet, Text, ToastAndroid, TouchableOpacity, View
 import { getVar, removeVar } from "./api";
 import { useFocusEffect } from "@react-navigation/native";
 import { actions, reactions } from "./area";
-
-function showToast(message: string) {
-  if (Platform.OS === 'android') {
-    ToastAndroid.showWithGravity(
-      message,
-      ToastAndroid.LONG,
-      ToastAndroid.CENTER
-    );
-  }
-}
+import { showToast } from "./utils";
 
 async function forge() {
   const actionId = await getVar('action');
