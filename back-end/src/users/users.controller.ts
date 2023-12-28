@@ -25,15 +25,13 @@ export class UsersController {
     type: GetUserDto,
   })
   @ApiTags('users')
-  async getUser(@Req() request: Request) {
+  async getUser(@Req() request: Request): Promise<GetUserDto> {
     const payload = request['user'];
     const user = await this.usersService.findOneById(payload['user']['_id']);
     if (!user) throw new BadRequestException('User not found');
 
     const userDto = new GetUserDto();
     userDto.username = user.username;
-    userDto.firstname = user.firstname;
-    userDto.lastname = user.lastname;
     userDto.email = user.email;
     userDto.id = user['_id'];
 

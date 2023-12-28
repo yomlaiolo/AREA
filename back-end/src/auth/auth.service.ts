@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, NotAcceptableException, UnauthorizedException } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
@@ -24,6 +24,35 @@ export class AuthService {
 
   async getJwt(payload: any) {
     return await this.jwtService.signAsync(payload);
+  }
+
+  async changePassword(userId: string, oldPassword: string, newPassword: string): Promise<void> {
+    const user = await this.usersService.findOneById(userId);
+    if (!user || !(await bcrypt.compare(oldPassword, user.password))) {
+      throw new UnauthorizedException("Invalid password");
+    }
+    const regexPassword = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})");
+    if (!regexPassword.test(newPassword)) {
+      throw new NotAcceptableException("Password must contain at least 8 characters, 1 uppercase letter, 1 lowercase letter and 1 number");
+    }
+    const salt = await bcrypt.genSalt();
+    const password = await bcrypt.hash(newPassword, salt);
+    await this.usersService.updatePassword(userId, password);
+  }
+
+  async changeUsernameOrEmail(userId: string, changeUsernameOrEmailDto: any): Promise<void> {
+    const user = await this.usersService.findOneById(userId);
+    const regexEmail = new RegExp("^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$");
+    
+    if (!user || !(await bcrypt.compare(changeUsernameOrEmailDto.password, user.password)))
+      throw new UnauthorizedException("Invalid password");
+    if (changeUsernameOrEmailDto.email != undefined && !regexEmail.test(changeUsernameOrEmailDto.email))
+      throw new NotAcceptableException("Email is not valid");
+
+    if (changeUsernameOrEmailDto.username != undefined)
+      await this.usersService.updateUsername(userId, changeUsernameOrEmailDto.username);
+    if (changeUsernameOrEmailDto.email != undefined)
+      await this.usersService.updateEmail(userId, changeUsernameOrEmailDto.email);
   }
 
   async getGoogleTokens(code: string): Promise<object> {

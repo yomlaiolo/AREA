@@ -1,5 +1,5 @@
 import { Model } from 'mongoose';
-import { BadRequestException, ConflictException, Injectable, NotAcceptableException } from '@nestjs/common';
+import { BadRequestException, ConflictException, Injectable, InternalServerErrorException, NotAcceptableException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from './user.schema';
 import { CreateUserDto } from './user.dto';
@@ -17,9 +17,8 @@ export class UsersService {
 
     if (
       createUserDto.username == undefined ||
-      createUserDto.firstname == undefined ||
-      createUserDto.lastname == undefined ||
-      createUserDto.email == undefined || (createUserDto.password == undefined && createUserDto.is_google_oauth == false)
+      createUserDto.email == undefined ||
+      (createUserDto.password == undefined && createUserDto.is_google_oauth == false)
     ) {
       throw new BadRequestException("Missing fields required for user creation");
     }
@@ -49,7 +48,8 @@ export class UsersService {
     try {
       returnedUser = await createdUser.save();
     } catch (error) {
-      throw new ConflictException("User already exists");
+      console.log(error)
+      throw new InternalServerErrorException(error);
     }
     return returnedUser;
   }
@@ -72,5 +72,24 @@ export class UsersService {
 
   async deleteAll(): Promise<any> {
     return this.userModel.deleteMany({});
+  }
+
+  async updatePassword(userId: string, newPassword: string): Promise<void> {
+    const user = await this.userModel.findById(userId).exec();
+    user.password = newPassword;
+    await user.save();
+    console.log(user);
+  }
+
+  async updateUsername(userId: string, newUsername: string): Promise<void> {
+    const user = await this.userModel.findById(userId).exec();
+    user.username = newUsername;
+    await user.save();
+  }
+
+  async updateEmail(userId: string, newEmail: string): Promise<void> {
+    const user = await this.userModel.findById(userId).exec();
+    user.email = newEmail;
+    await user.save();
   }
 }

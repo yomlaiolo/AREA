@@ -62,3 +62,27 @@ export class GoogleDto {
   @AutoMap()
   id_token: string;
 }
+
+export class ChangePasswordDto {
+  @ApiProperty()
+  @AutoMap()
+  old_password: string;
+
+  @ApiProperty()
+  @AutoMap()
+  new_password: string;
+}
+
+export class ChangeUsernameOrEmailDto {
+  @ApiProperty()
+  @AutoMap()
+  password: string;
+
+  @ApiProperty()
+  @AutoMap()
+  username: string;
+
+  @ApiProperty()
+  @AutoMap()
+  email: string;
+}

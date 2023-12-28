@@ -1,8 +1,8 @@
-import { Body, Controller, Post, HttpCode, HttpStatus, UnauthorizedException, BadRequestException, ConflictException } from '@nestjs/common';
+import { Body, Controller, Post, HttpCode, HttpStatus, UnauthorizedException, BadRequestException, ConflictException, NotAcceptableException, Req } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { Public } from './auth.decorator';
-import { ApiBody, ApiProperty, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { LoginDto, LoginResponse, RegisterDto, GoogleDto } from './auth.dto';
+import { ApiBearerAuth, ApiBody, ApiProperty, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { LoginDto, LoginResponse, RegisterDto, GoogleDto, ChangePasswordDto, ChangeUsernameOrEmailDto } from './auth.dto';
 import { CreateUserDto, GetUserDto } from 'src/users/user.dto';
 import { UsersService } from 'src/users/users.service';
 import { AutoMap } from '@automapper/classes';
@@ -30,7 +30,7 @@ export class AuthController {
   @ApiBody({
     type: LoginDto,
   })
-  async signIn(@Body() loginDto: LoginDto) {
+  async signIn(@Body() loginDto: LoginDto): Promise<LoginResponse> {
     return this.authService.signIn(loginDto.email, loginDto.password);
   }
 
@@ -66,10 +66,66 @@ export class AuthController {
     type: CreateUserDto,
   })
   @ApiTags('auth')
-  async signUp(@Body() userDto: CreateUserDto) {
+  async signUp(@Body() userDto: CreateUserDto): Promise<RegisterDto> {
     userDto.is_google_oauth = false;
     const user = await this.usersService.create(userDto);
     return { id: user['_id'] };
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @ApiTags('auth')
+  @Post('change-password')
+  @ApiResponse({
+    status: 200,
+    description: 'OK - Password changed',
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'UNAUTHORIZED - Invalid token / Invalid password',
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'BAD REQUEST - Missing fields required for password change',
+  })
+  @ApiResponse({
+    status: 406,
+    description: 'NOT ACCEPTABLE - Password must contain at least 8 characters, 1 uppercase letter, 1 lowercase letter and 1 number',
+  })
+  @ApiBearerAuth('access-token')
+  async changePassword(@Body() ChangePasswordDto: ChangePasswordDto, @Req() request: Request): Promise<void> {
+    const userId = request['user'].user['_id'];
+    if (ChangePasswordDto.new_password == undefined || ChangePasswordDto.old_password == undefined)
+      throw new BadRequestException("Missing fields required for password change");
+    return this.authService.changePassword(userId, ChangePasswordDto.old_password, ChangePasswordDto.new_password);
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @ApiTags('auth')
+  @Post('change-profile')
+  @ApiResponse({
+    status: 200,
+    description: 'OK - Username / email changed',
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'UNAUTHORIZED - Invalid token',
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'BAD REQUEST - Password is required / Username or email is required',
+  })
+  @ApiResponse({
+    status: 406,
+    description: 'NOT ACCEPTABLE - Email is not valid',
+  })
+  @ApiBearerAuth('access-token')
+  async changeUsernameOrEmail(@Body() changeUsernameOrEmailDto: ChangeUsernameOrEmailDto, @Req() request: Request): Promise<void> {
+    if (changeUsernameOrEmailDto.password == undefined)
+      throw new BadRequestException("Password is required");
+    if (changeUsernameOrEmailDto.username == undefined && changeUsernameOrEmailDto.email == undefined)
+      throw new BadRequestException("Username or email is required");
+    const userId = request['user'].user['_id'];    
+    return this.authService.changeUsernameOrEmail(userId, changeUsernameOrEmailDto);
   }
 
   @Public()
@@ -121,8 +177,6 @@ export class AuthController {
     );
     
     newUser.username = googleDto.user.name;
-    newUser.firstname = googleDto.user.givenName;
-    newUser.lastname = googleDto.user.familyName;
     newUser.email = googleDto.user.email;
     newUser.password = undefined;
     newUser.is_google_oauth = true;

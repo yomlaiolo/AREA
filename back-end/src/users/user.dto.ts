@@ -8,14 +8,6 @@ export class CreateUserDto {
 
     @ApiProperty()
     @AutoMap()
-    firstname: string;
-
-    @ApiProperty()
-    @AutoMap()
-    lastname: string;
-
-    @ApiProperty()
-    @AutoMap()
     email: string;
 
     @ApiProperty()
@@ -47,14 +39,6 @@ export class GetUserDto {
     @ApiProperty()
     @AutoMap()
     username: string;
-
-    @ApiProperty()
-    @AutoMap()
-    firstname: string;
-
-    @ApiProperty()
-    @AutoMap()
-    lastname: string;
 
     @ApiProperty()
     @AutoMap()
