@@ -14,9 +14,11 @@ import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './auth/auth.guard';
 import { JwtModule } from '@nestjs/jwt';
 import { GithubModule } from './github-action/github.module';
+import { OpenAIService } from './openai/openai.service';
 
 @Module({
   imports: [
+    ConfigModule.forRoot(),
     UsersModule,
     AboutModule,
     JwtModule,
@@ -40,6 +42,7 @@ import { GithubModule } from './github-action/github.module';
       provide: APP_GUARD,
       useClass: AuthGuard,
     },
+    OpenAIService,
   ],
 })
-export class AppModule {}
+export class AppModule { }
