@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Image, Pressable, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import AreaButton from "@components//button";
-import { getVar, logout, userInfo } from "./api";
+import { getVar, logout, setVar, userInfo } from "./api";
 import Switch from "@components//switch";
 
 export default function ProfilePage({ navigation }: any) {
@@ -10,10 +10,25 @@ export default function ProfilePage({ navigation }: any) {
   const separator = <View style={styles.separator} />;
 
   useEffect(() => {
-    userInfo().then(() => {
-      getVar('username').then(usernameValue => { setUsername(usernameValue); })
-      getVar('email').then(emailValue => { setEmail(emailValue); })
-    });
+    // Get username and email from AsyncStorage, if not present, get them from the API
+    getVar('username').then(usernameValue => {
+      setUsername(usernameValue);
+      getVar('email').then(emailValue => {
+        setEmail(emailValue);
+
+        if (usernameValue === null || emailValue === null) {
+          userInfo().then((value) => {
+            setUsername(value.username);
+            setEmail(value.email);
+            setVar('username', value.username);
+            setVar('email', value.email);
+          })
+        } else {
+          console.log("Username and email found in AsyncStorage: " + usernameValue + " " + emailValue);
+        }
+
+      })
+    })
   });
 
   return (
@@ -45,7 +60,7 @@ export default function ProfilePage({ navigation }: any) {
         </TouchableOpacity>
         {separator}
         <View style={styles.bottom} >
-          <AreaButton backgroundColor="red" title="Disconnect" onPress={() => { logout(navigation) }} />
+          <AreaButton backgroundColor="red" textColor="black" title="Disconnect" onPress={() => { logout(navigation) }} />
         </View>
       </View>
     </View>

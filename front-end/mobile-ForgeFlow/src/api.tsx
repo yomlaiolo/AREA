@@ -3,6 +3,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { API, GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, GOOGLE_CLIENT_ID } from '@env';
 import { authorize } from 'react-native-app-auth';
 import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
+import { useState } from 'react';
 
 GoogleSignin.configure({
   webClientId: GOOGLE_CLIENT_ID,
@@ -126,31 +127,33 @@ export async function register(
 }
 
 export async function userInfo() {
-  const token = await AsyncStorage.getItem('token');
+  const token = await getVar('token');
+  var username: string = '';
+  var email: string = '';
 
-  fetch(API + '/users', {
-    method: 'GET',
-    headers: new Headers({
-      'Content-Type': 'application/json',
-      Authorization: 'Bearer ' + token,
-    }),
-  })
-    .then(response => {
-      if (response.status === 200)
-        return response.json();
-      else if (response.status === 401)
-        return null;
-    })
-    .then(data => {
-      if (data) {
-        setVar('username', data.username);
-        setVar('email', data.email);
-      } else
-        console.log('Unauthorized - invalid credentials');
-    })
-    .catch(error => {
-      console.error('Error:', error);
+  try {
+    const response = await fetch(API + '/users', {
+      method: 'GET',
+      headers: new Headers({
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token,
+      }),
     });
+    if (response.status === 200) {
+      const data = await response.json();
+      username = data.username;
+      email = data.email;
+      setVar('username', username);
+      setVar('email', email);
+    } else if (response.status === 401) {
+      removeVar('username');
+      removeVar('email');
+      console.log('Unauthorized - invalid credentials');
+    }
+  } catch (error) {
+    console.error('Error:', error);
+  }
+  return { username, email };
 }
 
 const config = {
@@ -188,12 +191,16 @@ export async function signInWithGithub() {
 }
 
 export async function getVar(key: string) {
-  const token = await AsyncStorage.getItem(key);
-  return token;
+  const myVar = await AsyncStorage.getItem(key);
+  return myVar;
 }
 
 export async function setVar(key: string, value: string) {
   await AsyncStorage.setItem(key, value);
+}
+
+export async function removeVar(key: string) {
+  await AsyncStorage.removeItem(key);
 }
 
 export async function logout(navigation: any) {
