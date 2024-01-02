@@ -15,10 +15,14 @@ import { AuthGuard } from './auth/auth.guard';
 import { JwtModule } from '@nestjs/jwt';
 import { GithubModule } from './github-action/github.module';
 import { OpenAIService } from './openai/openai.service';
+import OpenAI from 'openai';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      envFilePath: '.env',
+      isGlobal: true,
+    }),
     UsersModule,
     AboutModule,
     JwtModule,
@@ -34,6 +38,7 @@ import { OpenAIService } from './openai/openai.service';
     }),
     AuthModule,
     GithubModule,
+    OpenAIService
   ],
   controllers: [AppController],
   providers: [
