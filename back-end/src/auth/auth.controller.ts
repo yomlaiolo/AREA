@@ -5,7 +5,6 @@ import { ApiBearerAuth, ApiBody, ApiProperty, ApiResponse, ApiTags } from '@nest
 import { LoginDto, LoginResponse, RegisterDto, GoogleDto, ChangePasswordDto, ChangeUsernameOrEmailDto } from './auth.dto';
 import { CreateUserDto, GetUserDto } from 'src/users/user.dto';
 import { UsersService } from 'src/users/users.service';
-import { AutoMap } from '@automapper/classes';
 
 @ApiTags('auth')
 @Controller('auth')
