@@ -78,6 +78,8 @@ export class OpenAIService {
     for await (const message of completion) {
       response += (message.choices[0]?.delta?.content || '');
     }
+    fs.unlinkSync(file_path);
+
     return response;
   }
 }
