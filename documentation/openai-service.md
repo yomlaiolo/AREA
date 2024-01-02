@@ -39,3 +39,17 @@ A string which sumarize the email in the language asked.
 > Return :
 
 A string which is a suggestion to response to the email received. If the email doesn't need response, the AI will told you so.
+
+## ResumeFile
+
+> Arguments :
+
+- file_path : The path of the file to sumarize.
+
+- token : The OpenAI Api key of the ForgeFlow user.
+
+- language ( english as default) : Set the language in which the AI will sumarize the email.
+
+> Return :
+
+A string which sumarize the file in the language asked.
