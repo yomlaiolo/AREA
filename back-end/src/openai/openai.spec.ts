@@ -47,4 +47,10 @@ describe('OpenAIService', () => {
     console.log(response);
     expect(response).toContain('There is no need to respond to this email');
   });
+
+  it('should return AI response, resuming a file', async () => {
+    const response = await service.ResumeFile('./files/test.pdf', configService.get<string>('OPENAI_KEY'));
+    console.log(response);
+    expect(response).toBeDefined();
+  });
 });

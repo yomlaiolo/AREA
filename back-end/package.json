@@ -32,10 +32,13 @@
     "@nestjs/swagger": "^7.1.16",
     "axios": "^1.6.2",
     "bcrypt": "^5.1.1",
+    "docxtemplater": "^3.42.7",
+    "mammoth": "^1.6.0",
     "mongodb": "^6.3.0",
     "mongoose": "^8.0.2",
     "node": "20.8.0",
     "openai": "^4.24.1",
+    "pdf-parse": "^1.1.1",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.1",
     "swagger-ui-express": "^5.0.0"
