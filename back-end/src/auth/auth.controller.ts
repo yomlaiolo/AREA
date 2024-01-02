@@ -118,13 +118,25 @@ export class AuthController {
     status: 406,
     description: 'NOT ACCEPTABLE - Email is not valid',
   })
+  @ApiResponse({
+    status: 409,
+    description: 'CONFLICT - Username or email already in use',
+  })
   @ApiBearerAuth('access-token')
   async changeUsernameOrEmail(@Body() changeUsernameOrEmailDto: ChangeUsernameOrEmailDto, @Req() request: Request): Promise<void> {
+    const userByEmail = await this.usersService.findOneByEmail(changeUsernameOrEmailDto.email);
+    const userByUsername = await this.usersService.findOneByUsername(changeUsernameOrEmailDto.username);
+
+    if (
+      (userByEmail != undefined && userByEmail['_id'] != request['user'].user['_id']) ||
+      (userByUsername != undefined && userByUsername['_id'] != request['user'].user['_id'])
+    )
+      throw new ConflictException("Username or email already in use");
     if (changeUsernameOrEmailDto.password == undefined)
       throw new BadRequestException("Password is required");
     if (changeUsernameOrEmailDto.username == undefined && changeUsernameOrEmailDto.email == undefined)
       throw new BadRequestException("Username or email is required");
-    const userId = request['user'].user['_id'];    
+    const userId = request['user'].user['_id'];
     return this.authService.changeUsernameOrEmail(userId, changeUsernameOrEmailDto);
   }
 
@@ -175,7 +187,7 @@ export class AuthController {
     const tokens: object = await this.authService.getGoogleTokens(
       googleDto.server_auth_code
     );
-    
+
     newUser.username = googleDto.user.name;
     newUser.email = googleDto.user.email;
     newUser.password = undefined;
