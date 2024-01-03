@@ -1,0 +1,96 @@
+.profile-header {
+    background-color: #F5F5F5;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.profile-image {
+    top: 20%;
+    left: 25%;
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.profile-image>img {
+    width: 80px;
+    height: 86px;
+    border-radius: 50%;
+}
+
+.profile-image>p {
+    margin-left: 20px;
+    margin-top: 35px;
+}
+
+.profile-menu-selected {
+    top: 30%;
+    left: 40%;
+    width: 30%;
+    position: absolute;
+}
+
+.selected_image {
+    top: 20%;
+    left: 70%;
+    position: absolute;
+}
+
+.selected_image>img {
+    width: 130px;
+    height: 142px;
+    border-radius: 50%;
+}
+
+.profile-menu-selected-seperateur {
+    border-bottom: 1px solid #CECECE;
+}
+
+.profile-menu {
+    position: absolute;
+    top: 30%;
+    left: 25%;
+    display: flex;
+    flex-direction: column;
+    width: 188px;
+    height: 32px;
+}
+
+.profile-menu-item {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 188px;
+    height: 32px;
+    margin-top: 10px;
+    border: none;
+}
+
+.selected_change>* {
+    margin-top: 10px;
+}
+
+.selected_notif {
+    display: flex;
+    flex-direction: row;
+}
+
+.selected_notif>p {
+    margin-left: 10px;
+    margin-top: 30px;
+}
+
+.selected_password>* {
+    margin-top: 20px;
+}
+
+.selected_password {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
