@@ -3,7 +3,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { API, GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, GOOGLE_CLIENT_ID } from '@env';
 import { authorize } from 'react-native-app-auth';
 import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
-import { useState } from 'react';
 
 GoogleSignin.configure({
   webClientId: GOOGLE_CLIENT_ID,
@@ -131,6 +130,10 @@ export async function userInfo() {
   var username: string = '';
   var email: string = '';
 
+  if (!token) {
+    console.log('No token found');
+    return { username, email };
+  }
   try {
     const response = await fetch(API + '/users', {
       method: 'GET',
@@ -183,11 +186,13 @@ export async function modifyProfile(username: string, email: string, password: s
       return "Unauthorized - invalid credentials";
     } else if (response.status === 406) {
       return "Email not valid";
+    } else if (response.status === 409) {
+      return "Username or email already used";
     }
   } catch (error) {
     console.error('Error:', error);
   }
-  return "Unknown error, maybe the server is down, or the username or the email is already used";
+  return "Unknown error, maybe the server is down";
 }
 
 export async function modifyPassword(oldPassword: string, newPassword: string) {
@@ -239,6 +244,11 @@ const config = {
 export async function signInWithGithub() {
   const githubToken = await authorize(config);
 
+  if (!githubToken) {
+    console.log('No token found');
+    return;
+  }
+  setVar('githubToken', githubToken.accessToken);
   fetch(API + '/github/token', {
     method: 'POST',
     headers: new Headers({
@@ -249,10 +259,13 @@ export async function signInWithGithub() {
     }),
   })
     .then(response => {
-      console.log('Front: Response', response);
+      if (response.status === 200) {
+        return response.json();
+      } else if (response.status === 401)
+        return null;
     })
     .catch(error => {
-      console.error('Error:', error);
+      console.log('Error:', error);
     });
 }
 

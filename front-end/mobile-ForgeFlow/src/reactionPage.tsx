@@ -1,10 +1,13 @@
 import React from "react";
 import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { setVar } from "./api";
+import { setVar, signInWithGithub } from "./api";
 import { reactions } from "./area";
 
 async function press(navigation: any, item: any) {
   setVar('reaction', item.id.toString());
+  if (item.connection === 'github') {
+    await signInWithGithub();
+  }
   navigation.goBack();
 }
 

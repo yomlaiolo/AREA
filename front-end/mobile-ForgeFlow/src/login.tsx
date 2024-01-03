@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Image, StyleSheet, Text, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import TextBox from '../app/shared/components/textbox';
 import AreaButton from '@components//button';
-import { login, sendGoogleLogin, googleSignInFunc } from './api';
+import { login, sendGoogleLogin, googleSignInFunc, removeVar } from './api';
 
 export default function LoginScreen({ navigation }: any) {
   const [email, setEmail] = useState('');
@@ -19,9 +19,17 @@ export default function LoginScreen({ navigation }: any) {
             <View style={styles.utils}>
               <TextBox placeholder="E-mail" onChangeText={setEmail} value={email} hideText={false} autocomplete="email" />
               <TextBox placeholder="Password" onChangeText={setPassword} value={password} hideText={true} autocomplete="password" />
-              <AreaButton title="Login" onPress={() => { login(email, password, navigation) }} backgroundColor='#E88741' textColor='#1F1F1F' activeOpacity={0.5} />
+              <AreaButton title="Login" onPress={() => {
+                login(email, password, navigation);
+                removeVar('action');
+                removeVar('reaction');
+              }} backgroundColor='#E88741' textColor='#1F1F1F' activeOpacity={0.5} />
               <View style={styles.bar} />
-              <AreaButton title="Sign in with Google" onPress={() => googleSignInFunc(navigation)} backgroundColor='#F5F5F5' textColor='#00000054' icon={require('@ressources/google.png')} activeOpacity={0.7} />
+              <AreaButton title="Sign in with Google" onPress={() => {
+                googleSignInFunc(navigation);
+                removeVar('action');
+                removeVar('reaction');
+              }} backgroundColor='#F5F5F5' textColor='#00000054' icon={require('@ressources/google.png')} activeOpacity={0.7} />
               <Text onPress={() => { navigation.navigate('Register') }} style={{ color: '#1F1F1F', fontSize: 16, alignSelf: 'center', marginTop: '30%' }}>No account yet ? Register Here</Text>
             </View>
           </View>
