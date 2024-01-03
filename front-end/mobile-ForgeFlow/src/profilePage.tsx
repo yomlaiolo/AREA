@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import AreaButton from "@components//button";
-import { getVar, logout, setVar, userInfo } from "./api";
+import { getVar, logout, removeVar, setVar, userInfo } from "./api";
 import Switch from "@components//switch";
 import { useFocusEffect } from "@react-navigation/native";
 
@@ -52,7 +52,11 @@ export default function ProfilePage({ navigation }: any) {
         </TouchableOpacity>
         {separator}
         <View style={styles.bottom} >
-          <AreaButton backgroundColor="red" textColor="black" title="Disconnect" onPress={() => { logout(navigation) }} />
+          <AreaButton backgroundColor="red" textColor="black" title="Disconnect" onPress={() => {
+            logout(navigation);
+            removeVar('action');
+            removeVar('reaction');
+          }} />
         </View>
       </View>
     </View>

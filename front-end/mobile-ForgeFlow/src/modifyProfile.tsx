@@ -58,8 +58,8 @@ export default function ChangeProfilePage({ navigation }: any) {
           <Text style={{ color: 'black', fontSize: 14, marginTop: 20, textAlign: 'justify' }} >{explanations}</Text>
         </View>
         <View style={styles.form} >
-          <TextBox placeholder={"New username. Actual one: " + actualUsername} backgroundColor="white" borderColor="#E2E2E2" value={newUsername} onChangeText={(text: string) => { setnewUsername(text) }} />
-          <TextBox placeholder={"New email. Actual one: " + actualEmail} backgroundColor="white" borderColor="#E2E2E2" value={newEmail} onChangeText={(text: string) => { setnewEmail(text) }} />
+          <TextBox placeholder={"New username. (" + actualUsername + ")"} backgroundColor="white" borderColor="#E2E2E2" value={newUsername} onChangeText={(text: string) => { setnewUsername(text) }} />
+          <TextBox placeholder={"New email. (" + actualEmail + ")"} backgroundColor="white" borderColor="#E2E2E2" value={newEmail} onChangeText={(text: string) => { setnewEmail(text) }} />
           <TextBox hideText={true} placeholder="Password" backgroundColor="white" borderColor="#E2E2E2" value={password} onChangeText={(text: string) => { setPassword(text) }} />
           <AreaButton backgroundColor="#CECECE" textColor="black" title="Confirm profile change" onPress={() => { processChanges(navigation, newUsername, newEmail, password) }} />
         </View>

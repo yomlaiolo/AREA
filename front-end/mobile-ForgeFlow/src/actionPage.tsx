@@ -1,14 +1,48 @@
 import React from "react";
 import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { setVar } from "./api";
+import { getVar, setVar, signInWithGithub } from "./api";
 import { actions } from "./area";
+import { useFocusEffect } from "@react-navigation/native";
 
 async function press(navigation: any, item: any) {
   setVar('action', item.id.toString());
-  navigation.goBack();
+  if (item.redirection === 'github') {
+    var name = '';
+    if (item.name === 'Pull request created') {
+      name = 'Pull request';
+    } else if (item.name === 'Issue created') {
+      name = 'Issue';
+    }
+    console.log('name: ' + name);
+    await signInWithGithub();
+    navigation.navigate('SelectGithugRepo', { name: name });
+  } else if (item.redirection === 'cron') {
+    var type = '';
+    if (item.name === 'Every [x] time') {
+      type = 'time';
+    } else if (item.name === 'At [hour] on [day]') {
+      type = 'day';
+    }
+    navigation.navigate('SelectCron', { type: type });
+  } else {
+    navigation.goBack();
+  }
 }
 
 export default function ActionPage({ navigation }: any) {
+  const fetchData = async () => {
+    const repo = await getVar('githubRepo');
+    const cronTime = await getVar('cronTime');
+    if (repo || cronTime) {
+      navigation.goBack();
+    }
+  };
+  fetchData();
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchData();
+    }, [])
+  );
   return (
     <View style={styles.all}>
       <View style={styles.top} >

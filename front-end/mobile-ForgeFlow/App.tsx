@@ -11,6 +11,8 @@ import ModifyProfilePage from 'src/modifyProfile';
 import ActionPage from 'src/actionPage';
 import ReactionPage from 'src/reactionPage';
 import { useLockOrientationPortrait } from 'src/utils';
+import SelectGithugRepo from 'src/selectRepo';
+import SelectCron from 'src/selectCron';
 
 const Stack = createNativeStackNavigator();
 
@@ -27,6 +29,8 @@ export default function App() {
         <Stack.Screen name="ModifyProfile" component={ModifyProfilePage} options={{ title: 'Change profile', headerShown: false }} />
         <Stack.Screen name="Action" component={ActionPage} options={{ title: 'Action', headerShown: false }} />
         <Stack.Screen name="Reaction" component={ReactionPage} options={{ title: 'Reaction', headerShown: false }} />
+        <Stack.Screen name="SelectGithugRepo" component={SelectGithugRepo} options={{ title: 'SelectGithugRepo', headerShown: false }} />
+        <Stack.Screen name="SelectCron" component={SelectCron} options={{ title: 'SelectCron', headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );
