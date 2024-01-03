@@ -3,25 +3,33 @@ import { HydratedDocument } from 'mongoose';
 
 export type UserDocument = HydratedDocument<User>;
 
+export class GithubUser {
+  username: string;
+  access_token: string;
+}
+
 @Schema()
 export class User {
-    @Prop({ required: true, unique: true })
-    username: string;
+  @Prop({ required: true, unique: true })
+  username: string;
 
-    @Prop({ required: true, unique: true })
-    email: string;
+  @Prop({ required: true, unique: true })
+  email: string;
 
-    @Prop()
-    is_google_oauth: boolean;
+  @Prop()
+  is_google_oauth: boolean;
 
-    @Prop()
-    password: string;
+  @Prop()
+  password: string;
 
-    @Prop()
-    access_token: string;
+  @Prop()
+  access_token: string;
 
-    @Prop()
-    refresh_token: string;
+  @Prop()
+  refresh_token: string;
+
+  @Prop()
+  github: GithubUser;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);
