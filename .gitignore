@@ -7,3 +7,4 @@ note.txt
 dist/
 .env
 index.android.bundle
+gdrive.spec.ts

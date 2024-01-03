@@ -8,7 +8,7 @@ GoogleSignin.configure({
   webClientId: GOOGLE_CLIENT_ID,
   offlineAccess: true,
   hostedDomain: '',
-  scopes: ['profile', 'email'],
+  scopes: ['profile', 'email', 'https://www.googleapis.com/auth/drive'],
 });
 
 export async function googleSignInFunc(navigation: any) {

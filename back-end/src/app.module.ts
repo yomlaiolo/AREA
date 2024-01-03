@@ -14,8 +14,7 @@ import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './auth/auth.guard';
 import { JwtModule } from '@nestjs/jwt';
 import { GithubModule } from './github-action/github.module';
-import { OpenAIService } from './openai/openai.service';
-import OpenAI from 'openai';
+import { OpenAIModule } from './openai/openai.module';
 
 @Module({
   imports: [
@@ -38,7 +37,7 @@ import OpenAI from 'openai';
     }),
     AuthModule,
     GithubModule,
-    OpenAIService
+    OpenAIModule
   ],
   controllers: [AppController],
   providers: [
@@ -47,7 +46,6 @@ import OpenAI from 'openai';
       provide: APP_GUARD,
       useClass: AuthGuard,
     },
-    OpenAIService,
   ],
 })
 export class AppModule { }
