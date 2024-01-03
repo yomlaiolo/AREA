@@ -2,35 +2,35 @@ import { ApiProperty } from "@nestjs/swagger";
 import { AutoMap } from "@automapper/classes";
 
 export class CreateUserDto {
-    @ApiProperty()
+    @ApiProperty({ example: "username" })
     @AutoMap()
     username: string;
 
-    @ApiProperty()
+    @ApiProperty({ example: "email@gmail.com" })
     @AutoMap()
     email: string;
 
-    @ApiProperty()
+    @ApiProperty({ example: "Passw0rd" })
     @AutoMap()
     password: string;
 
-    @ApiProperty()
+    @ApiProperty({ example: false })
     @AutoMap()
     is_google_oauth: boolean;
 
-    @ApiProperty()
+    @ApiProperty({ example: null })
     @AutoMap()
     photo: string;
 
-    @ApiProperty()
+    @ApiProperty({ example: null })
     @AutoMap()
     id_token: string;
 
-    @ApiProperty()
+    @ApiProperty({ example: null })
     @AutoMap()
     access_token: string;
 
-    @ApiProperty()
+    @ApiProperty({ example: null })
     @AutoMap()
     refresh_token: string;
 }

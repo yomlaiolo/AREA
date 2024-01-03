@@ -2,11 +2,11 @@ import { ApiProperty } from '@nestjs/swagger';
 import { AutoMap } from '@automapper/classes';
 
 export class LoginDto {
-  @ApiProperty()
+  @ApiProperty({ example: "email@gmail.com" })
   @AutoMap()
   email: string;
 
-  @ApiProperty()
+  @ApiProperty({ example: "Passw0rd" })
   @AutoMap()
   password: string;
 }

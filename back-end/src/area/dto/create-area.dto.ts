@@ -1,33 +1,33 @@
 import { AutoMap } from "@automapper/classes";
 import { Prop } from "@nestjs/mongoose";
-import e from "express";
+import { ApiProperty } from "@nestjs/swagger";
 
 export class ActionDto {
-  @Prop({ required: true })
-  @AutoMap()
+  @ApiProperty()
   type: string;
 
-  @Prop()
-  @AutoMap()
+  @ApiProperty({ default: null })
   value: string | number | boolean | object;
 }
 
 export class ReactionDto {
-  @Prop({ required: true })
-  @AutoMap()
+  @ApiProperty()
   type: string;
 
-  @Prop({ required: false })
-  @AutoMap()
+  @ApiProperty({ default: null })
   value: string | number | boolean | object;
 }
 
 export class CreateAreaDto {
-  @Prop({ required: true })
-  @AutoMap()
+  @ApiProperty()
+  name: string;
+
+  @ApiProperty()
+  description: string;
+
+  @ApiProperty()
   action: ActionDto;
 
-  @Prop({ required: true })
-  @AutoMap()
+  @ApiProperty()
   reaction: ReactionDto;
 }

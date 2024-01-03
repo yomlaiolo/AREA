@@ -1,4 +1,4 @@
-function printReaction(reaction_data: string | object | number | boolean) {
+async function printReaction(reaction_data: string | object | number | boolean) {
     const print = reaction_data as string;
     console.log(print);
 }

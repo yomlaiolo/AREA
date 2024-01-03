@@ -1,23 +1,23 @@
 import { AutoMap } from '@automapper/classes';
-import { Prop, SchemaFactory } from '@nestjs/mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { ActionDto, ReactionDto } from './dto/create-area.dto';
 
+@Schema()
 export class Area {
     @Prop({ required: true })
-    @AutoMap()
     name: string;
 
     @Prop({ required: true })
-    @AutoMap()
     description: string;
 
     @Prop({ required: true })
-    @AutoMap()
     action: ActionDto;
 
     @Prop({ required: true })
-    @AutoMap()
     reaction: ReactionDto;
+
+    @Prop()
+    user_id: string;
 }
 
 export const AreaSchema = SchemaFactory.createForClass(Area);

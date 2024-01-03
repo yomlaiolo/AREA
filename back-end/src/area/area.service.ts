@@ -1,34 +1,38 @@
-import { Injectable, Type } from '@nestjs/common';
+import { BadRequestException, Injectable, OnModuleInit } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Area } from './area.schema';
-
-import { intervalAction } from './actions/delay';
-import { printReaction } from './reactions/print';
-import { ActionDto, ReactionDto } from './dto/create-area.dto';
+import { ActionDto, CreateAreaDto, ReactionDto } from './dto/create-area.dto';
 import { CancellationToken } from './cancellation';
-import { ObjectId } from 'mongodb';
+
+// Actions
+import { intervalAction } from './actions/interval';
+
+// Reactions
+import { printReaction } from './reactions/print';
 
 @Injectable()
 export class AreaService {
-  constructor(@InjectModel('Area') private readonly areaModel: Model<Area>) { }
+  constructor(@InjectModel(Area.name) private areaModel: Model<Area>) { }
   private cancellation_tokens: Map<string, CancellationToken> = new Map();
 
-  factoryAction(actionDto: ActionDto) {
-    if (actionDto.type === 'delay') return intervalAction;
+  factoryAction(actionDto: ActionDto): Function {
+    if (actionDto.type == 'interval') return intervalAction;
+    return null;
   }
 
-  factoryReaction(reactionDto: ReactionDto) {
-    if (reactionDto.type === 'print') return printReaction;
+  factoryReaction(reactionDto: ReactionDto): Function {
+    if (reactionDto.type == 'print') return printReaction;
+    return null;
   }
 
   launchArea(actionDto: ActionDto, reactionDto: ReactionDto, id: string): void {
     const action = this.factoryAction(actionDto);
     const reaction = this.factoryReaction(reactionDto);
+
+    if (!action || !reaction) throw new BadRequestException('Invalid action or reaction');
     const token = new CancellationToken();
-
     this.cancellation_tokens.set(id, token);
-
     action(actionDto.value, reaction, reactionDto.value, token);
   }
 
@@ -40,10 +44,10 @@ export class AreaService {
     });
   }
 
-  async create(createAreaDto: any): Promise<Area> {
-    const area = new this.areaModel(createAreaDto);
+  async create(createAreaDto: CreateAreaDto, user_id: string): Promise<Object> {
+    const area = new this.areaModel({...createAreaDto, user_id: user_id});
     this.launchArea(area.action, area.reaction, area._id.toString());
-    return area.save();
+    return {id: (await area.save())._id.toString()}
   }
 
   async delete(id: string): Promise<void> {
@@ -58,5 +62,9 @@ export class AreaService {
 
   async findOne(id: string): Promise<Area> {
     return this.areaModel.findById(id).exec();
+  }
+
+  async onModuleInit(): Promise<void> {
+    this.launchAllAreas();
   }
 }
