@@ -43,4 +43,20 @@ export class GithubService {
 
     await axios.post(url, data, { headers });
   }
+
+  async createEvent(
+    repoOwner: string,
+    repoName: string,
+    eventType: string,
+    accessToken: string,
+    data: any,
+  ): Promise<void> {
+    const url = `https://api.github.com/repos/${repoOwner}/${repoName}/${eventType}`;
+    const headers = {
+      Authorization: `token ${accessToken}`,
+      'User-Agent': 'ForgeFlow',
+    };
+
+    await axios.post(url, data, { headers });
+  }
 }

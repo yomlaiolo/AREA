@@ -51,6 +51,20 @@ export class GithubController {
     );
   }
 
+  @Post('event')
+  async createEvent(@Body() data: any, @Req() request: Request): Promise<void> {
+    const user = await this.usersService.findOneById(
+      request['user']['user']['_id'],
+    );
+    return this.githubService.createEvent(
+      data.repoOwner,
+      data.repoName,
+      data.eventType,
+      user.github.access_token,
+      data.data,
+    );
+  }
+
   @Public()
   @Post('webhook')
   webhook(@Body() payload: any) {
