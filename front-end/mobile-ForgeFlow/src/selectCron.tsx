@@ -14,7 +14,7 @@ export default function SelectCron({ navigation, type }: any) {
   const cronType = string_params.substring(9, string_params.length - 2);
   const tmpTime = new Date().setHours(12, 0, 0, 0);
   const [time, setTime] = useState<Date>(new Date(tmpTime));
-  const text = 'You need to select the time gap in ' + cronType + ' when the action will be actioned.';
+  const text = cronType === 'time' ? 'You need to select the hour when the action will be actioned each days.' : 'You need to select the time when the action will be actioned.';
 
   return (
     <View style={styles.all}>
@@ -26,7 +26,7 @@ export default function SelectCron({ navigation, type }: any) {
       </View>
       <View style={styles.separator} />
       <Image style={{ width: 200, height: 200, marginTop: '10%' }} source={require('@ressources/clock.png')} />
-      <Text style={{ fontSize: 20, color: '#1F1F1F', marginTop: 20, marginHorizontal: 30, textAlign: 'center', width: '100%' }} >{text}</Text>
+      <Text style={{ fontSize: 20, color: '#1F1F1F', marginTop: 20, marginHorizontal: 30, textAlign: 'center', width: '90%' }} >{text}</Text>
       <View style={styles.picker}>
         <DatePicker
           date={time}
