@@ -5,10 +5,10 @@ import profile_icon from '../assets/profile.svg';
 import mail_icon from '../assets/mail.svg';
 import notif_icon from '../assets/bell.svg';
 import modif_icon from '../assets/modif.svg';
+import { userInfo, getVar } from '../api';
 import { Profile_selected, Modify_email_selected, modify_password_selected, notifications_selected } from '../components/Profile_selected';
 
 export const Profilepage = () => {
-    const [name, setName] = React.useState('Name');
     const [Email, setEmail] = React.useState('Email');
     const [NewEmail, setNewEmail] = React.useState(Email);
     const [Username, setUsername] = React.useState('Username');
@@ -19,6 +19,15 @@ export const Profilepage = () => {
     const [profile_menu_selected, setProfile_menu_selected] = React.useState('Profile');
     const [Notifications, setNotifications] = React.useState(true);
     const [Img, setImg] = React.useState('https://www.w3schools.com/howto/img_avatar.png');
+    
+    const fetchData = async () => {
+        console.log("fetching data");
+        userInfo().then(() => {
+            getVar('username').then(usernameValue => { setUsername(usernameValue ?? 'Default username'); })
+            getVar('email').then(emailValue => { setEmail(emailValue ?? 'Default email'); })
+        });
+    };
+    fetchData();
 
     React.useEffect(() => {
         if (profile_menu_selected !== 'Change profile') {
@@ -40,7 +49,7 @@ export const Profilepage = () => {
                 <NavigationBar name="Profile" notifications={true} />
                 <div className='profile-image'>
                     <img src={Img} alt="Avatar" className='avatar' />
-                    <p>{name}</p>
+                    <p>{Username}</p>
                 </div>
                 <div className='profile-menu'>
                     <button
@@ -50,21 +59,21 @@ export const Profilepage = () => {
                         <img src={profile_icon} alt="" />
                         <p>Profile</p>
                     </button>
-                    <button className='profile-menu-item' 
-                    style={{ backgroundColor: profile_menu_selected === 'Modify email' ? '#E2E2E2' : '#F5F5F5' }}
-                    onClick={() => setProfile_menu_selected('Change profile')}>
+                    <button className='profile-menu-item'
+                        style={{ backgroundColor: profile_menu_selected === 'Modify email' ? '#E2E2E2' : '#F5F5F5' }}
+                        onClick={() => setProfile_menu_selected('Change profile')}>
                         <img src={mail_icon} alt="" />
                         <p>Change profile</p>
                     </button>
-                    <button className='profile-menu-item' 
-                    style={{ backgroundColor: profile_menu_selected === 'Modify password' ? '#E2E2E2' : '#F5F5F5' }}
-                    onClick={() => setProfile_menu_selected('Modify password')}>
+                    <button className='profile-menu-item'
+                        style={{ backgroundColor: profile_menu_selected === 'Modify password' ? '#E2E2E2' : '#F5F5F5' }}
+                        onClick={() => setProfile_menu_selected('Modify password')}>
                         <img src={modif_icon} alt="" />
                         <p>Modify password</p>
                     </button>
-                    <button className='profile-menu-item' 
-                    style={{ backgroundColor: profile_menu_selected === 'Notifications' ? '#E2E2E2' : '#F5F5F5' }}
-                    onClick={() => setProfile_menu_selected('Notifications')}>
+                    <button className='profile-menu-item'
+                        style={{ backgroundColor: profile_menu_selected === 'Notifications' ? '#E2E2E2' : '#F5F5F5' }}
+                        onClick={() => setProfile_menu_selected('Notifications')}>
                         <img src={notif_icon} alt="" />
                         <p>Notifications</p>
                     </button>
@@ -72,7 +81,7 @@ export const Profilepage = () => {
                 <div className='profile-menu-selected'>
                     <p>{profile_menu_selected}</p>
                     <div className='profile-menu-selected-seperateur' />
-                    {profile_menu_selected === 'Profile' && Profile_selected("Name_perso", "Email_perso", Img, setImg)}
+                    {profile_menu_selected === 'Profile' && Profile_selected(Username, Email, Img, setImg)}
                     {profile_menu_selected === 'Change profile' && Modify_email_selected(Email, NewEmail, setNewEmail, setEmail, Username, NewUsername, setNewUsername, setUsername, password, setPassword)}
                     {profile_menu_selected === 'Modify password' && modify_password_selected(password, newPassword, setNewPassword, confirmPassword, setConfirmPassword, setPassword)}
                     {profile_menu_selected === 'Notifications' && notifications_selected(Notifications, setNotifications)}

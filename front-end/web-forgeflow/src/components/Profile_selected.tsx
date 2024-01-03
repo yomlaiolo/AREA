@@ -1,7 +1,7 @@
 import React from "react";
 import TextBox from "./TextBox"
 import Toggle from "./Toggle";
-
+import { modifyProfile, modifyPassword } from "../api";
 export const Profile_selected = (Name: string, Email: string, Img: string, setImg: React.Dispatch<React.SetStateAction<string>>) => {
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -41,10 +41,35 @@ export const Profile_selected = (Name: string, Email: string, Img: string, setIm
 export const Modify_email_selected = (Email: string, NewEmail: string, setNewEmail: React.Dispatch<React.SetStateAction<string>>, setEmail: React.Dispatch<React.SetStateAction<string>>, Username: string, NewUsername: string, setNewUsername: React.Dispatch<React.SetStateAction<string>>, setUsername: React.Dispatch<React.SetStateAction<string>>, Password: string, setPassword: React.Dispatch<React.SetStateAction<string>>) => {
 
     const handleChangeProfile = () => {
-        if (NewEmail !== "")
-            setEmail(NewEmail);
-        if (NewUsername !== "")
-            setUsername(NewUsername);
+        if (NewEmail !== "" && NewUsername === "") {
+            modifyProfile(Username, NewEmail, Password).then((response) => {
+                if (response === 0) {
+                    alert("Profile changed");
+                    setEmail(NewEmail);
+                } else {
+                    alert(response);
+                }
+            });
+        } else if (NewUsername !== "" && NewEmail === "") {
+            modifyProfile(NewUsername, Email, Password).then((response) => {
+                if (response === 0) {
+                    alert("Profile changed");
+                    setUsername(NewUsername);
+                } else {
+                    alert(response);
+                }
+            });
+        } else if (NewUsername !== "" && NewEmail !== "") {
+            modifyProfile(NewUsername, NewEmail, Password).then((response) => {
+                if (response === 0) {
+                    alert("Profile changed");
+                    setUsername(NewUsername);
+                    setEmail(NewEmail);
+                } else {
+                    alert(response);
+                }
+            });
+        }
     }
 
     return (
@@ -53,7 +78,7 @@ export const Modify_email_selected = (Email: string, NewEmail: string, setNewEma
             <p>You can change only one of the two fields, or both.</p>
             <p>You need your password to confirm the changes.</p>
             <TextBox
-                placeholder={"New username. Actual one: " + Username}
+                placeholder={"New username. (" + Username + ")"}
                 onChangeText={(text: string) => setNewUsername(text)}
                 value={NewUsername}
                 hideText={false}
@@ -64,7 +89,7 @@ export const Modify_email_selected = (Email: string, NewEmail: string, setNewEma
             />
             <div className="selected_change">
                 <TextBox
-                    placeholder={"New email. Actual one: " + Email}
+                    placeholder={"New email. (" + Email + ")"}
                     onChangeText={(text: string) => setNewEmail(text)}
                     value={NewEmail}
                     hideText={false}
@@ -94,9 +119,16 @@ export const Modify_email_selected = (Email: string, NewEmail: string, setNewEma
 export const modify_password_selected = (Password: string, NewPassword: string, setNewPassword: React.Dispatch<React.SetStateAction<string>>, ConfirmPassword: string, setConfirmPassword: React.Dispatch<React.SetStateAction<string>>, setPassword: React.Dispatch<React.SetStateAction<string>>) => {
     const handleChangepassword = () => {
         if (NewPassword === ConfirmPassword) {
-            setPassword(NewPassword);
-            setConfirmPassword("");
-            setNewPassword("");
+            modifyPassword(Password, NewPassword).then((response) => {
+                if (response === 0) {
+                    alert("Password changed");
+                    setConfirmPassword("");
+                    setNewPassword("");
+                    setPassword("");
+                } else {
+                    alert(response);
+                }
+            })
         } else {
             console.log("new Passwords are not the same");
             alert("new Passwords are not the same");
@@ -144,7 +176,7 @@ export const modify_password_selected = (Password: string, NewPassword: string, 
 
 export const notifications_selected = (Notifications: boolean, setNotifications: React.Dispatch<React.SetStateAction<boolean>>) => {
     const handleToggleChange = () => {
-      setNotifications(!Notifications);
+        setNotifications(!Notifications);
     };
     return (
         <div className="selected_notif">
