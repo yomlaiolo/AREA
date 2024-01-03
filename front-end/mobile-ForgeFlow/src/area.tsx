@@ -32,7 +32,7 @@ export const actions = [
   },
   {
     id: 4,
-    name: "Every [x] time",
+    name: "Each day at [x]",
     icon: require('@ressources/clock.png'),
     backgroundColor: "#67A1B5",
     textColor: "black",

@@ -72,7 +72,6 @@ export default function ForgePage({ navigation }: any) {
     const myCronTime = await getVar('cronTime');
     if (myCronTime) {
       setCronTime(myCronTime);
-      console.log('cronTime: ' + myCronTime);
       removeVar('cronTime');
     }
   };

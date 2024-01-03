@@ -17,7 +17,7 @@ export async function googleSignInFunc(navigation: any) {
     const userInfo = await GoogleSignin.signIn();
     sendGoogleLogin(navigation, userInfo);
   } catch (error: any) {
-    console.error(error);
+    console.log(error);
     if (error.code === statusCodes.SIGN_IN_CANCELLED) {
       // user cancelled the login flow
     } else if (error.code === statusCodes.IN_PROGRESS) {
@@ -59,7 +59,7 @@ export async function sendGoogleLogin(navigation: any, infos: any) {
         Alert.alert("Error", "Unauthorized - invalid credentials");
     })
     .catch((error) => {
-      console.error('Error:', error);
+      console.log('Error:', error);
     });
 }
 
@@ -86,7 +86,7 @@ export async function login(email: string, password: string, navigation: any) {
       } else Alert.alert('Error', 'Unauthorized - invalid credentials');
     })
     .catch(error => {
-      console.error('Error:', error);
+      console.log('Error:', error);
     });
 }
 
@@ -121,7 +121,7 @@ export async function register(
       }
     })
     .catch(error => {
-      console.error('Error:', error);
+      console.log('Error:', error);
     });
 }
 
@@ -154,7 +154,7 @@ export async function userInfo() {
       console.log('Unauthorized - invalid credentials');
     }
   } catch (error) {
-    console.error('Error:', error);
+    console.log('Error:', error);
   }
   return { username, email };
 }
@@ -175,7 +175,6 @@ export async function modifyProfile(username: string, email: string, password: s
         password: password,
       }),
     });
-    console.log(response.status);
     if (response.status === 200) {
       setVar('username', username);
       setVar('email', email);
@@ -190,7 +189,7 @@ export async function modifyProfile(username: string, email: string, password: s
       return "Username or email already used";
     }
   } catch (error) {
-    console.error('Error:', error);
+    console.log('Error:', error);
   }
   return "Unknown error, maybe the server is down";
 }
@@ -198,7 +197,6 @@ export async function modifyProfile(username: string, email: string, password: s
 export async function modifyPassword(oldPassword: string, newPassword: string) {
   const token = await AsyncStorage.getItem('token');
 
-  console.log(oldPassword, newPassword);
   try {
     const response = await fetch(API + '/auth/change-password', {
       method: 'POST',
@@ -211,7 +209,6 @@ export async function modifyPassword(oldPassword: string, newPassword: string) {
         new_password: newPassword,
       }),
     });
-    console.log(response.status);
     if (response.status === 200) {
       return 0;
     } else if (response.status === 400) {
@@ -222,7 +219,7 @@ export async function modifyPassword(oldPassword: string, newPassword: string) {
       return "Password must contain at least 8 characters, 1 uppercase letter, 1 lowercase letter and 1 number";
     }
   } catch (error) {
-    console.error('Error:', error);
+    console.log('Error:', error);
   }
   return "Unknown error, maybe the server is down";
 }

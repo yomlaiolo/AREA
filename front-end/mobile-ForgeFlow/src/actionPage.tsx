@@ -13,12 +13,11 @@ async function press(navigation: any, item: any) {
     } else if (item.name === 'Issue created') {
       name = 'Issue';
     }
-    console.log('name: ' + name);
     await signInWithGithub();
     navigation.navigate('SelectGithugRepo', { name: name });
   } else if (item.redirection === 'cron') {
     var type = '';
-    if (item.name === 'Every [x] time') {
+    if (item.name === 'Each day at [x]') {
       type = 'time';
     } else if (item.name === 'At [hour] on [day]') {
       type = 'day';
