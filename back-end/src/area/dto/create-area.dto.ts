@@ -7,7 +7,7 @@ export class ActionDto {
   type: string;
 
   @ApiProperty({ default: null })
-  value: string | number | boolean | object;
+  value: object;
 }
 
 export class ReactionDto {
@@ -15,19 +15,19 @@ export class ReactionDto {
   type: string;
 
   @ApiProperty({ default: null })
-  value: string | number | boolean | object;
+  value: object;
 }
 
 export class CreateAreaDto {
-  @ApiProperty()
+  @ApiProperty({ example: 'My area' })
   name: string;
 
-  @ApiProperty()
+  @ApiProperty({ example: 'My area description' })
   description: string;
 
-  @ApiProperty()
+  @ApiProperty({ example: { type: "interval", value: { interval: 1000 } } })
   action: ActionDto;
 
-  @ApiProperty()
+  @ApiProperty({ example: { type: "print", value: { message: "Hello World!" } } })
   reaction: ReactionDto;
 }

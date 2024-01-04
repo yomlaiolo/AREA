@@ -3,32 +3,18 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Area } from './area.schema';
 import { ActionDto, CreateAreaDto, ReactionDto } from './dto/create-area.dto';
-import { CancellationToken } from './cancellation';
+import { CancellationToken } from '../utils/cancellation_token';
 
-// Actions
-import { intervalAction } from './actions/interval';
-
-// Reactions
-import { printReaction } from './reactions/print';
+import { factoryAction, factoryReaction } from './services/services';
 
 @Injectable()
 export class AreaService {
   constructor(@InjectModel(Area.name) private areaModel: Model<Area>) { }
   private cancellation_tokens: Map<string, CancellationToken> = new Map();
 
-  factoryAction(actionDto: ActionDto): Function {
-    if (actionDto.type == 'interval') return intervalAction;
-    return null;
-  }
-
-  factoryReaction(reactionDto: ReactionDto): Function {
-    if (reactionDto.type == 'print') return printReaction;
-    return null;
-  }
-
   launchArea(actionDto: ActionDto, reactionDto: ReactionDto, id: string): void {
-    const action = this.factoryAction(actionDto);
-    const reaction = this.factoryReaction(reactionDto);
+    const action = factoryAction(actionDto);
+    const reaction = factoryReaction(reactionDto);
 
     if (!action || !reaction) throw new BadRequestException('Invalid action or reaction');
     const token = new CancellationToken();

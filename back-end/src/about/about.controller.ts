@@ -2,6 +2,52 @@ import { Controller, Get, Req } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Public } from 'src/auth/auth.decorator';
 
+import { actionsList, reactionsList } from '../area/services/services';
+
+function createServicesAbout(): object[] {
+  const servicesKey = [];
+  const services = [];
+  for (const actionName in actionsList) {
+    if (actionsList[actionName].service in servicesKey) continue;
+    servicesKey.push(actionsList[actionName].service);
+  }
+  for (const reactionName in reactionsList) {
+    if (reactionsList[reactionName].service in servicesKey) continue;
+    servicesKey.push(reactionsList[reactionName].service);
+  }
+
+  servicesKey.forEach(serviceName => {
+    const actions = [];
+    const reactions = [];
+    for (const actionName in actionsList) {
+      if (actionsList[actionName].service != serviceName) continue;
+      actions.push({
+        name: actionName,
+        description: actionsList[actionName].doc,
+        example: actionsList[actionName].dataExample,
+      });
+    }
+    for (const reactionName in reactionsList) {
+      if (reactionsList[reactionName].service != serviceName) continue;
+      reactions.push({
+        name: reactionName,
+        description: reactionsList[reactionName].doc,
+        example: reactionsList[reactionName].dataExample,
+      });
+    }
+    services.push({
+      name: serviceName,
+      actions: actions,
+      reactions: reactions,
+    });
+  });
+  
+
+  return services;
+}
+
+const about = createServicesAbout();
+
 @ApiTags('about')
 @Controller('about.json')
 export class AboutController {
@@ -14,29 +60,7 @@ export class AboutController {
       },
       server: {
         current_time: new Date().getTime(),
-        services: [
-          {
-            name: 'example',
-            actions: [
-              {
-                name: 'first_action_example',
-                description: 'Something incredible happens',
-              },
-              {
-                name: 'second_action_example',
-                description:
-                  "Something pretty cool happens but it's different from the first action",
-              },
-            ],
-            reactions: [
-              {
-                name: 'reaction_example',
-                description:
-                  'Something expected happens when the action is triggered',
-              },
-            ],
-          },
-        ],
+        services: about,
       },
     };
   }
