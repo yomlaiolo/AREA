@@ -1,6 +1,7 @@
 import { ActionDto, ReactionDto } from '../dto/create-area.dto';
 
 // Actions #########################################################
+// Interval
 import { intervalAction } from './actions/interval/interval';
 // Google
 import { receiveEmailAction } from './actions/google/receive_email';
