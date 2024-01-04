@@ -15,7 +15,7 @@ function createVariable(data: object, variables: object): { result: object, vali
           }
         }
       else if (typeof variables[key] == 'object') {
-        console.log(variables[key], "object")
+        console.log(variables[key], "object") // not supported yet, maybe later but it's not a priority
       }
     }
   }
