@@ -1,22 +1,54 @@
 import { ActionDto, ReactionDto } from '../dto/create-area.dto';
 
 // Actions #########################################################
-// Interval
-import { intervalAction } from './actions/interval/interval';
-// Google
+// cron
+import { intervalAction } from './actions/cron/interval';
+import { recurrentAction } from './actions/cron/recurrent';
+// github
+import { newIssueAction } from './actions/github/new_issue';
+import { newPullRequestAction } from './actions/github/new_pull_request';
+// google
 import { receiveEmailAction } from './actions/google/receive_email';
 
 // Reactions #######################################################
-import { printReaction } from './reactions/print/print';
+// github
+import { newIssueReaction } from './reactions/github/issue';
+import { newPullRequestReaction } from './reactions/github/pull_request';
+// google
+import { sendEmailReaction } from './reactions/google/send_email';
+// notification
+import { sendNotificationReaction } from './reactions/notification/send_notification';
+// openai
+import { resumeTextReaction } from './reactions/openai/resume_text';
+import { suggestResponseReaction } from './reactions/openai/suggest_response';
 
-export const actionsList = {
-    "interval": intervalAction,
-    "receive_email": receiveEmailAction,
-};
+function createList(functions: Function[]) {
+    const List = {};
+    functions.forEach(action => {
+        List[action['method']] = action;
+    });
+    return List;
+}
 
-export const reactionsList = {
-    "print": printReaction,
-};
+const actions = [
+    intervalAction,
+    recurrentAction,
+    newIssueAction,
+    newPullRequestAction,
+    receiveEmailAction,
+];
+
+const reactions = [
+    newIssueReaction,
+    newPullRequestReaction,
+    sendEmailReaction,
+    sendNotificationReaction,
+    resumeTextReaction,
+    suggestResponseReaction,
+];
+
+export const actionsList = createList(actions);
+export const reactionsList = createList(reactions);
 
 export function factoryAction(actionDto: ActionDto): Function | null {
     if (actionDto.type in actionsList) return actionsList[actionDto.type];
