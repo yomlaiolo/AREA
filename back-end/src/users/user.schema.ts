@@ -4,8 +4,14 @@ import { HydratedDocument } from 'mongoose';
 export type UserDocument = HydratedDocument<User>;
 
 export class GithubUser {
+  @Prop()
   username: string;
+
+  @Prop()
   access_token: string;
+
+  @Prop({ type: Object })
+  webhooks: object;
 }
 
 @Schema()

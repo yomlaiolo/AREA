@@ -43,4 +43,35 @@ export class GithubService {
 
     await axios.post(url, data, { headers });
   }
+
+  async unsubscribeToRepo(
+    repoOwner: string,
+    repoName: string,
+    accessToken: string,
+    webhookId: string,
+  ) {
+    const url = `https://api.github.com/repos/${repoOwner}/${repoName}/hooks/${webhookId}`;
+    const headers = {
+      Authorization: `token ${accessToken}`,
+      'User-Agent': 'ForgeFlow',
+    };
+
+    await axios.delete(url, { headers });
+  }
+
+  async createEvent(
+    repoOwner: string,
+    repoName: string,
+    eventType: string,
+    accessToken: string,
+    data: any,
+  ): Promise<void> {
+    const url = `https://api.github.com/repos/${repoOwner}/${repoName}/${eventType}`;
+    const headers = {
+      Authorization: `token ${accessToken}`,
+      'User-Agent': 'ForgeFlow',
+    };
+
+    await axios.post(url, data, { headers });
+  }
 }

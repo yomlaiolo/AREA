@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, Put, Req } from '@nestjs/common';
+import { Controller, Post, Body, Get, Put, Req, Delete } from '@nestjs/common';
 import { GithubTokenDto, RepoSettingsDto } from './github.dto';
 import { Public } from 'src/auth/auth.decorator';
 import { GithubService } from './github.service';
@@ -35,14 +35,17 @@ export class GithubController {
   }
 
   @Put('subscription')
-  async subscribeToAll(
+  async subscribeToRepo(
     @Body() repoSettings: RepoSettingsDto,
     @Req() request: Request,
   ) {
     const user = await this.usersService.findOneById(
       request['user']['user']['_id'],
     );
-    return this.githubService.subscribeToRepo(
+    if (repoSettings.eventsList === undefined) {
+      repoSettings.eventsList = ['*'];
+    }
+    await this.githubService.subscribeToRepo(
       user.github.username,
       repoSettings.repoName,
       user.github.access_token,
@@ -51,10 +54,52 @@ export class GithubController {
     );
   }
 
+  @Delete('unsubscription')
+  async unsubscribeToRepo(
+    @Body() repoSettings: RepoSettingsDto,
+    @Req() request: Request,
+  ) {
+    const user = await this.usersService.findOneById(
+      request['user']['user']['_id'],
+    );
+    await this.githubService.unsubscribeToRepo(
+      user.github.username,
+      repoSettings.repoName,
+      user.github.access_token,
+      user.github.webhooks[`${user.github.username}/${repoSettings.repoName}`],
+    );
+    this.usersService.removeWebhook(
+      user.github.username,
+      repoSettings.repoName,
+    );
+  }
+
+  @Post('event')
+  async createEvent(@Body() data: any, @Req() request: Request): Promise<void> {
+    const user = await this.usersService.findOneById(
+      request['user']['user']['_id'],
+    );
+    return this.githubService.createEvent(
+      data.repoOwner,
+      data.repoName,
+      data.eventType,
+      user.github.access_token,
+      data.data,
+    );
+  }
+
   @Public()
   @Post('webhook')
-  webhook(@Body() payload: any) {
-    console.log('Webhook:', payload);
+  async webhook(@Body() payload: any) {
+    if ('hook' in payload) {
+      this.usersService.addWebhook(
+        payload['repository']['owner']['login'],
+        payload['repository']['name'],
+        payload['hook']['id'],
+      );
+    } else {
+      console.log('Webhook:', payload);
+    }
     return 'OK';
   }
 }

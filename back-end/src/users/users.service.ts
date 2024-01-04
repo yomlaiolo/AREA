@@ -115,8 +115,26 @@ export class UsersService {
   async setGithubUser(username: string, token: string, id: string) {
     this.userModel
       .findByIdAndUpdate(id, {
-        github: { username: username, access_token: token },
+        github: { username: username, access_token: token, webhooks: {} },
       })
+      .exec();
+  }
+
+  async addWebhook(repoOwner: string, repoName: string, webhookId: string) {
+    this.userModel
+      .findOneAndUpdate(
+        { 'github.username': repoOwner },
+        { $set: { [`github.webhooks.${repoOwner}/${repoName}`]: webhookId } },
+      )
+      .exec();
+  }
+
+  async removeWebhook(repoOwner: string, repoName: string) {
+    this.userModel
+      .findOneAndUpdate(
+        { 'github.username': repoOwner },
+        { $unset: { [`github.webhooks.${repoOwner}/${repoName}`]: '' } },
+      )
       .exec();
   }
 }

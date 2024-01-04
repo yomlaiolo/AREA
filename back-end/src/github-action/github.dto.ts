@@ -14,5 +14,5 @@ export class RepoSettingsDto {
 
   @ApiProperty()
   @AutoMap()
-  eventsList: string[];
+  eventsList: string[] | undefined;
 }
