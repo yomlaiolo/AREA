@@ -1,11 +1,24 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { Picker } from '@react-native-picker/picker';
-import { getVar, setVar } from "./api";
-import { showToast } from "./utils";
+import { setVar } from "./api";
 import AreaButton from "@components//button";
 import { useRoute } from "@react-navigation/native";
 import DatePicker from "react-native-date-picker";
+import { format } from 'date-fns';
+
+function transformCronString(date: Date, type: string) {
+  const minute = format(date, 'm');
+  const hour = format(date, 'H');
+  const day = format(date, 'd');
+  const month = format(date, 'M');
+
+  if (type === 'time') {
+    var cronString = `${minute} ${hour} * * *`;
+  } else {
+    var cronString = `${minute} ${hour} ${day} ${month} *`;
+  }
+  return cronString;
+}
 
 export default function SelectCron({ navigation, type }: any) {
   const route = useRoute();
@@ -40,7 +53,8 @@ export default function SelectCron({ navigation, type }: any) {
       </View>
       <View style={styles.bottom} >
         <AreaButton backgroundColor="#1F1F1F" activeOpacity={0.5} textColor="white" title="Add this action" onPress={async () => {
-          await setVar('cronTime', time.toLocaleString());
+          var cronString = transformCronString(time, cronType);
+          await setVar('cronTime', cronString);
           navigation.goBack();
         }} />
       </View>
