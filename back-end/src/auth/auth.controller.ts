@@ -43,14 +43,6 @@ export class AuthController {
     type: RegisterDto,
   })
   @ApiResponse({
-    status: 409,
-    description: 'CONFLICT - User already exists',
-  })
-  @ApiResponse({
-    status: 400,
-    description: 'BAD REQUEST - Missing fields required for user creation',
-  })
-  @ApiResponse({
     status: 400,
     description: 'Bad Request - invalid data',
   })
@@ -169,11 +161,11 @@ export class AuthController {
     if (user) { // Login user
       if (user.is_google_oauth == false)
         throw new ConflictException('User not registered with Google');
-      access_token = user.access_token;
+      access_token = user.google.access_token;
 
       const validityGoogle = await this.authService.checkGoogleTokenValidity(access_token);
       if (!validityGoogle.valid)
-        user.access_token = await this.authService.getGoogleTokens(
+        user.google.access_token = await this.authService.getGoogleTokens(
           googleDto.server_auth_code)['access_token']
 
       const payload = { user };
@@ -193,9 +185,13 @@ export class AuthController {
     newUser.password = undefined;
     newUser.is_google_oauth = true;
     newUser.photo = googleDto.user.photo;
-    newUser.id_token = googleDto.id_token;
-    newUser.access_token = tokens['access_token'];
-    newUser.refresh_token = tokens['refresh_token'];
+    newUser.google = {
+      access_token: tokens['access_token'],
+      refresh_token: tokens['refresh_token'],
+      id_token: googleDto.id_token,
+      username: googleDto.user.name,
+    };
+
     const createdUser = await this.usersService.create(newUser);
     const payload = { user: createdUser };
     const token = await this.authService.getJwt(payload);

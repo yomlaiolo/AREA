@@ -1,5 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { AutoMap } from "@automapper/classes";
+import { GoogleUser } from "./user.schema";
 
 export class CreateUserDto {
     @ApiProperty({ example: "username" })
@@ -28,11 +29,7 @@ export class CreateUserDto {
 
     @ApiProperty({ example: null })
     @AutoMap()
-    access_token: string;
-
-    @ApiProperty({ example: null })
-    @AutoMap()
-    refresh_token: string;
+    google: GoogleUser;
 }
 
 export class GetUserDto {
@@ -47,4 +44,12 @@ export class GetUserDto {
     @ApiProperty()
     @AutoMap()
     id: string;
+
+    @ApiProperty()
+    @AutoMap()
+    google_connected: boolean;
+
+    @ApiProperty()
+    @AutoMap()
+    github_connected: boolean;
 }

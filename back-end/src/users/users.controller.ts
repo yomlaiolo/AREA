@@ -7,14 +7,22 @@ import {
   Get,
   BadRequestException,
   Req,
+  Inject,
+  forwardRef,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { ApiBearerAuth, ApiBody, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { CreateUserDto, GetUserDto } from './user.dto';
+import { AuthService } from 'src/auth/auth.service';
+import { GithubService } from 'src/github-action/github.service';
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) { }
+  constructor(
+    private readonly authService: AuthService,
+    private readonly usersService: UsersService,
+    private readonly githubService: GithubService,
+  ) {}
 
   @Get()
   @ApiBearerAuth('access-token')
@@ -27,13 +35,16 @@ export class UsersController {
   @ApiTags('users')
   async getUser(@Req() request: Request): Promise<GetUserDto> {
     const payload = request['user'];
-    const user = await this.usersService.findOneById(payload['user']['_id']);
+    const user = await this.usersService.findOneByEmail(payload['user']['email']);
     if (!user) throw new BadRequestException('User not found');
 
     const userDto = new GetUserDto();
     userDto.username = user.username;
     userDto.email = user.email;
     userDto.id = user['_id'];
+    
+    userDto.google_connected = (user.google ? (await this.authService.checkGoogleTokenValidity(user.google.access_token)).valid : false);
+    userDto.github_connected = (user.github ? (await this.githubService.checkTokenValidity(user.github.access_token)) : false);
 
     return userDto;
   }
