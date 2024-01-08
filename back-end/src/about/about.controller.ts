@@ -8,12 +8,12 @@ function createServicesAbout(): object[] {
   const servicesKey = [];
   const services = [];
   for (const actionName in actionsList) {
-    if (actionsList[actionName].service in servicesKey) continue;
-    servicesKey.push(actionsList[actionName].service);
+    if (!(servicesKey.find(service => service == actionsList[actionName].service)))
+      servicesKey.push(actionsList[actionName].service);
   }
   for (const reactionName in reactionsList) {
-    if (reactionsList[reactionName].service in servicesKey) continue;
-    servicesKey.push(reactionsList[reactionName].service);
+    if (!(servicesKey.find(service => service == reactionsList[reactionName].service)))
+      servicesKey.push(reactionsList[reactionName].service);
   }
 
   servicesKey.forEach(serviceName => {
@@ -41,7 +41,7 @@ function createServicesAbout(): object[] {
       reactions: reactions,
     });
   });
-  
+
 
   return services;
 }
