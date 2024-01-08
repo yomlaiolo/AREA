@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { map } from 'rxjs/operators';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 
 @Injectable()
 export class GithubService {
@@ -73,5 +73,25 @@ export class GithubService {
     };
 
     await axios.post(url, data, { headers });
+  }
+
+  async checkTokenValidity(accessToken: string): Promise<boolean> {
+    const url = `https://api.github.com/user`;
+    const headers = {
+      Authorization: `token ${accessToken}`,
+      'User-Agent': 'ForgeFlow',
+    };
+
+    try {
+      await axios.get(url, { headers });
+      return true;
+    } catch (error) {
+      if (error.isAxiosError === false) {
+        const axiosError = error as AxiosError;
+        if (axiosError.response?.status === 401) {
+          return false;
+        }
+      }
+    }
   }
 }
