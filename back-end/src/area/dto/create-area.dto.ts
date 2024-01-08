@@ -25,9 +25,9 @@ export class CreateAreaDto {
   @ApiProperty({ example: 'My area description' })
   description: string;
 
-  @ApiProperty({ example: { type: "interval", value: { interval: 1000 } } })
+  @ApiProperty({ example: { type: "interval", value: { cron: "*/10 * * * * *" } } })
   action: ActionDto;
 
-  @ApiProperty({ example: { type: "print", value: { message: "Hello World!" } } })
+  @ApiProperty({ example: { type: "console_log", value: { message: "Hello World!" } } })
   reaction: ReactionDto;
 }
