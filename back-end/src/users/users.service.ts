@@ -17,6 +17,7 @@ export class UsersService {
 
   async create(createUserDto: CreateUserDto): Promise<User> {
     const createdUser = new this.userModel(createUserDto);
+
     let returnedUser: User;
     const regexPassword = new RegExp(
       '^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.{8,})',
@@ -58,8 +59,21 @@ export class UsersService {
       .exec();
     if (email) throw new ConflictException('Email already exists');
 
+    if (createUserDto.is_google_oauth) {
+      createdUser.password = null;
+      createdUser.google = {
+        username: createUserDto.username,
+        access_token: createUserDto.google.access_token,
+        refresh_token: createUserDto.google.refresh_token,
+        id_token: createUserDto.google.id_token,
+      };
+    } else {
+      createdUser.google = null;
+    }
+
     // encrypt password with bcrypt
-    createdUser.password = undefined;
+    createdUser.password = null;
+    createdUser.github = null;
     if (createUserDto.password) {
       const salt = await bcrypt.genSalt();
       createdUser.password = await bcrypt.hash(createUserDto.password, salt);

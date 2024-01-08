@@ -14,6 +14,20 @@ export class GithubUser {
   webhooks: object;
 }
 
+export class GoogleUser {
+  @Prop()
+  username: string;
+
+  @Prop()
+  access_token: string;
+
+  @Prop()
+  refresh_token: string;
+
+  @Prop()
+  id_token: string;
+}
+
 @Schema()
 export class User {
   @Prop({ required: true, unique: true })
@@ -29,10 +43,7 @@ export class User {
   password: string;
 
   @Prop()
-  access_token: string;
-
-  @Prop()
-  refresh_token: string;
+  google: GoogleUser;
 
   @Prop()
   github: GithubUser;

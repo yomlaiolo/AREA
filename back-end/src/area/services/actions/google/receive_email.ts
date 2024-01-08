@@ -2,6 +2,7 @@ import { CancellationToken } from "../../../../utils/cancellation_token";
 import { variableObject } from "../../../../utils/variable_object";
 
 async function receiveEmailAction(actionData: object, reactionFunc: Function, reactionData: object, token: CancellationToken) {
+    //
     const data = { // set this data in the action
         "from": "",
         "cc": [],
@@ -9,9 +10,9 @@ async function receiveEmailAction(actionData: object, reactionFunc: Function, re
         "subject": "",
     }
 
-    const dataForReaction = variableObject(data, actionData, reactionData);
+    // const dataForReaction = variableObject(data, actionData, reactionData);
 
-    console.log(dataForReaction);
+    reactionFunc(variableObject(data, actionData, reactionData));
 }
 
 receiveEmailAction.service = "google";
