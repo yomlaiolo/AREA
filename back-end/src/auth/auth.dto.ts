@@ -63,6 +63,12 @@ export class GoogleDto {
   id_token: string;
 }
 
+export class AccessTokenDto {
+  @ApiProperty()
+  @AutoMap()
+  access_token: string;
+}
+
 export class ChangePasswordDto {
   @ApiProperty()
   @AutoMap()
