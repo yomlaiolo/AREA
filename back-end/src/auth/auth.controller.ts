@@ -1,8 +1,33 @@
-import { Body, Controller, Post, HttpCode, HttpStatus, UnauthorizedException, BadRequestException, ConflictException, NotAcceptableException, Req } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Post,
+  HttpCode,
+  HttpStatus,
+  UnauthorizedException,
+  BadRequestException,
+  ConflictException,
+  NotAcceptableException,
+  Req,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { Public } from './auth.decorator';
-import { ApiBearerAuth, ApiBody, ApiProperty, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { LoginDto, LoginResponse, RegisterDto, GoogleDto, ChangePasswordDto, ChangeUsernameOrEmailDto } from './auth.dto';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiProperty,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
+import {
+  LoginDto,
+  LoginResponse,
+  RegisterDto,
+  GoogleDto,
+  ChangePasswordDto,
+  ChangeUsernameOrEmailDto,
+  AccessTokenDto,
+} from './auth.dto';
 import { CreateUserDto, GetUserDto } from 'src/users/user.dto';
 import { UsersService } from 'src/users/users.service';
 import { AutoMap } from '@automapper/classes';
@@ -13,7 +38,7 @@ export class AuthController {
   constructor(
     private authService: AuthService,
     private readonly usersService: UsersService,
-  ) { }
+  ) {}
 
   @HttpCode(HttpStatus.OK)
   @Public()
@@ -81,14 +106,27 @@ export class AuthController {
   })
   @ApiResponse({
     status: 406,
-    description: 'NOT ACCEPTABLE - Password must contain at least 8 characters, 1 uppercase letter, 1 lowercase letter and 1 number',
+    description:
+      'NOT ACCEPTABLE - Password must contain at least 8 characters, 1 uppercase letter, 1 lowercase letter and 1 number',
   })
   @ApiBearerAuth('access-token')
-  async changePassword(@Body() ChangePasswordDto: ChangePasswordDto, @Req() request: Request): Promise<void> {
+  async changePassword(
+    @Body() ChangePasswordDto: ChangePasswordDto,
+    @Req() request: Request,
+  ): Promise<void> {
     const userId = request['user'].user['_id'];
-    if (ChangePasswordDto.new_password == undefined || ChangePasswordDto.old_password == undefined)
-      throw new BadRequestException("Missing fields required for password change");
-    return this.authService.changePassword(userId, ChangePasswordDto.old_password, ChangePasswordDto.new_password);
+    if (
+      ChangePasswordDto.new_password == undefined ||
+      ChangePasswordDto.old_password == undefined
+    )
+      throw new BadRequestException(
+        'Missing fields required for password change',
+      );
+    return this.authService.changePassword(
+      userId,
+      ChangePasswordDto.old_password,
+      ChangePasswordDto.new_password,
+    );
   }
 
   @HttpCode(HttpStatus.OK)
@@ -104,7 +142,8 @@ export class AuthController {
   })
   @ApiResponse({
     status: 400,
-    description: 'BAD REQUEST - Password is required / Username or email is required',
+    description:
+      'BAD REQUEST - Password is required / Username or email is required',
   })
   @ApiResponse({
     status: 406,
@@ -115,21 +154,36 @@ export class AuthController {
     description: 'CONFLICT - Username or email already in use',
   })
   @ApiBearerAuth('access-token')
-  async changeUsernameOrEmail(@Body() changeUsernameOrEmailDto: ChangeUsernameOrEmailDto, @Req() request: Request): Promise<void> {
-    const userByEmail = await this.usersService.findOneByEmail(changeUsernameOrEmailDto.email);
-    const userByUsername = await this.usersService.findOneByUsername(changeUsernameOrEmailDto.username);
+  async changeUsernameOrEmail(
+    @Body() changeUsernameOrEmailDto: ChangeUsernameOrEmailDto,
+    @Req() request: Request,
+  ): Promise<void> {
+    const userByEmail = await this.usersService.findOneByEmail(
+      changeUsernameOrEmailDto.email,
+    );
+    const userByUsername = await this.usersService.findOneByUsername(
+      changeUsernameOrEmailDto.username,
+    );
 
     if (
-      (userByEmail != undefined && userByEmail['_id'] != request['user'].user['_id']) ||
-      (userByUsername != undefined && userByUsername['_id'] != request['user'].user['_id'])
+      (userByEmail != undefined &&
+        userByEmail['_id'] != request['user'].user['_id']) ||
+      (userByUsername != undefined &&
+        userByUsername['_id'] != request['user'].user['_id'])
     )
-      throw new ConflictException("Username or email already in use");
+      throw new ConflictException('Username or email already in use');
     if (changeUsernameOrEmailDto.password == undefined)
-      throw new BadRequestException("Password is required");
-    if (changeUsernameOrEmailDto.username == undefined && changeUsernameOrEmailDto.email == undefined)
-      throw new BadRequestException("Username or email is required");
+      throw new BadRequestException('Password is required');
+    if (
+      changeUsernameOrEmailDto.username == undefined &&
+      changeUsernameOrEmailDto.email == undefined
+    )
+      throw new BadRequestException('Username or email is required');
     const userId = request['user'].user['_id'];
-    return this.authService.changeUsernameOrEmail(userId, changeUsernameOrEmailDto);
+    return this.authService.changeUsernameOrEmail(
+      userId,
+      changeUsernameOrEmailDto,
+    );
   }
 
   @Public()
@@ -158,15 +212,18 @@ export class AuthController {
     let access_token = undefined;
     const user = await this.usersService.findOneByEmail(email);
 
-    if (user) { // Login user
+    if (user) {
+      // Login user
       if (user.is_google_oauth == false)
         throw new ConflictException('User not registered with Google');
       access_token = user.google.access_token;
 
-      const validityGoogle = await this.authService.checkGoogleTokenValidity(access_token);
+      const validityGoogle =
+        await this.authService.checkGoogleTokenValidity(access_token);
       if (!validityGoogle.valid)
         user.google.access_token = await this.authService.getGoogleTokens(
-          googleDto.server_auth_code)['access_token']
+          googleDto.server_auth_code,
+        )['access_token'];
 
       const payload = { user };
       const token = await this.authService.getJwt(payload);
@@ -177,7 +234,7 @@ export class AuthController {
     const newUser = new CreateUserDto();
     // Create user
     const tokens: object = await this.authService.getGoogleTokens(
-      googleDto.server_auth_code
+      googleDto.server_auth_code,
     );
 
     newUser.username = googleDto.user.name;
@@ -190,6 +247,71 @@ export class AuthController {
       refresh_token: tokens['refresh_token'],
       id_token: googleDto.id_token,
       username: googleDto.user.name,
+    };
+
+    const createdUser = await this.usersService.create(newUser);
+    const payload = { user: createdUser };
+    const token = await this.authService.getJwt(payload);
+    return {
+      access_token: token,
+    };
+  }
+
+  @Public()
+  @Post('google-access-token')
+  @ApiResponse({
+    status: 200,
+    description: 'OK - User logged in',
+    type: LoginResponse,
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'UNAUTHORIZED - Invalid token',
+  })
+  @ApiResponse({
+    status: 409,
+    description: 'CONFLICT - User not registered with Google',
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'BAD REQUEST - User not registered with Google',
+  })
+  @ApiTags('auth')
+  @HttpCode(HttpStatus.OK)
+  @ApiBody({ type: AccessTokenDto })
+  async googleAccessToken(
+    @Body() accessTokenDto: AccessTokenDto,
+  ): Promise<LoginResponse> {
+    const access_token = accessTokenDto.access_token;
+    const userInfo = await this.authService.getGoogleUserInfo(access_token);
+
+    const email = userInfo.email;
+    let user = await this.usersService.findOneByEmail(email);
+
+    if (user) {
+      // Login user
+      if (user.is_google_oauth == false)
+        throw new ConflictException('User not registered with Google');
+
+      const payload = { user };
+      const token = await this.authService.getJwt(payload);
+      return {
+        access_token: token,
+      };
+    }
+
+    // Create user
+    const newUser = new CreateUserDto();
+    newUser.username = userInfo.name;
+    newUser.email = userInfo.email;
+    newUser.password = undefined;
+    newUser.is_google_oauth = true;
+    newUser.photo = userInfo.picture;
+    newUser.google = {
+      access_token: access_token,
+      refresh_token: null,
+      id_token: null,
+      username: userInfo.name,
     };
 
     const createdUser = await this.usersService.create(newUser);
