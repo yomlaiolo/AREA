@@ -1,4 +1,9 @@
-async function consoleLogReaction(reaction_data: { message: string }) {
+import { User } from 'src/users/user.schema';
+
+async function consoleLogReaction(
+  reaction_data: { message: string },
+  user: User,
+) {
   console.log(reaction_data.message);
 }
 

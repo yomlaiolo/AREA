@@ -6,13 +6,21 @@ import { ActionDto, CreateAreaDto, ReactionDto } from './dto/create-area.dto';
 import { CancellationToken } from '../utils/cancellation_token';
 
 import { factoryAction, factoryReaction } from './services/services';
+import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class AreaService {
-  constructor(@InjectModel(Area.name) private areaModel: Model<Area>) {}
+  constructor(
+    @InjectModel(Area.name) private areaModel: Model<Area>,
+    private readonly usersService: UsersService,
+  ) {}
   private cancellation_tokens: Map<string, CancellationToken> = new Map();
 
-  launchArea(actionDto: ActionDto, reactionDto: ReactionDto, id: string): void {
+  async launchArea(
+    actionDto: ActionDto,
+    reactionDto: ReactionDto,
+    id: string,
+  ): Promise<void> {
     const action = factoryAction(actionDto);
     const reaction = factoryReaction(reactionDto);
 
@@ -20,7 +28,9 @@ export class AreaService {
       throw new BadRequestException('Invalid action or reaction');
     const token = new CancellationToken();
     this.cancellation_tokens.set(id, token);
-    action(actionDto.value, reaction, reactionDto.value, token);
+    const area = await this.areaModel.findById(id).exec();
+    const user = this.usersService.findOneById(area.user_id);
+    action(actionDto.value, reaction, reactionDto.value, token, user);
   }
 
   launchAllAreas(): void {
@@ -32,7 +42,7 @@ export class AreaService {
           try {
             this.launchArea(area.action, area.reaction, area._id.toString());
           } catch (e) {
-            console.error("Error in launchArea:", e);
+            console.error('Error in launchArea:', e);
           }
         });
       });
