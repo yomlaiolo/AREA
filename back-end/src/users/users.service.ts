@@ -10,6 +10,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { User } from './user.schema';
 import { CreateUserDto } from './user.dto';
 import * as bcrypt from 'bcrypt';
+import { AccessTokenDto } from 'src/auth/auth.dto';
 
 @Injectable()
 export class UsersService {
@@ -150,5 +151,13 @@ export class UsersService {
         { $unset: { [`github.webhooks.${repoOwner}/${repoName}`]: '' } },
       )
       .exec();
+  }
+
+  async updateAcessToken(userId: string, accessToken: string): Promise<void> {
+    const user = await this.userModel.findById(userId).exec();
+
+    user.google.access_token = accessToken;
+
+    user.save();
   }
 }

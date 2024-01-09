@@ -31,6 +31,7 @@ import {
 import { CreateUserDto, GetUserDto } from 'src/users/user.dto';
 import { UsersService } from 'src/users/users.service';
 import { AutoMap } from '@automapper/classes';
+import { auth } from 'googleapis/build/src/apis/abusiveexperiencereport';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -227,6 +228,8 @@ export class AuthController {
 
       const payload = { user };
       const token = await this.authService.getJwt(payload);
+      user.google.access_token = token;
+      await this.usersService.updateAcessToken(user['_id'], token);
       return {
         access_token: token,
       };
