@@ -5,13 +5,11 @@ import * as fs from 'fs';
 @Injectable()
 export class GDriveService {
   async createFolderIfNotExist(folderName: string, drive: any): Promise<string> {
-    // Search for folders with the specified name
     const response = await drive.files.list({
       q: `mimeType='application/vnd.google-apps.folder' and name='${folderName}' and trashed = false`,
       fields: 'files(id, name)',
     });
 
-    // If the folder doesn't exist, create it
     if (response.data.files.length === 0) {
       const fileMetadata = {
         'name': folderName,
@@ -46,7 +44,6 @@ export class GDriveService {
 
     const requestBody: any = {
       name: fileName,
-      //File is a .txt file
       mimeType: 'text/plain',
     };
 
