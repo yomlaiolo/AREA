@@ -16,6 +16,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { GithubModule } from './github-action/github.module';
 import { OpenAIModule } from './openai/openai.module';
 import { AreaModule } from './area/area.module';
+import { GoogleModule } from './oauth2/oauth2.module';
 
 @Module({
   imports: [
@@ -39,7 +40,8 @@ import { AreaModule } from './area/area.module';
     AuthModule,
     GithubModule,
     OpenAIModule,
-    AreaModule
+    AreaModule,
+    GoogleModule,
   ],
   controllers: [AppController],
   providers: [
