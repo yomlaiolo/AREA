@@ -4,7 +4,8 @@ import Button from '../components/Button';
 import TextBox from '../components/TextBox';
 import { Link, useNavigate } from 'react-router-dom';
 import './Registerpage.css';
-import { register } from '../api';
+import { register, sendGoogleLogin } from '../api';
+import { useGoogleLogin } from '@react-oauth/google';
 
 export const Registerpage = () => {
   const [email, setEmail] = React.useState<string>("");
@@ -16,6 +17,19 @@ export const Registerpage = () => {
     console.log("email: " + email + " password: " + password + " username: " + username);
     register(username, email, password, navigate);
   }
+
+  const myresponseGoogle = (response: any) => {
+    if (response.access_token) {
+      console.log("access_token: " + response.access_token);
+      sendGoogleLogin(navigate, response.access_token);
+    }
+  }
+
+  const login_google = useGoogleLogin({
+    onSuccess: myresponseGoogle,
+    flow: 'implicit',
+    scope: "https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/drive",
+  });
 
   return (
     <div>
@@ -33,12 +47,10 @@ export const Registerpage = () => {
             <TextBox onChangeText={setPassword} value={password} hideText={true} backgroundColor='#DFDFDF' customwidth={400} />
             <p className='mini_info'>Make sure it's at least 8 characters including a number and a uppercase letter.</p>
           </div>
-          <div className='Button-Register_RP'>
-            <Button onPress={() => connect()} title="JOIN US" backgroundColor='#E88741' />
-          </div>
+          <Button onPress={() => connect()} title="JOIN US" backgroundColor='#E88741' />
           <div className='Other-Login_RP'>
             <p>Join in with...</p>
-            <img className='Mini-Logo' src={require("../assets/google.png")} alt="google" onClick={() => { console.log("sa fonctionne") }} />
+            <Button onPress={() => login_google()} title="GOOGLE" backgroundColor='#ffffff' icon={require("../assets/google.png")} border={true} />
             <p>Already registered ? <Link to="/login">Login here.</Link></p>
           </div>
         </div>
