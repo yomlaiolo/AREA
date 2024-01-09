@@ -8,13 +8,13 @@ async function recurrentAction(
   reactionFunc: Function,
   reactionData: object,
   token: CancellationToken,
-  user: User
+  user: User,
 ) {
   const data = {
     cron: actionData.cron,
   };
   const cron = require('node-cron');
-  if (!cron.validate(actionData.cron))
+  if (!cron.validate(data.cron))
     throw new BadRequestException('Invalid cron expression');
   cron.schedule(data.cron, () => {
     if (token.isCancelled) {
@@ -24,10 +24,9 @@ async function recurrentAction(
     try {
       reactionFunc(variableObject(data, actionData, reactionData), user);
     } catch (error) {
-      console.error('Error in reactionFunc:', error);
+      console.error(`Error in reactionFunc: ${error} for user ${user}`);
     }
   });
-
 }
 
 recurrentAction.service = 'cron';
