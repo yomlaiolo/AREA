@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable, OnModuleInit } from '@nestjs/common';
+import { BadRequestException, HttpCode, HttpException, Injectable, OnModuleInit } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Area } from './area.schema';
@@ -6,13 +6,22 @@ import { ActionDto, CreateAreaDto, ReactionDto } from './dto/create-area.dto';
 import { CancellationToken } from '../utils/cancellation_token';
 
 import { factoryAction, factoryReaction } from './services/services';
+import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class AreaService {
-  constructor(@InjectModel(Area.name) private areaModel: Model<Area>) {}
+  constructor(
+    @InjectModel(Area.name) private areaModel: Model<Area>,
+    private readonly usersService: UsersService,
+  ) {}
   private cancellation_tokens: Map<string, CancellationToken> = new Map();
 
-  launchArea(actionDto: ActionDto, reactionDto: ReactionDto, id: string): void {
+  async launchArea(
+    actionDto: ActionDto,
+    reactionDto: ReactionDto,
+    id: string,
+    area: Area
+  ): Promise<void> {
     const action = factoryAction(actionDto);
     const reaction = factoryReaction(reactionDto);
 
@@ -20,19 +29,25 @@ export class AreaService {
       throw new BadRequestException('Invalid action or reaction');
     const token = new CancellationToken();
     this.cancellation_tokens.set(id, token);
-    action(actionDto.value, reaction, reactionDto.value, token);
+    const user = await this.usersService.findOneById(area.user_id);
+    try {
+      await action(actionDto.value, reaction, reactionDto.value, token, user);
+    } catch (e) {
+      console.error('Error in action:', e);
+    }
   }
 
   launchAllAreas(): void {
+    
     this.areaModel
       .find()
       .exec()
       .then((areas) => {
         areas.forEach((area) => {
           try {
-            this.launchArea(area.action, area.reaction, area._id.toString());
+            this.launchArea(area.action, area.reaction, area._id.toString(), area);
           } catch (e) {
-            console.error("Error in launchArea:", e);
+            console.error('Error in launchArea:', e);
           }
         });
       });
@@ -40,7 +55,7 @@ export class AreaService {
 
   async create(createAreaDto: CreateAreaDto, user_id: string): Promise<Object> {
     const area = new this.areaModel({ ...createAreaDto, user_id: user_id });
-    this.launchArea(area.action, area.reaction, area._id.toString());
+    this.launchArea(area.action, area.reaction, area._id.toString(), area);
     return { id: (await area.save())._id.toString() };
   }
 
