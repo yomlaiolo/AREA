@@ -4,7 +4,8 @@ import TextBox from '../components/TextBox';
 import logo from '../assets/logo.svg'
 import { useNavigate, Link } from 'react-router-dom';
 import './Loginpage.css';
-import { login } from '../api';
+import { login, sendGoogleLogin } from '../api';
+import { useGoogleLogin } from '@react-oauth/google';
 
 export const Loginpage = () => {
   const [password, setPassword] = React.useState<string>("");
@@ -15,6 +16,19 @@ export const Loginpage = () => {
     console.log("email: " + email + " password: " + password);
     login(email, password, navigate)
   }
+
+  const myresponseGoogle = (response: any) => {
+    if (response.access_token) {
+      console.log("access_token: " + response.access_token);
+      sendGoogleLogin(navigate, response.access_token);
+    }
+  }
+
+  const login_google = useGoogleLogin({
+    onSuccess: myresponseGoogle,
+    flow: 'implicit',
+    scope: "https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/drive",
+  });
 
   return (
     <div>
@@ -29,15 +43,13 @@ export const Loginpage = () => {
             <p>Password</p>
             <TextBox onChangeText={setPassword} value={password} hideText={true} backgroundColor='#DFDFDF' customwidth={400} />
           </div>
-          <div className='Button-Signin'>
-            <Button onPress={() => connect()} title="SIGN IN" backgroundColor='#E88741' />
-          </div>
+          <Button onPress={() => connect()} title="SIGN IN" backgroundColor='#E88741' />
           <div className='Ligne'>
             <div className='Ligne1' />
           </div>
           <div className='Other-Login'>
             <p>Sign in with...</p>
-            <img className='Mini-Logo' src={require("../assets/google.png")} alt="google" onClick={() => { console.log("sa fonctionne") }} />
+            <Button onPress={() => login_google()} title="GOOGLE" backgroundColor='#ffffff' icon={require("../assets/google.png")} border={true} />
             <p>No account yet ? <Link to="/register">Register here</Link></p>
           </div>
         </div>

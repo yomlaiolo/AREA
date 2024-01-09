@@ -32,6 +32,35 @@ export async function login(email: string, password: string, navigate: Function)
         });
 }
 
+export async function sendGoogleLogin(navigation: any, infos: any) {
+    fetch(API + '/auth/google-access-token', {
+      method: 'POST',
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+      body: JSON.stringify({
+        "access_token": infos,
+      })
+    })
+      .then(response => {
+        if (response.status === 200)
+          return response.json();
+        else if (response.status === 401)
+          return null;
+      })
+      .then(async data => {
+        if (data && data.access_token) {
+          let token = data.access_token;
+          await setVar('token', token);
+          navigation('/flows');
+        } else
+          window.alert("Error: Unauthorized - invalid credentials");
+      })
+      .catch((error) => {
+        console.log('Error:', error);
+      });
+  }
+
 export async function register(username: string, email: string, password: string, navigate: Function) {
     fetch(API + '/auth/register', {
         method: 'POST',
