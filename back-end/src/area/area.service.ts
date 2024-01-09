@@ -6,7 +6,7 @@ import { ActionDto, CreateAreaDto, ReactionDto } from './dto/create-area.dto';
 import { CancellationToken } from '../utils/cancellation_token';
 
 import { factoryAction, factoryReaction } from './services/services';
-import { UsersService } from 'src/users/users.service';
+import { UsersService } from '../users/users.service';
 
 @Injectable()
 export class AreaService {
