@@ -11,11 +11,12 @@ function transformCronString(date: Date, type: string) {
   const hour = format(date, 'H');
   const day = format(date, 'd');
   const month = format(date, 'M');
+  const year = format(date, 'y');
 
   if (type === 'time') {
     var cronString = `${minute} ${hour} * * *`;
   } else {
-    var cronString = `${minute} ${hour} ${day} ${month} *`;
+    var cronString = `0 ${minute} ${hour} ${day} ${month} * ${year}`;
   }
   return cronString;
 }

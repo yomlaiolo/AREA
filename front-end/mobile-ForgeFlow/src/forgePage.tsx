@@ -1,35 +1,83 @@
 import AreaButton from "@components//button";
 import React, { useState } from "react";
 import { Image, Keyboard, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
-import { getVar, removeVar } from "./api";
+import { createArea, getVar, removeVar } from "./api";
 import { useFocusEffect } from "@react-navigation/native";
 import { actions, reactions } from "./area";
 import { showToast } from "./utils";
 import TextBox from "@components//textbox";
 
-async function forge(name: string, repo: string, cronTime: string) {
+async function forge(name: string, repo: string, cronTime: string, reactionValue: any) {
   const actionId = await getVar('action');
   const reactionId = await getVar('reaction');
   const action = actions[parseInt(actionId as string)];
   const reaction = reactions[parseInt(reactionId as string)];
+  var description = '';
+  var value;
 
   if (action.redirection === 'github' && repo !== '') {
-    console.log(name + ', When ' + action.name + ' on ' + repo + ' then ' + reaction.name);
-    showToast(name + ', When ' + action.name + ' on ' + repo + ' then ' + reaction.name);
-  } else if (action.redirection === 'cron') {
-    if (action.name === 'Every [x] time' && cronTime !== '') {
-      console.log(name + ', Every ' + cronTime + ' then ' + reaction.name);
-      showToast(name + ', Every ' + cronTime + ' then ' + reaction.name);
-    } else if (action.name === 'At [hour] on [day]' && cronTime !== '') {
-      console.log(name + ', At ' + cronTime + ' then ' + reaction.name);
-      showToast(name + ', At ' + cronTime + ' then ' + reaction.name);
+    description = 'When ' + action.name + ' on ' + repo + ' then ' + reaction.name;
+    if (action.name === 'Pull request created') {
+      value = {
+        repo: repo,
+        fromBranch: "__fromBranch__",
+        toBranch: "__toBranch__",
+      }
+    } else if (action.name === 'Issue created') {
+      value = {
+        repo: repo,
+        title: "__title__",
+        body: "__body__",
+      }
     }
+    showToast(name + description);
+  } else if (action.redirection === 'cron') {
+    if (action.name === 'Each day at [x]' && cronTime !== '') {
+      description = 'Each day at ' + cronTime + ' then ' + reaction.name;
+      value = {
+        cronTime: cronTime,
+      }
+      showToast(name + description);
+    } else if (action.name === 'At [hour] on [day]' && cronTime !== '') {
+      description = 'At ' + cronTime + ' then ' + reaction.name;
+      value = {
+        cronTime: cronTime,
+      }
+      showToast(name + description);
+    }
+  } else if (action.redirection === 'google') {
+    description = 'When ' + action.name + ' then ' + reaction.name;
+    value = {
+      from: "__from__",
+      cc: "__cc__",
+      to: "__to__",
+      subject: "__subject__",
+      body: "__body__",
+    }
+    showToast(name + description);
   } else {
-    console.log(name + ', When ' + action.name + ' then ' + reaction.name);
-    showToast(name + ', When ' + action.name + ' then ' + reaction.name);
+    description = 'When ' + action.name + ' then ' + reaction.name;
+    showToast(name + description);
   }
-  removeVar('action');
-  removeVar('reaction');
+
+  var myArea = {
+    name: name,
+    description: description,
+    action: {
+      type: actions[parseInt(actionId as string)].type,
+      value: value,
+    },
+    reaction: {
+      type: reactions[parseInt(reactionId as string)].type,
+      value: reactionValue,
+    },
+  };
+  console.log(myArea);
+  var response = await createArea(myArea);
+  console.log(response);
+
+  // removeVar('action');
+  // removeVar('reaction');
   return 0;
 }
 
@@ -41,6 +89,7 @@ export default function ForgePage({ navigation }: any) {
   const [name, setName] = useState<string>('');
   const [repo, setRepo] = useState<string>('');
   const [cronTime, setCronTime] = useState<string>('');
+  const [reactionValue, setReactionValue] = useState<any>({} as any);
 
   const fetchData = async () => {
     const action = await getVar('action');
@@ -73,6 +122,12 @@ export default function ForgePage({ navigation }: any) {
     if (myCronTime) {
       setCronTime(myCronTime);
       removeVar('cronTime');
+    }
+
+    const myReactionValue = await getVar('reactionValue');
+    if (myReactionValue) {
+      setReactionValue(JSON.parse(myReactionValue));
+      removeVar('reactionValue');
     }
   };
   fetchData();
@@ -120,12 +175,12 @@ export default function ForgePage({ navigation }: any) {
                   showToast('Please name your flow');
                   return;
                 }
-                const value = await forge(name, repo, cronTime);
-                if (value === 0) {
-                  setActionSelected(actions[0]);
-                  setReactionSelected(reactions[0]);
-                  setName('');
-                }
+                const value = await forge(name, repo, cronTime, reactionValue);
+                // if (value === 0) {
+                //   setActionSelected(actions[0]);
+                //   setReactionSelected(reactions[0]);
+                //   setName('');
+                // }
               }} />
             </View>
           }

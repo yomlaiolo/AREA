@@ -1,17 +1,34 @@
 import React from "react";
 import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { setVar, signInWithGithub } from "./api";
+import { getVar, setVar, signInWithGithub } from "./api";
 import { reactions } from "./area";
+import { useFocusEffect } from "@react-navigation/native";
 
 async function press(navigation: any, item: any) {
   setVar('reaction', item.id.toString());
-  if (item.connection === 'github') {
+  if (item.redirection === 'github') {
     await signInWithGithub();
+  } else if (item.redirection === 'cron') {
+    navigation.navigate('SelectCron');
+  } else if (item.redirection === 'google') {
+    navigation.navigate('SetEmail', { idx: await getVar('action') });
   }
-  navigation.goBack();
 }
 
 export default function ReactionPage({ navigation }: any) {
+  const fetchData = async () => {
+    const reactionValue = await getVar('reactionValue');
+    if (reactionValue) {
+      navigation.goBack();
+    }
+  };
+  fetchData();
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchData();
+    }, [])
+  );
+
   return (
     <View style={styles.all}>
       <View style={styles.top} >

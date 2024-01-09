@@ -266,6 +266,79 @@ export async function signInWithGithub() {
     });
 }
 
+export async function createArea(area: any) {
+  const token = await AsyncStorage.getItem('token');
+
+  try {
+    const response = await fetch(API + '/area/create', {
+      method: 'POST',
+      headers: new Headers({
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token,
+      }),
+      body: JSON.stringify(area),
+    });
+    if (response.status === 201) {
+      return 0;
+    } else if (response.status === 400) {
+      return "Invalid data";
+    }
+  } catch (error) {
+    console.log('Error:', error);
+  }
+  return "Unknown error, maybe the server is down";
+}
+
+export async function deleteArea(id: string) {
+  const token = await AsyncStorage.getItem('token');
+
+  try {
+    const response = await fetch(API + '/area/delete/' + id, {
+      method: 'DELETE',
+      headers: new Headers({
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token,
+      }),
+    });
+    if (response.status === 200) {
+      return 0;
+    } else if (response.status === 404) {
+      return "Area not found";
+    }
+  } catch (error) {
+    console.log('Error:', error);
+  }
+  return "Unknown error, maybe the server is down";
+}
+
+export async function getAreas() {
+  const token = await AsyncStorage.getItem('token');
+  var areas: any[] = [];
+
+  if (!token) {
+    console.log('No token found');
+    return areas;
+  }
+  try {
+    const response = await fetch(API + '/area', {
+      method: 'GET',
+      headers: new Headers({
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token,
+      }),
+    });
+    if (response.status === 200) {
+      const data = await response.json();
+      areas = data;
+    } else if (response.status === 401) {
+      console.log('Unauthorized - invalid credentials');
+    }
+  } catch (error) {
+    console.log('Error:', error);
+  }
+  return areas;
+}
+
 export async function getVar(key: string) {
   const myVar = await AsyncStorage.getItem(key);
   return myVar;
