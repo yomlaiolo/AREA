@@ -1,5 +1,19 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, TouchableOpacity, Text, Image, Pressable, Platform, ImageSourcePropType } from 'react-native';
+import { deleteArea } from 'src/api';
+import { showToast } from 'src/utils';
+
+async function deleteFlow(id: string) {
+  const response = await deleteArea(id);
+  console.log(response);
+  if (response === 0) {
+    console.log('Flow deleted');
+    showToast('Your flow has been deleted');
+  } else {
+    console.log('Error deleting flow');
+    showToast('Error deleting flow');
+  }
+}
 
 interface FlowProps {
   onPress: () => void;
@@ -9,9 +23,11 @@ interface FlowProps {
   backgroundColor?: string;
   textColor?: string;
   description: string;
+  id: string;
+  refreshList: () => void;
 }
 
-const Flow: React.FC<FlowProps> = ({ onPress, title, icons, disabled, backgroundColor, textColor, description }) => {
+const Flow: React.FC<FlowProps> = ({ onPress, title, icons, disabled, backgroundColor, textColor, description, id, refreshList }) => {
   const [longpress, setLongpress] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
   if (!backgroundColor) {
@@ -28,7 +44,7 @@ const Flow: React.FC<FlowProps> = ({ onPress, title, icons, disabled, background
     <View style={{ width: '100%', height: 'auto', marginBottom: 50, backgroundColor: 'transparent' }} >
       <TouchableOpacity onPress={onPress} onLongPress={handleLongPress} activeOpacity={0.8} disabled={disabled} style={styles.touchable}>
         {longpress && (
-          <TouchableOpacity style={[styles.delete, { backgroundColor: '#E88741' }]} activeOpacity={0.8}>
+          <TouchableOpacity style={[styles.delete, { backgroundColor: '#E88741' }]} activeOpacity={0.8} onPress={async () => { await deleteFlow(id); refreshList() }} >
             <Image source={require('@ressources/delete.png')} style={[{ width: 25, height: 25 }]} />
           </TouchableOpacity>
         )}

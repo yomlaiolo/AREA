@@ -27,8 +27,10 @@ export default function RegisterScreen({ navigation }: any) {
                 removeVar('reaction');
               }} backgroundColor='#E88741' textColor='#1F1F1F' activeOpacity={0.5} />
               <View style={styles.bar} />
-              <AreaButton title="Register with Google" onPress={() => {
-                googleSignInFunc(navigation);
+              <AreaButton title="Register with Google" onPress={async () => {
+                if (await googleSignInFunc() === true) {
+                  navigation.reset({ index: 0, routes: [{ name: 'Home' }] });
+                }
                 removeVar('action');
                 removeVar('reaction');
               }} backgroundColor='#F5F5F5' textColor='#00000054' icon={require('@ressources/google.png')} activeOpacity={0.7} />

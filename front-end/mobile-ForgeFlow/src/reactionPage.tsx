@@ -1,17 +1,43 @@
 import React from "react";
 import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { setVar, signInWithGithub } from "./api";
+import { getVar, isGithubLoggedIn, isGoogleLoggedIn, setVar, signInWithGithub } from "./api";
 import { reactions } from "./area";
+import { useFocusEffect } from "@react-navigation/native";
 
 async function press(navigation: any, item: any) {
   setVar('reaction', item.id.toString());
-  if (item.connection === 'github') {
-    await signInWithGithub();
+  if (item.redirection === 'github') {
+    if (await isGithubLoggedIn() === false) {
+      await signInWithGithub();
+    }
+    navigation.navigate('SetGithub', { idx: await getVar('action'), name: item.name });
+  } else if (item.redirection === 'google') {
+    if (await isGoogleLoggedIn() === false) {
+      console.log('not logged in');
+      return;
+    }
+    navigation.navigate('SetEmail', { idx: await getVar('action') });
+  } else if (item.redirection === 'notification') {
+    navigation.navigate('SetNotification', { idx: await getVar('action') });
+  } else if (item.redirection === 'openai') {
+    navigation.navigate('SetOpenAI', { idx: await getVar('action'), name: item.name });
   }
-  navigation.goBack();
 }
 
 export default function ReactionPage({ navigation }: any) {
+  const fetchData = async () => {
+    const reactionValue = await getVar('reactionValue');
+    if (reactionValue) {
+      navigation.goBack();
+    }
+  };
+  fetchData();
+  useFocusEffect(
+    React.useCallback(() => {
+      fetchData();
+    }, [])
+  );
+
   return (
     <View style={styles.all}>
       <View style={styles.top} >
