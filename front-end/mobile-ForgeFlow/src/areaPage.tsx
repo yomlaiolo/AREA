@@ -46,7 +46,7 @@ export default function AreaPage({ navigation }: any) {
           if (element.type === areas.item.action.type && element.type !== "recurrent") {
             icons.push(element.icon);
           } else if (element.type === areas.item.action.type && element.type === "recurrent") {
-            if (areas.item.description.includes(element.name[0]))
+            if (areas.item.description.includes(element.name.split(' ')[0]))
               icons.push(element.icon);
           }
         });

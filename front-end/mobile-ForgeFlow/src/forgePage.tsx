@@ -35,13 +35,21 @@ async function forge(name: string, repo: string, cronTime: string, reactionValue
     if (action.name === 'Each day at [x]' && cronTime !== '') {
       description = 'Each day at ' + cronTime + ' then ' + reaction.name;
       value = {
-        cronTime: cronTime,
+        cron: cronTime,
       }
       showToast(name + description);
     } else if (action.name === 'At [hour] on [day]' && cronTime !== '') {
       description = 'At ' + cronTime + ' then ' + reaction.name;
       value = {
-        cronTime: cronTime,
+        cron: cronTime,
+      }
+      showToast(name + description);
+    } else if (action.name === 'Every [x] time' && cronTime !== '') {
+      description = 'Every ' + cronTime + ' then ' + reaction.name;
+      var myCron = JSON.parse(cronTime);
+      value = {
+        hour: myCron.hour,
+        minute: myCron.minute,
       }
       showToast(name + description);
     }

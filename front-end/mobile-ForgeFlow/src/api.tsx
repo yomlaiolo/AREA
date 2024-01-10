@@ -281,6 +281,7 @@ export async function signInWithGithub() {
   const token = await getVar('token');
   const githubToken = await authorize(config);
 
+  console.log(githubToken);
   if (!githubToken) {
     console.log('No token found');
     return;

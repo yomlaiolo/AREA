@@ -71,6 +71,17 @@ export const actions = [
     value: {
     }
   },
+  {
+    id: 6,
+    name: "Every [x] time",
+    type: "interval",
+    icon: require('@ressources/clock.png'),
+    backgroundColor: "#67A1B5",
+    textColor: "black",
+    redirection: "cron",
+    value: {
+    }
+  }
 ];
 
 export const reactions = [
