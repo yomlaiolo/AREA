@@ -1,6 +1,6 @@
 import React from "react";
 import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { getVar, setVar, signInWithGithub } from "./api";
+import { getVar, googleSignInFunc, isGithubLoggedIn, isGoogleLoggedIn, sendGoogleLogin, setVar, signInWithGithub } from "./api";
 import { actions } from "./area";
 import { useFocusEffect } from "@react-navigation/native";
 
@@ -13,8 +13,15 @@ async function press(navigation: any, item: any) {
     } else if (item.name === 'Issue created') {
       name = 'Issue';
     }
-    await signInWithGithub();
+    if (await isGithubLoggedIn() === false) {
+      await signInWithGithub();
+    }
     navigation.navigate('SelectGithugRepo', { name: name });
+  } else if (item.redirection === 'google') {
+    if (await isGoogleLoggedIn() === false)
+      if (await googleSignInFunc() === false)
+        return;
+    navigation.goBack();
   } else if (item.redirection === 'cron') {
     var type = '';
     if (item.name === 'Each day at [x]') {

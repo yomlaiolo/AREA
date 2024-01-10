@@ -2,7 +2,7 @@ import { Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { API, GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, GOOGLE_CLIENT_ID } from '@env';
 import { authorize } from 'react-native-app-auth';
-import { GoogleSignin, statusCodes } from '@react-native-google-signin/google-signin';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 GoogleSignin.configure({
   webClientId: GOOGLE_CLIENT_ID,
@@ -11,56 +11,43 @@ GoogleSignin.configure({
   scopes: ['profile', 'email', 'https://www.googleapis.com/auth/drive'],
 });
 
-export async function googleSignInFunc(navigation: any) {
+export async function googleSignInFunc() {
   try {
     await GoogleSignin.hasPlayServices();
     const userInfo = await GoogleSignin.signIn();
-    sendGoogleLogin(navigation, userInfo);
+    return await sendGoogleLogin(userInfo);
   } catch (error: any) {
     console.log(error);
-    if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-      // user cancelled the login flow
-    } else if (error.code === statusCodes.IN_PROGRESS) {
-      // operation (e.g. sign in) is in progress already
-    } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-      // play services not available or outdated
-    } else {
-      // some other error happened
-    }
-  } finally {
-
+    return false;
   }
 };
 
-export async function sendGoogleLogin(navigation: any, infos: any) {
-  fetch(API + '/auth/google', {
-    method: 'POST',
-    headers: new Headers({
-      'Content-Type': 'application/json',
-    }),
-    body: JSON.stringify({
-      "user": infos.user,
-      "server_auth_code": infos.serverAuthCode,
-      "id_token": infos.idToken,
+export async function sendGoogleLogin(infos: any) {
+  try {
+    const response = await fetch(API + '/auth/google', {
+      method: 'POST',
+      headers: new Headers({
+        'Content-Type': 'application/json',
+      }),
+      body: JSON.stringify({
+        "user": infos.user,
+        "server_auth_code": infos.serverAuthCode,
+        "id_token": infos.idToken,
+      })
     })
-  })
-    .then(response => {
-      if (response.status === 200)
-        return response.json();
-      else if (response.status === 401)
-        return null;
-    })
-    .then(async data => {
-      if (data && data.access_token) {
-        let token = data.access_token;
-        await setVar('token', token);
-        navigation.reset({ index: 0, routes: [{ name: 'Home' }] });
-      } else
-        Alert.alert("Error", "Unauthorized - invalid credentials");
-    })
-    .catch((error) => {
-      console.log('Error:', error);
-    });
+    if (response.status === 200) {
+      const data = await response.json();
+      let token = data.access_token;
+      await setVar('token', token);
+      return true;
+    } else if (response.status === 401) {
+      console.log("Unauthorized - invalid credentials");
+      return false;
+    }
+  } catch (error) {
+    console.log('Error:', error);
+    return false;
+  }
 }
 
 export async function login(email: string, password: string, navigation: any) {
@@ -159,6 +146,58 @@ export async function userInfo() {
   return { username, email };
 }
 
+export async function isGoogleLoggedIn() {
+  const token = await AsyncStorage.getItem('token');
+
+  if (!token) {
+    console.log('No token found');
+    return false;
+  }
+  try {
+    const response = await fetch(API + '/users', {
+      method: 'GET',
+      headers: new Headers({
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token,
+      }),
+    });
+    if (response.status === 200) {
+      const data = await response.json();
+      return data.google_connected;
+    } else if (response.status === 401) {
+      return false;
+    }
+  } catch (error) {
+    console.log('Error:', error);
+  }
+}
+
+export async function isGithubLoggedIn() {
+  const token = await AsyncStorage.getItem('token');
+
+  if (!token) {
+    console.log('No token found');
+    return false;
+  }
+  try {
+    const response = await fetch(API + '/users', {
+      method: 'GET',
+      headers: new Headers({
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token,
+      }),
+    });
+    if (response.status === 200) {
+      const data = await response.json();
+      return data.github_connected;
+    } else if (response.status === 401) {
+      return false;
+    }
+  } catch (error) {
+    console.log('Error:', error);
+  }
+}
+
 export async function modifyProfile(username: string, email: string, password: string) {
   const token = await AsyncStorage.getItem('token');
 
@@ -239,6 +278,7 @@ const config = {
 };
 
 export async function signInWithGithub() {
+  const token = await getVar('token');
   const githubToken = await authorize(config);
 
   if (!githubToken) {
@@ -250,6 +290,7 @@ export async function signInWithGithub() {
     method: 'POST',
     headers: new Headers({
       'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + token,
     }),
     body: JSON.stringify({
       token: githubToken.accessToken,
@@ -257,9 +298,12 @@ export async function signInWithGithub() {
   })
     .then(response => {
       if (response.status === 200) {
+        console.log('Github token saved');
         return response.json();
-      } else if (response.status === 401)
+      } else if (response.status === 401) {
+        console.log('Unauthorized - invalid credentials');
         return null;
+      }
     })
     .catch(error => {
       console.log('Error:', error);

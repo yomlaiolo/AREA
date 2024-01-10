@@ -14,6 +14,7 @@ import { useLockOrientationPortrait } from 'src/utils';
 import SelectGithugRepo from 'src/selectRepo';
 import SelectCron from 'src/selectCron';
 import SetEmail from 'src/setEmail';
+import SetGithub from 'src/setGithub';
 
 const Stack = createNativeStackNavigator();
 
@@ -33,6 +34,7 @@ export default function App() {
         <Stack.Screen name="SelectGithugRepo" component={SelectGithugRepo} options={{ title: 'SelectGithugRepo', headerShown: false }} />
         <Stack.Screen name="SelectCron" component={SelectCron} options={{ title: 'SelectCron', headerShown: false }} />
         <Stack.Screen name="SetEmail" component={SetEmail} options={{ title: 'SetEmail', headerShown: false }} />
+        <Stack.Screen name="SetGithub" component={SetGithub} options={{ title: 'SetGithub', headerShown: false }} />
       </Stack.Navigator>
     </NavigationContainer>
   );

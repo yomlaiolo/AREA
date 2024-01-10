@@ -72,12 +72,13 @@ async function forge(name: string, repo: string, cronTime: string, reactionValue
       value: reactionValue,
     },
   };
-  console.log(myArea);
-  var response = await createArea(myArea);
-  console.log(response);
+  if (await createArea(myArea) !== 0) {
+    showToast('An error occured, maybe the variables are not set correctly');
+    return 1;
+  }
 
-  // removeVar('action');
-  // removeVar('reaction');
+  removeVar('action');
+  removeVar('reaction');
   return 0;
 }
 
@@ -176,11 +177,11 @@ export default function ForgePage({ navigation }: any) {
                   return;
                 }
                 const value = await forge(name, repo, cronTime, reactionValue);
-                // if (value === 0) {
-                //   setActionSelected(actions[0]);
-                //   setReactionSelected(reactions[0]);
-                //   setName('');
-                // }
+                if (value === 0) {
+                  setActionSelected(actions[0]);
+                  setReactionSelected(reactions[0]);
+                  setName('');
+                }
               }} />
             </View>
           }

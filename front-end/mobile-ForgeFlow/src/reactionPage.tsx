@@ -1,16 +1,21 @@
 import React from "react";
 import { FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { getVar, setVar, signInWithGithub } from "./api";
+import { getVar, isGithubLoggedIn, isGoogleLoggedIn, setVar, signInWithGithub } from "./api";
 import { reactions } from "./area";
 import { useFocusEffect } from "@react-navigation/native";
 
 async function press(navigation: any, item: any) {
   setVar('reaction', item.id.toString());
   if (item.redirection === 'github') {
-    await signInWithGithub();
-  } else if (item.redirection === 'cron') {
-    navigation.navigate('SelectCron');
+    if (await isGithubLoggedIn() === false) {
+      await signInWithGithub();
+    }
+    navigation.navigate('SetGithub', { idx: await getVar('action'), name: item.name });
   } else if (item.redirection === 'google') {
+    if (await isGoogleLoggedIn() === false) {
+      console.log('not logged in');
+      return;
+    }
     navigation.navigate('SetEmail', { idx: await getVar('action') });
   }
 }
