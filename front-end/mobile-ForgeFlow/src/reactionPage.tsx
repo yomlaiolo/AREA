@@ -17,6 +17,10 @@ async function press(navigation: any, item: any) {
       return;
     }
     navigation.navigate('SetEmail', { idx: await getVar('action') });
+  } else if (item.redirection === 'notification') {
+    navigation.navigate('SetNotification', { idx: await getVar('action') });
+  } else if (item.redirection === 'openai') {
+    navigation.navigate('SetOpenAI', { idx: await getVar('action'), name: item.name });
   }
 }
 

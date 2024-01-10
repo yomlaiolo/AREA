@@ -7,16 +7,14 @@ import { useRoute } from "@react-navigation/native";
 import TextBox from "@components//textbox";
 import { showToast } from "./utils";
 
-export default function SetEmail({ navigation, idx }: any) {
+export default function SetNotification({ navigation, idx }: any) {
   const route = useRoute();
   const params = route.params;
   const string_params = JSON.stringify(params);
   const indexStr = string_params.substring(8, string_params.length - 2);
   const index = parseInt(indexStr);
   const [text, setText] = useState('');
-  const [to, setTo] = useState('');
-  const [cc, setCc] = useState('');
-  const [subject, setSubject] = useState('');
+  const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
 
   useEffect(() => {
@@ -37,25 +35,21 @@ export default function SetEmail({ navigation, idx }: any) {
           <TouchableOpacity onPress={() => { navigation.goBack() }} >
             <Image style={styles.chevron} source={require('@ressources/chevronL.png')} />
           </TouchableOpacity>
-          <Text style={styles.title} >Send an email</Text>
+          <Text style={styles.title} >Send a notification</Text>
         </View>
         <View style={styles.separator} />
         <ScrollView style={{ width: '90%', height: '100%', marginTop: 20 }} contentContainerStyle={{ alignItems: 'center' }} >
-          <Image style={{ width: 150, height: 150, }} source={require('@ressources/mail.png')} />
+          <Image style={{ width: 150, height: 150, }} source={require('@ressources/notification.png')} />
           <Text style={{ fontSize: 20, color: '#1F1F1F', marginTop: 20, marginHorizontal: 30, textAlign: 'center', width: '90%' }} >{text}</Text>
-          <TextBox backgroundColor="white" borderColor="#E2E2E2" onChangeText={setTo} value={to} placeholder="To" hideText={false} autocomplete="off" />
-          <TextBox backgroundColor="white" borderColor="#E2E2E2" onChangeText={setCc} value={cc} placeholder="Cc" hideText={false} autocomplete="off" />
-          <TextBox backgroundColor="white" borderColor="#E2E2E2" onChangeText={setSubject} value={subject} placeholder="Subject" hideText={false} autocomplete="off" />
+          <TextBox backgroundColor="white" borderColor="#E2E2E2" onChangeText={setTitle} value={title} placeholder="Title" hideText={false} autocomplete="off" />
           <TextBox backgroundColor="white" borderColor="#E2E2E2" onChangeText={setBody} value={body} placeholder="Body" hideText={false} autocomplete="off" />
           <AreaButton backgroundColor="#1F1F1F" activeOpacity={0.5} textColor="white" title="Add this reaction" onPress={async () => {
-            if (to === '' || subject === '' || body === '') {
+            if (title === '' || body === '') {
               showToast('Please fill all fields');
               return;
             }
             var value = {
-              to: to,
-              cc: cc,
-              subject: subject,
+              title: title,
               body: body,
             };
             await setVar('reactionValue', JSON.stringify(value));

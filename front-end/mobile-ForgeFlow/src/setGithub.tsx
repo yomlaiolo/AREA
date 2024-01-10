@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Image, Keyboard, ScrollView, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
-import { setVar } from "./api";
+import { getRepo, setVar } from "./api";
 import AreaButton from "@components//button";
 import { actions } from "./area";
 import { useRoute } from "@react-navigation/native";
 import TextBox from "@components//textbox";
 import { showToast } from "./utils";
+import { Picker } from "@react-native-picker/picker";
 
 export default function SetGithub({ navigation, idx, name }: any) {
   const route = useRoute();
@@ -18,6 +19,7 @@ export default function SetGithub({ navigation, idx, name }: any) {
   const [toBranch, setToBranch] = useState('');
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
+  const [repoList, setRepoList] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,6 +31,13 @@ export default function SetGithub({ navigation, idx, name }: any) {
     };
     fetchData();
   }, [index]);
+  useEffect(() => {
+    const fetchRepoList = async () => {
+      const repos = await getRepo();
+      setRepoList(repos as []);
+    };
+    fetchRepoList();
+  }, []);
 
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -43,7 +52,18 @@ export default function SetGithub({ navigation, idx, name }: any) {
         <ScrollView style={{ width: '90%', height: '100%', marginTop: 20 }} contentContainerStyle={{ alignItems: 'center' }} >
           <Image style={{ width: 150, height: 150, }} source={require('@ressources/github.png')} />
           <Text style={{ fontSize: 20, color: '#1F1F1F', marginTop: 20, marginHorizontal: 30, textAlign: 'center', width: '90%' }} >{text}</Text>
-          <TextBox backgroundColor="white" borderColor="#E2E2E2" onChangeText={setRepo} value={repo} placeholder="Repository" hideText={false} autocomplete="off" />
+          <Picker
+            style={styles.picker}
+            selectedValue={repo}
+            onValueChange={(itemValue) =>
+              setRepo(itemValue)
+            }>
+            <Picker.Item label="Select a repository" value="" />
+            {repoList && repoList.map((item, index) => {
+              return (<Picker.Item label={item} value={item} key={index} />)
+            }
+            )}
+          </Picker>
           {type === 'Create a pull request' ? (
             <>
               <TextBox backgroundColor="white" borderColor="#E2E2E2" onChangeText={setFromBranch} value={fromBranch} placeholder="From branch" hideText={false} autocomplete="off" />
@@ -116,11 +136,13 @@ const styles = StyleSheet.create({
     height: 30,
   },
   picker: {
-    width: '80%',
-    backgroundColor: "#E5E5E5",
+    width: '100%',
+    backgroundColor: "#CECECE",
     borderRadius: 10,
     marginTop: 20,
+    marginBottom: 10,
     alignItems: "center",
     paddingHorizontal: '5%',
+    color: 'black',
   },
 })

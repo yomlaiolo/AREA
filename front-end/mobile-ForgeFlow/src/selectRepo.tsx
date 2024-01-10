@@ -1,40 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { Picker } from '@react-native-picker/picker';
-import { getVar, setVar } from "./api";
+import { getRepo, getVar, setVar } from "./api";
 import { showToast } from "./utils";
 import AreaButton from "@components//button";
 import { useRoute } from "@react-navigation/native";
-
-async function getRepo() {
-  const token = await getVar('githubToken');
-  const repos: any[] = [];
-  if (!token) {
-    console.log('No token found');
-    return;
-  }
-
-  try {
-    const response = await fetch('https://api.github.com/user/repos', {
-      method: 'GET',
-      headers: new Headers({
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + token,
-      }),
-    });
-    if (response.status === 200) {
-      const data = await response.json();
-      data.forEach((item: any) => {
-        repos.push(item.name);
-      });
-    } else if (response.status === 401) {
-      console.log('Unauthorized - invalid credentials');
-    }
-  } catch (error) {
-    console.error('Error:', error);
-  }
-  return repos;
-}
 
 export default function SelectGithugRepo({ navigation, name }: any) {
   const route = useRoute();
