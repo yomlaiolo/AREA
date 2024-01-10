@@ -101,6 +101,10 @@ export class UsersService {
     return this.userModel.findOne({ email: email }).exec();
   }
 
+  async findOneByGithubUsername(username: string): Promise<User> {
+    return this.userModel.findOne({ 'github.username': username }).exec();
+  }
+
   async findAll(): Promise<User[]> {
     return this.userModel.find().exec();
   }
@@ -135,11 +139,73 @@ export class UsersService {
       .exec();
   }
 
-  async addWebhook(repoOwner: string, repoName: string, webhookId: string) {
+  async addWebhookUUID(
+    repoOwner: string,
+    repoName: string,
+    webhookUUID: string,
+  ) {
     this.userModel
       .findOneAndUpdate(
         { 'github.username': repoOwner },
-        { $set: { [`github.webhooks.${repoOwner}/${repoName}`]: webhookId } },
+        {
+          $set: {
+            [`github.webhooks.${repoOwner}/${repoName}.webhookUUID`]:
+              webhookUUID,
+          },
+        },
+      )
+      .exec();
+  }
+
+  async addWebhookId(repoOwner: string, repoName: string, webhookId: string) {
+    this.userModel
+      .findOneAndUpdate(
+        { 'github.username': repoOwner },
+        {
+          $set: {
+            [`github.webhooks.${repoOwner}/${repoName}.webhookUUID`]: webhookId,
+          },
+        },
+      )
+      .exec();
+  }
+
+  async addWebhookReaction(
+    repoOwner: string,
+    repoName: string,
+    reactionFunc: string,
+    actionData: object,
+    reactionData: object,
+  ) {
+    this.userModel
+      .findOneAndUpdate(
+        { 'github.username': repoOwner },
+        {
+          $set: {
+            [`github.webhooks.${repoOwner}/${repoName}.reactionFunc`]:
+              reactionFunc,
+            [`github.webhooks.${repoOwner}/${repoName}.actionData`]: actionData,
+            [`github.webhooks.${repoOwner}/${repoName}.reactionData`]:
+              reactionData,
+          },
+        },
+      )
+      .exec();
+  }
+
+  async setWebhookReactionData(
+    repoOwner: string,
+    repoName: string,
+    data: object,
+  ) {
+    this.userModel
+      .findOneAndUpdate(
+        { 'github.username': repoOwner },
+        {
+          $set: {
+            [`github.webhooks.${repoOwner}/${repoName}.data`]: data,
+          },
+        },
       )
       .exec();
   }

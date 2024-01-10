@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { AreaController } from './area.controller';
 import { AreaService } from './area.service';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -11,10 +11,10 @@ import { GDriveModule } from 'src/gdrive/gdrive.module';
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: Area.name, schema: AreaSchema }]),
-    UsersModule,
-    GithubModule,
-    OpenAIModule,
-    GDriveModule,
+    forwardRef(() => UsersModule),
+    forwardRef(() => GithubModule),
+    forwardRef(() => OpenAIModule),
+    forwardRef(() => GDriveModule),
   ],
   controllers: [AreaController],
   providers: [AreaService],

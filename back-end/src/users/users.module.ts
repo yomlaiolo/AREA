@@ -8,9 +8,13 @@ import { AuthModule } from 'src/auth/auth.module';
 import { GithubModule } from 'src/github-action/github.module';
 
 @Module({
-  imports: [MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]), AuthModule, GithubModule],
+  imports: [
+    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
+    forwardRef(() => AuthModule),
+    forwardRef(() => GithubModule),
+  ],
   controllers: [UsersController],
   providers: [UsersService],
   exports: [UsersService],
 })
-export class UsersModule { }
+export class UsersModule {}

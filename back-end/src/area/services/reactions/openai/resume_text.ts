@@ -13,5 +13,6 @@ resumeTextReaction.doc = 'Resume the message with openai.';
 resumeTextReaction.dataExample = {
   message: '__message__',
 };
+resumeTextReaction.type = 'function';
 
 export { resumeTextReaction };

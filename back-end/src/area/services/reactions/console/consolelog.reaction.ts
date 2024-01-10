@@ -17,7 +17,7 @@ export default class ConsoleLogReaction implements ReactionInterface {
 
   data: { message: string };
   user: User;
-  
+
   constructor(
     data: { message: string },
     user: User,
@@ -31,7 +31,7 @@ export default class ConsoleLogReaction implements ReactionInterface {
   }
 
   async exec(): Promise<void> {
-    console.log(this.data.message);
+    console.log(this.data['value'].message);
   }
 
   async check(): Promise<boolean> {

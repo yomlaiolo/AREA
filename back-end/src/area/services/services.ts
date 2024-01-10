@@ -18,6 +18,10 @@ import ReceiveEmailAction from './actions/google/receive_email.action';
 // Reactions ##################################################################
 // console
 import ConsoleLogReaction from './reactions/console/consolelog.reaction';
+import IssueAction from './actions/github/new_issue';
+import PullRequestAction from './actions/github/new_pull_request';
+import IssueReaction from './reactions/github/issue';
+import PullRequestReaction from './reactions/github/pull_request';
 
 export const actionConstructors: (new (
   actionDto: ActionDto,
@@ -28,7 +32,13 @@ export const actionConstructors: (new (
   usersService: UsersService,
   gDriveService: GDriveService,
   openAiService: OpenAIService,
-) => ActionInterface)[] = [IntervalAction, RecurrentAction, ReceiveEmailAction];
+) => ActionInterface)[] = [
+  IntervalAction,
+  IssueAction,
+  PullRequestAction,
+  RecurrentAction,
+  ReceiveEmailAction,
+];
 
 export const reactionConstructors: (new (
   data: object,
@@ -37,7 +47,11 @@ export const reactionConstructors: (new (
   usersService: UsersService,
   gDriveService: GDriveService,
   openAiService: OpenAIService,
-) => ReactionInterface)[] = [ConsoleLogReaction];
+) => ReactionInterface)[] = [
+  ConsoleLogReaction,
+  IssueReaction,
+  PullRequestReaction,
+];
 
 export function createAbout(): object[] {
   const services = [];

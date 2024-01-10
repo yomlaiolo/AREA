@@ -1,10 +1,4 @@
-import {
-  BadRequestException,
-  HttpCode,
-  HttpException,
-  Injectable,
-  OnModuleInit,
-} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Area } from './area.schema';
@@ -52,6 +46,9 @@ export class AreaService {
     if (!action || !(await action.check()))
       return { error: 'Action or reaction not found' };
     else action.exec();
+    const tmp = await this.areaModel.findById(id).exec();
+    tmp.first_launch = false;
+    await tmp.save();
     return { id: id };
   }
 
@@ -75,8 +72,9 @@ export class AreaService {
       });
   }
 
-  async create(createAreaDto: CreateAreaDto, user_id: string): Promise<Object> {
+  async create(createAreaDto: CreateAreaDto, user_id: string): Promise<object> {
     const area = new this.areaModel({ ...createAreaDto, user_id: user_id });
+    await area.save();
     const response = this.launchArea(
       area.action,
       area.reaction,

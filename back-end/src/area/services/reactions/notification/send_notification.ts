@@ -13,5 +13,6 @@ sendNotificationReaction.doc = "Sends a notification to the user's device.";
 sendNotificationReaction.dataExample = {
   message: '__message__',
 };
+sendNotificationReaction.type = 'function';
 
 export { sendNotificationReaction };
