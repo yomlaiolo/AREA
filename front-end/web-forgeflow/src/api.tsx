@@ -213,3 +213,29 @@ export async function getVar(key: string) {
 export async function removeVar(key: string) {
     localStorage.removeItem(key);
 }
+
+export async function createArea(area: any) {
+    const token = await getToken();
+  
+    if (token === null)
+        return "Not connected";
+    try {
+      console.log(JSON.stringify(area));
+      const response = await fetch(API + '/area/create', {
+        method: 'POST',
+        headers: new Headers({
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + token,
+        }),
+        body: JSON.stringify(area),
+      });
+      if (response.status === 201) {
+        return 0;
+      } else if (response.status === 400) {
+        return "Invalid data";
+      }
+    } catch (error) {
+      console.log('Error:', error);
+    }
+    return "Unknown error, maybe the server is down";
+  }
