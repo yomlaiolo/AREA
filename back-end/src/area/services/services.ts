@@ -36,6 +36,71 @@ export const reactionConstructors: (new (
   openAiService: OpenAIService,
 ) => ReactionInterface)[] = [ConsoleLogReaction];
 
+export function createAbout(): object[] {
+  const services = [];
+  const allServices = [];
+
+  actionConstructors.forEach((element) => {
+    let tmp = new element(
+      {} as ActionDto,
+      {} as ReactionDto,
+      {} as User,
+      {} as CancellationToken,
+      null,
+      null,
+      null,
+      null,
+    );
+    if (!allServices.includes(tmp.service)) allServices.push(tmp.service);
+  });
+  reactionConstructors.forEach((element) => {
+    let tmp = new element({}, {} as User, null, null, null, null);
+    if (!allServices.includes(tmp.service)) allServices.push(tmp.service);
+  });
+
+  allServices.forEach((serviceName) => {
+    const action = [];
+    const reaction = [];
+    actionConstructors.forEach((element) => {
+      const tmpAction = new element(
+        {} as ActionDto,
+        {} as ReactionDto,
+        {} as User,
+        {} as CancellationToken,
+        null,
+        null,
+        null,
+        null,
+      );
+      if (tmpAction.service === serviceName) {
+        action.push({
+          method: tmpAction.method,
+          description: tmpAction.description,
+          example: tmpAction.example,
+        });
+      }
+    });
+
+    reactionConstructors.forEach((element) => {
+      const tmpReaction = new element({}, {} as User, null, null, null, null);
+      if (tmpReaction.service === serviceName) {
+        reaction.push({
+          method: tmpReaction.method,
+          description: tmpReaction.description,
+          example: tmpReaction.example,
+        });
+      }
+    });
+    services.push({
+      name: serviceName,
+      actions: action,
+      reactions: reaction,
+    });
+  });
+
+  return services;
+}
+
 export function createMapAction(
   actionConstructors: (new (
     actionDto: ActionDto,
