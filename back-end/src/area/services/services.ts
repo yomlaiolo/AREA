@@ -8,13 +8,16 @@ import { UsersService } from 'src/users/users.service';
 import { GDriveService } from 'src/gdrive/gdrive.service';
 import { OpenAIService } from 'src/openai/openai.service';
 
-// Actions #########################################################
+// Actions ####################################################################
 // cron
 import IntervalAction from './actions/cron/interval.action';
+import RecurrentAction from './actions/cron/recurrent.action';
+// google
+import ReceiveEmailAction from './actions/google/receive_email.action';
 
-// Reactions ######################################################
+// Reactions ##################################################################
 // console
-import ConsoleLogReaction from './reactions/console/consolelog.action';
+import ConsoleLogReaction from './reactions/console/consolelog.reaction';
 
 export const actionConstructors: (new (
   actionDto: ActionDto,
@@ -25,7 +28,7 @@ export const actionConstructors: (new (
   usersService: UsersService,
   gDriveService: GDriveService,
   openAiService: OpenAIService,
-) => ActionInterface)[] = [IntervalAction];
+) => ActionInterface)[] = [IntervalAction, RecurrentAction, ReceiveEmailAction];
 
 export const reactionConstructors: (new (
   data: object,
@@ -158,9 +161,6 @@ export function factoryArea(
   gDriveService: GDriveService,
   openAiService: OpenAIService,
 ): ActionInterface {
-  console.log('actionDto', actionDto);
-  console.log('reactionDto', reactionDto);
-  console.log('user', user);
   const actionMap = createMapAction(actionConstructors);
   const action = actionMap[actionDto.type]
     ? new actionMap[actionDto.type](
