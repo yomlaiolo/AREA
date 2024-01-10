@@ -1,18 +1,30 @@
-import { BadRequestException, HttpCode, HttpException, Injectable, OnModuleInit } from '@nestjs/common';
+import {
+  BadRequestException,
+  HttpCode,
+  HttpException,
+  Injectable,
+  OnModuleInit,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Area } from './area.schema';
 import { ActionDto, CreateAreaDto, ReactionDto } from './dto/create-area.dto';
 import { CancellationToken } from '../utils/cancellation_token';
 
-import { factoryAction, factoryReaction } from './services/services';
+import { factoryArea } from './services/services';
 import { UsersService } from '../users/users.service';
+import { GithubService } from 'src/github-action/github.service';
+import { GDriveService } from 'src/gdrive/gdrive.service';
+import { OpenAIService } from 'src/openai/openai.service';
 
 @Injectable()
 export class AreaService {
   constructor(
     @InjectModel(Area.name) private areaModel: Model<Area>,
+    private readonly githubService: GithubService,
     private readonly usersService: UsersService,
+    private readonly gDriveService: GDriveService,
+    private readonly openAiService: OpenAIService,
   ) {}
   private cancellation_tokens: Map<string, CancellationToken> = new Map();
 
@@ -20,32 +32,43 @@ export class AreaService {
     actionDto: ActionDto,
     reactionDto: ReactionDto,
     id: string,
-    area: Area
+    area: Area,
   ): Promise<void> {
-    const action = factoryAction(actionDto);
-    const reaction = factoryReaction(reactionDto);
-
-    if (!action || !reaction)
-      throw new BadRequestException('Invalid action or reaction');
     const token = new CancellationToken();
     this.cancellation_tokens.set(id, token);
     const user = await this.usersService.findOneById(area.user_id);
-    try {
-      await action(actionDto.value, reaction, reactionDto.value, token, user);
-    } catch (e) {
-      console.error('Error in action:', e);
-    }
+
+    const action = factoryArea(
+      actionDto,
+      reactionDto,
+      user,
+      token,
+      this.githubService,
+      this.usersService,
+      this.gDriveService,
+      this.openAiService,
+    );
+    
+    if (!action)
+      throw new BadRequestException('Action not found');
+    if (!await action.check())
+      throw new BadRequestException('Action check failed');
+    action.exec();
   }
 
   launchAllAreas(): void {
-    
     this.areaModel
       .find()
       .exec()
       .then((areas) => {
         areas.forEach((area) => {
           try {
-            this.launchArea(area.action, area.reaction, area._id.toString(), area);
+            this.launchArea(
+              area.action,
+              area.reaction,
+              area._id.toString(),
+              area,
+            );
           } catch (e) {
             console.error('Error in launchArea:', e);
           }

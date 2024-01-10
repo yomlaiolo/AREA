@@ -1,63 +1,113 @@
+import { User } from 'src/users/user.schema';
 import { ActionDto, ReactionDto } from '../dto/create-area.dto';
+import { ActionInterface } from './actions/action.interface';
+import { ReactionInterface } from './reactions/reaction.interface';
+import { CancellationToken } from 'src/utils/cancellation_token';
+import { GithubService } from 'src/github-action/github.service';
+import { UsersService } from 'src/users/users.service';
+import { GDriveService } from 'src/gdrive/gdrive.service';
+import { OpenAIService } from 'src/openai/openai.service';
 
 // Actions #########################################################
 // cron
-import { intervalAction } from './actions/cron/interval';
-import { recurrentAction } from './actions/cron/recurrent';
-// github
-import { newIssueAction } from './actions/github/new_issue';
-import { newPullRequestAction } from './actions/github/new_pull_request';
-// google
-import { receiveEmailAction } from './actions/google/receive_email';
-import { consoleLogReaction } from './reactions/console/consolelog';
+import IntervalAction from './actions/cron/interval.action';
 
-// Reactions #######################################################
-// github
-import { newIssueReaction } from './reactions/github/issue';
-import { newPullRequestReaction } from './reactions/github/pull_request';
-// google
-import { sendEmailReaction } from './reactions/google/send_email';
-// notification
-import { sendNotificationReaction } from './reactions/notification/send_notification';
-// openai
-import { resumeTextReaction } from './reactions/openai/resume_text';
-import { suggestResponseReaction } from './reactions/openai/suggest_response';
+// Reactions ######################################################
+// console
+import ConsoleLogReaction from './reactions/console/consolelog.action';
 
-function createList(functions: Function[]) {
-  const List = {};
-  functions.forEach((action) => {
-    List[action['method']] = action;
+export const actionConstructors: (new (
+  actionDto: ActionDto,
+  reactionDto: ReactionDto,
+  user: object,
+  token: object,
+  githubService: GithubService,
+  usersService: UsersService,
+  gDriveService: GDriveService,
+  openAiService: OpenAIService,
+) => ActionInterface)[] = [IntervalAction];
+
+export const reactionConstructors: (new (
+  data: object,
+  user: User,
+  githubService: GithubService,
+  usersService: UsersService,
+  gDriveService: GDriveService,
+  openAiService: OpenAIService,
+) => ReactionInterface)[] = [ConsoleLogReaction];
+
+export function createMapAction(
+  actionConstructors: (new (
+    actionDto: ActionDto,
+    reactionDto: ReactionDto,
+    user: object,
+    token: object,
+    githubService: GithubService,
+    usersService: UsersService,
+    gDriveService: GDriveService,
+    openAiService: OpenAIService,
+  ) => ActionInterface)[],
+) {
+  const actionMap = {};
+  actionConstructors.forEach((element) => {
+    let tmp = new element(
+      {} as ActionDto,
+      {} as ReactionDto,
+      {} as User,
+      {} as CancellationToken,
+      null,
+      null,
+      null,
+      null,
+    );
+    actionMap[tmp.method] = element;
   });
-  return List;
+  return actionMap;
 }
 
-const actions = [
-  intervalAction,
-  recurrentAction,
-  newIssueAction,
-  newPullRequestAction,
-  receiveEmailAction,
-];
-
-const reactions = [
-  newIssueReaction,
-  newPullRequestReaction,
-  sendEmailReaction,
-  sendNotificationReaction,
-  resumeTextReaction,
-  suggestResponseReaction,
-  consoleLogReaction,
-];
-
-export const actionsList = createList(actions);
-export const reactionsList = createList(reactions);
-
-export function factoryAction(actionDto: ActionDto): Function | null {
-  if (actionDto.type in actionsList) return actionsList[actionDto.type];
-  return null;
+export function createMapReaction(
+  reactionConstructors: (new (
+    data: object,
+    user: User,
+    githubService: GithubService,
+    usersService: UsersService,
+    gDriveService: GDriveService,
+    openAiService: OpenAIService,
+  ) => ReactionInterface)[],
+) {
+  const reactionMap = {};
+  reactionConstructors.forEach((element) => {
+    let tmp = new element({} as object, {} as User, null, null, null, null);
+    reactionMap[tmp.method] = element;
+  });
+  return reactionMap;
 }
 
-export function factoryReaction(reactionDto: ReactionDto): Function | null {
-  if (reactionDto.type in reactionsList) return reactionsList[reactionDto.type];
-  return null;
+export function factoryArea(
+  actionDto: ActionDto,
+  reactionDto: ReactionDto,
+  user: User,
+  token: object,
+  githubService: GithubService,
+  usersService: UsersService,
+  gDriveService: GDriveService,
+  openAiService: OpenAIService,
+): ActionInterface {
+  console.log('actionDto', actionDto);
+  console.log('reactionDto', reactionDto);
+  console.log('user', user);
+  const actionMap = createMapAction(actionConstructors);
+  const action = actionMap[actionDto.type]
+    ? new actionMap[actionDto.type](
+        actionDto,
+        reactionDto,
+        user,
+        token,
+        githubService,
+        usersService,
+        gDriveService,
+        openAiService,
+      )
+    : null;
+  return action;
 }
