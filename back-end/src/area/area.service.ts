@@ -33,7 +33,7 @@ export class AreaService {
     reactionDto: ReactionDto,
     id: string,
     area: Area,
-  ): Promise<void> {
+  ): Promise<object> {
     const token = new CancellationToken();
     this.cancellation_tokens.set(id, token);
     const user = await this.usersService.findOneById(area.user_id);
@@ -48,12 +48,11 @@ export class AreaService {
       this.gDriveService,
       this.openAiService,
     );
-    
-    if (!action)
-      throw new BadRequestException('Action not found');
-    if (!await action.check())
-      throw new BadRequestException('Action check failed');
-    action.exec();
+
+    if (!action || !(await action.check()))
+      return { error: 'Action or reaction not found' };
+    else action.exec();
+    return { id: id };
   }
 
   launchAllAreas(): void {
@@ -78,8 +77,13 @@ export class AreaService {
 
   async create(createAreaDto: CreateAreaDto, user_id: string): Promise<Object> {
     const area = new this.areaModel({ ...createAreaDto, user_id: user_id });
-    this.launchArea(area.action, area.reaction, area._id.toString(), area);
-    return { id: (await area.save())._id.toString() };
+    const response = this.launchArea(
+      area.action,
+      area.reaction,
+      area._id.toString(),
+      area,
+    );
+    return response;
   }
 
   async delete(id: string): Promise<void> {
