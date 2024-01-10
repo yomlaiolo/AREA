@@ -5,7 +5,8 @@ import profile_icon from '../assets/profile.svg';
 import mail_icon from '../assets/mail.svg';
 import notif_icon from '../assets/bell.svg';
 import modif_icon from '../assets/modif.svg';
-import { userInfo, getVar, setVar, signInWithGithub } from '../api';
+import github_icon from '../assets/github-white.svg';
+import { userInfo, getVar, setVar, signInWithGithub, removeVar } from '../api';
 import { Profile_selected, Modify_email_selected, modify_password_selected, notifications_selected } from '../components/Profile_selected';
 
 export const Profilepage = () => {
@@ -19,6 +20,8 @@ export const Profilepage = () => {
     const [profile_menu_selected, setProfile_menu_selected] = React.useState('Profile');
     const [Notifications, setNotifications] = React.useState(true);
     const [Img, setImg] = React.useState('https://www.w3schools.com/howto/img_avatar.png');
+    const [accessTokenGithub, setAccessTokenGithub] = React.useState<string | null>(null);
+
     setVar('code', '');
 
     const fetchData = async () => {
@@ -30,7 +33,11 @@ export const Profilepage = () => {
 
     function loginwithGithub() {
         window.location.assign("https://github.com/login/oauth/authorize?client_id=" + process.env.REACT_APP_GITHUB_CLIENT_ID);
+    }
 
+    function logoutGithub() {
+        removeVar('access_token_github');
+        setAccessTokenGithub(null);
     }
 
     fetchData();
@@ -75,6 +82,7 @@ export const Profilepage = () => {
                         console.log('Access Token:', accessToken);
                         if (accessToken !== null) {
                             setVar('access_token_github', accessToken);
+                            setAccessTokenGithub(accessToken);
                             signInWithGithub(accessToken);
                         }
                     })
@@ -122,9 +130,10 @@ export const Profilepage = () => {
                         <p>Notifications</p>
                     </button>
                     <button className='profile-menu-item'
-                        style={{ backgroundColor: '#F5F5F5' }}
-                        onClick={loginwithGithub}>
-                        <p>Loing with github</p>
+                        style={{ backgroundColor: '#000000', borderRadius: 10 }}
+                        onClick={accessTokenGithub? logoutGithub : loginwithGithub}>
+                        <img src={github_icon} alt="" style={{height:30, width: 30}}/>
+                        <p style={{ color: '#FFFFFF' }}>{accessTokenGithub ? 'Log out'  : 'Loging with github'}</p>
                     </button>
                 </div>
                 <div className='profile-menu-selected'>
