@@ -53,27 +53,6 @@ export class GithubController {
     return this.githubService.getGithubUser(user.github.access_token);
   }
 
-  @Put('subscription')
-  @ApiBearerAuth('access-token')
-  async subscribeToRepo(
-    @Body() repoSettings: RepoSettingsDto,
-    @Req() request: Request,
-  ) {
-    const user = await this.usersService.findOneById(
-      request['user']['user']['_id'],
-    );
-    if (repoSettings.eventsList === undefined) {
-      repoSettings.eventsList = ['*'];
-    }
-    // await this.githubService.subscribeToRepo(
-    //   user.github.username,
-    //   repoSettings.repoName,
-    //   user.github.access_token,
-    //   this.configService.get<string>('WEBHOOK_URL'),
-    //   repoSettings.eventsList,
-    // );
-  }
-
   @Delete('unsubscription')
   @ApiBearerAuth('access-token')
   async unsubscribeToRepo(
@@ -92,21 +71,6 @@ export class GithubController {
     this.usersService.removeWebhook(
       user.github.username,
       repoSettings.repoName,
-    );
-  }
-
-  @Post('event')
-  @ApiBearerAuth('access-token')
-  async createEvent(@Body() data: any, @Req() request: Request): Promise<void> {
-    const user = await this.usersService.findOneById(
-      request['user']['user']['_id'],
-    );
-    return this.githubService.createEvent(
-      data.repoOwner,
-      data.repoName,
-      data.eventType,
-      user.github.access_token,
-      data.data,
     );
   }
 
