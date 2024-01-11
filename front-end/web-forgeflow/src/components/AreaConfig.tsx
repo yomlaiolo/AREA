@@ -118,13 +118,10 @@ async function setValue(name: string, map: any) {
       default:
         break;
   };
-  console.log("VALUE: ", action_value, reaction_value);
-  console.log(Object.keys(action_value).length)
   if (Object.keys(action_value).length !== 0)
     setVar('actionValue', JSON.stringify(action_value));
   if (Object.keys(reaction_value).length !== 0)
     setVar('reactionValue', JSON.stringify(reaction_value));
-  console.log("TRUE VALUE", await getVar('actionValue'), await getVar('reactionValue'))
 }
 
 const AreaAreaConfig: React.FC<FlowProps> = ({title, icon, description, type, fields, display}) => {
@@ -134,7 +131,6 @@ const AreaAreaConfig: React.FC<FlowProps> = ({title, icon, description, type, fi
 
   useEffect(() => {
     if (infos.cronTime) {
-      console.log(infos.cronTime);
       setValue(title, infos);
     }
   }, [infos.cronTime]);
@@ -206,7 +202,7 @@ const AreaAreaConfig: React.FC<FlowProps> = ({title, icon, description, type, fi
               <TextBox
                 placeholder='From branch'
                 onChangeText={(text) => setInfos({ ...infos, branch: text })}
-                value={infos.repo ? infos.repo.toString() : ''}
+                value={infos.branch ? infos.branch.toString() : ''}
                 backgroundColor='#1F1F1F'
                 textColor='#F5F5F5'
                 customwidth={200}
@@ -223,7 +219,7 @@ const AreaAreaConfig: React.FC<FlowProps> = ({title, icon, description, type, fi
               <TextBox
                 placeholder='To branch'
                 onChangeText={(text) => setInfos({ ...infos, tobranch: text })}
-                value={infos.repo ? infos.repo.toString() : ''}
+                value={infos.tobranch ? infos.tobranch.toString() : ''}
                 backgroundColor='#1F1F1F'
                 textColor='#F5F5F5'
                 customwidth={200}
@@ -240,7 +236,7 @@ const AreaAreaConfig: React.FC<FlowProps> = ({title, icon, description, type, fi
               <TextBox
                 placeholder='Title'
                 onChangeText={(text) => setInfos({ ...infos, title: text })}
-                value={infos.repo ? infos.repo.toString() : ''}
+                value={infos.title ? infos.title.toString() : ''}
                 backgroundColor='#1F1F1F'
                 textColor='#F5F5F5'
                 customwidth={200}
@@ -257,7 +253,7 @@ const AreaAreaConfig: React.FC<FlowProps> = ({title, icon, description, type, fi
               <TextBox
                 placeholder='To'
                 onChangeText={(text) => setInfos({ ...infos, to: text })}
-                value={infos.repo ? infos.repo.toString() : ''}
+                value={infos.to ? infos.to.toString() : ''}
                 backgroundColor='#1F1F1F'
                 textColor='#F5F5F5'
                 customwidth={200}
@@ -274,7 +270,7 @@ const AreaAreaConfig: React.FC<FlowProps> = ({title, icon, description, type, fi
               <TextBox
                 placeholder='CC'
                 onChangeText={(text) => setInfos({ ...infos, cc: text })}
-                value={infos.repo ? infos.repo.toString() : ''}
+                value={infos.cc ? infos.cc.toString() : ''}
                 backgroundColor='#1F1F1F'
                 textColor='#F5F5F5'
                 customwidth={200}
@@ -291,7 +287,7 @@ const AreaAreaConfig: React.FC<FlowProps> = ({title, icon, description, type, fi
               <TextBox
                 placeholder='Subject'
                 onChangeText={(text) => setInfos({ ...infos, subject: text })}
-                value={infos.repo ? infos.repo.toString() : ''}
+                value={infos.subject ? infos.subject.toString() : ''}
                 backgroundColor='#1F1F1F'
                 textColor='#F5F5F5'
                 customwidth={200}
@@ -308,7 +304,7 @@ const AreaAreaConfig: React.FC<FlowProps> = ({title, icon, description, type, fi
               <TextBox
                 placeholder='Body'
                 onChangeText={(text) => setInfos({ ...infos, body: text })}
-                value={infos.repo ? infos.repo.toString() : ''}
+                value={infos.body ? infos.body.toString() : ''}
                 backgroundColor='#1F1F1F'
                 textColor='#F5F5F5'
                 customwidth={200}
@@ -317,7 +313,7 @@ const AreaAreaConfig: React.FC<FlowProps> = ({title, icon, description, type, fi
           </div>
         ) : null 
       }
-      <div style={{ position: 'absolute', left: '25%', bottom: '30%' }}>
+      <div style={{ position: 'absolute', left: '36%', bottom: '10%' }}>
         <Button onPress={handleButtonPress} title={`Create ${type}`} backgroundColor='#1F1F1F' textColor='#F5F5F5'/>
       </div>
     </div>

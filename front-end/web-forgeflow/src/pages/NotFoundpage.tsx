@@ -2,8 +2,7 @@ export const NotFoundpage = () => {
     return (
         <div className="App">
         <header className="App-header">
-            <p>tu vas où là ?</p>
-            <p>tu t'es perdu</p>
+            <p>This page can't be found.</p>
         </header>
         </div>
     );

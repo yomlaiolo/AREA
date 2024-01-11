@@ -14,11 +14,9 @@ async function forge(name: string, reactionValue: any) {
   const actionId = await getVar('action');
   const reactionId = await getVar('reaction');
   const action = actions[parseInt(actionId as string)];
-  console.log("Test");
   const reaction = reactions[parseInt(reactionId as string)];
   var description = 'When ' + action.name + ' then ' + reaction.name;
   var value;
-  console.log(reactionValue);
   var obj = JSON.parse(reactionValue);
   const act_var = await getVar('actionValue');
   const react_var = await getVar('reactionValue');
@@ -72,9 +70,6 @@ async function forge(name: string, reactionValue: any) {
       value: react_var ? JSON.parse(react_var) : null
     },
   };
-  console.log(myArea);
-  var response = await createArea(myArea);
-  console.log(response);
 
   removeVar('action');
   removeVar('reaction');

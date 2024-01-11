@@ -138,7 +138,6 @@ export async function modifyProfile(username: string, email: string, password: s
                 password: password,
             }),
         });
-        console.log(response.status);
         if (response.status === 200) {
             setVar('username', username);
             setVar('email', email);
@@ -171,7 +170,6 @@ export async function modifyPassword(oldPassword: string, newPassword: string) {
                 new_password: newPassword,
             }),
         });
-        console.log(response.status);
         if (response.status === 200) {
             return 0;
         } else if (response.status === 400) {
@@ -220,7 +218,6 @@ export async function createArea(area: any) {
     if (token === null)
         return "Not connected";
     try {
-      console.log(JSON.stringify(area));
       const response = await fetch(API + '/area/create', {
         method: 'POST',
         headers: new Headers({
