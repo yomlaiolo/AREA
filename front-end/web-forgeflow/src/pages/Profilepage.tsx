@@ -63,7 +63,7 @@ export const Profilepage = () => {
             const code = urlParams.get('code');
             console.log("code for github: " + code);
             const storedCode = await getVar('code'); // Use await to handle the Promise
-            if (code !== storedCode && code !== null) {
+            if (code !== null && code !== storedCode) {
                 console.log("code for github: " + code);
                 setVar('code', code);
                 console.log("code for github on localstorage: " + await getVar('code'));
