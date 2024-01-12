@@ -33,7 +33,7 @@ export const actions = [
     redirection: "github",
     value: {
       fromBranch: "__fromBranch__",
-      toBranch: "__toBranch__",
+      headBranch: "__headBranch__",
     }
   },
   {
@@ -119,7 +119,7 @@ export const reactions = [
     value: {
       repo: "__repo__",
       fromBranch: "__fromBranch__",
-      toBranch: "__toBranch__",
+      headBranch: "__headBranch__",
     }
   },
   {

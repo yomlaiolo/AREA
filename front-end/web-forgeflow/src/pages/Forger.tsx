@@ -27,7 +27,7 @@ async function forge(name: string, reactionValue: any) {
       value = {
         repo: obj.repo,
         fromBranch: "__fromBranch__",
-        toBranch: "__toBranch__",
+        headBranch: "__headBranch__",
       }
     } else if (action.name === 'Issue created') {
       value = {
@@ -40,12 +40,12 @@ async function forge(name: string, reactionValue: any) {
     if (action.name === 'Each day at [x]' && obj.cron !== '') {
       description = 'Each day at ' + obj.cron + ' then ' + reaction.name;
       value = {
-        cronTime: obj.cron,
+        cron: obj.cron,
       }
     } else if (action.name === 'At [hour] on [day]' && obj.cron !== '') {
       description = 'At ' + obj.cron + ' then ' + reaction.name;
       value = {
-        cronTime: obj.cron,
+        cron: obj.cron,
       }
     }
   } else if (action.redirection === 'google') {
@@ -70,6 +70,11 @@ async function forge(name: string, reactionValue: any) {
       value: react_var ? JSON.parse(react_var) : null
     },
   };
+
+  var response = await createArea(myArea);
+  if (response !== 0) {
+    alert("Error");
+  }
 
   removeVar('action');
   removeVar('reaction');

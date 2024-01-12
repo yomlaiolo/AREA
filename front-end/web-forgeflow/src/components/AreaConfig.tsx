@@ -54,7 +54,7 @@ async function setValue(name: string, map: any) {
     case 'Pull request created':
       action_value = {
         fromBranch: "__fromBranch__",
-        toBranch: "__toBranch__",
+        headBranch: "__headBranch__",
       };
       break;
     case 'Issue created':
@@ -89,7 +89,7 @@ async function setValue(name: string, map: any) {
       reaction_value = {
         repo: map['repo'],
         fromBranch: "__fromBranch__",
-        toBranch: "__toBranch__",
+        headBranch: "__headBranch__",
       };
       break;
     case 'Create an issue':
@@ -211,15 +211,15 @@ const AreaAreaConfig: React.FC<FlowProps> = ({title, icon, description, type, fi
           </div>
         ) : null 
       }
-      { fields?.find((field) => field === 'ToBranch') !== undefined ?
+      { fields?.find((field) => field === 'headBranch') !== undefined ?
         (
           <div style={{width: '25%', justifyItems: 'center', alignContent: 'center'}}>
             <p style={{display: 'flex', justifyContent: 'center'}}>Type a branch name.</p>
             <div style={{ display: 'flex', justifyContent: 'space-around', width: '100%', justifyItems: 'center' }}>
               <TextBox
                 placeholder='To branch'
-                onChangeText={(text) => setInfos({ ...infos, tobranch: text })}
-                value={infos.tobranch ? infos.tobranch.toString() : ''}
+                onChangeText={(text) => setInfos({ ...infos, headBranch: text })}
+                value={infos.headBranch ? infos.headBranch.toString() : ''}
                 backgroundColor='#1F1F1F'
                 textColor='#F5F5F5'
                 customwidth={200}

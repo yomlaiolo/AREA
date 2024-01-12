@@ -103,7 +103,7 @@ export const reactions = [
     backgroundColor: "#CCCCCC",
     textColor: "black",
     redirection: "github",
-    fields: ["Repository", "Branch", "ToBranch"],
+    fields: ["Repository", "Branch", "headBranch"],
     type: "create_pull_request"
   },
   {

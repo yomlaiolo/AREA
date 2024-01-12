@@ -16,7 +16,7 @@ export default function SetGithub({ navigation, idx, name }: any) {
   const [text, setText] = useState('');
   const [repo, setRepo] = useState('');
   const [fromBranch, setFromBranch] = useState('');
-  const [toBranch, setToBranch] = useState('');
+  const [headBranch, setheadBranch] = useState('');
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
   const [repoList, setRepoList] = useState([]);
@@ -67,7 +67,7 @@ export default function SetGithub({ navigation, idx, name }: any) {
           {type === 'Create a pull request' ? (
             <>
               <TextBox backgroundColor="white" borderColor="#E2E2E2" onChangeText={setFromBranch} value={fromBranch} placeholder="From branch" hideText={false} autocomplete="off" />
-              <TextBox backgroundColor="white" borderColor="#E2E2E2" onChangeText={setToBranch} value={toBranch} placeholder="To branch" hideText={false} autocomplete="off" />
+              <TextBox backgroundColor="white" borderColor="#E2E2E2" onChangeText={setheadBranch} value={headBranch} placeholder="To branch" hideText={false} autocomplete="off" />
             </>
           ) : (
             <>
@@ -78,14 +78,14 @@ export default function SetGithub({ navigation, idx, name }: any) {
           <AreaButton backgroundColor="#1F1F1F" activeOpacity={0.5} textColor="white" title="Add this reaction" onPress={async () => {
             var value = {};
             if (type === 'Create a pull request') {
-              if (fromBranch === '' || toBranch === '' || repo === '') {
+              if (fromBranch === '' || headBranch === '' || repo === '') {
                 showToast('Please fill all fields');
                 return;
               }
               value = {
                 repo: repo,
                 fromBranch: fromBranch,
-                toBranch: toBranch,
+                headBranch: headBranch,
               };
             } else {
               if (title === '' || body === '' || repo === '') {
