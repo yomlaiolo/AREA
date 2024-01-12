@@ -7,6 +7,7 @@ import { GithubService } from 'src/github-action/github.service';
 import { UsersService } from 'src/users/users.service';
 import { GDriveService } from 'src/gdrive/gdrive.service';
 import { OpenAIService } from 'src/openai/openai.service';
+import { AreaService } from '../area.service';
 
 // Actions ####################################################################
 // cron
@@ -28,6 +29,7 @@ export const actionConstructors: (new (
   reactionDto: ReactionDto,
   user: object,
   token: object,
+  id: string,
   githubService: GithubService,
   usersService: UsersService,
   gDriveService: GDriveService,
@@ -43,6 +45,7 @@ export const actionConstructors: (new (
 export const reactionConstructors: (new (
   data: object,
   user: User,
+  id: string,
   githubService: GithubService,
   usersService: UsersService,
   gDriveService: GDriveService,
@@ -63,6 +66,8 @@ export function createAbout(): object[] {
       {} as ReactionDto,
       {} as User,
       {} as CancellationToken,
+      '',
+      null,
       null,
       null,
       null,
@@ -71,7 +76,7 @@ export function createAbout(): object[] {
     if (!allServices.includes(tmp.service)) allServices.push(tmp.service);
   });
   reactionConstructors.forEach((element) => {
-    let tmp = new element({}, {} as User, null, null, null, null);
+    let tmp = new element({}, {} as User, '', null, null, null, null, null);
     if (!allServices.includes(tmp.service)) allServices.push(tmp.service);
   });
 
@@ -84,6 +89,8 @@ export function createAbout(): object[] {
         {} as ReactionDto,
         {} as User,
         {} as CancellationToken,
+        '',
+        null,
         null,
         null,
         null,
@@ -99,7 +106,16 @@ export function createAbout(): object[] {
     });
 
     reactionConstructors.forEach((element) => {
-      const tmpReaction = new element({}, {} as User, null, null, null, null);
+      const tmpReaction = new element(
+        {},
+        {} as User,
+        '',
+        null,
+        null,
+        null,
+        null,
+        null,
+      );
       if (tmpReaction.service === serviceName) {
         reaction.push({
           method: tmpReaction.method,
@@ -124,10 +140,12 @@ export function createMapAction(
     reactionDto: ReactionDto,
     user: object,
     token: object,
+    id: string,
     githubService: GithubService,
     usersService: UsersService,
     gDriveService: GDriveService,
     openAiService: OpenAIService,
+    areaService: AreaService,
   ) => ActionInterface)[],
 ) {
   const actionMap = {};
@@ -137,6 +155,8 @@ export function createMapAction(
       {} as ReactionDto,
       {} as User,
       {} as CancellationToken,
+      '',
+      null,
       null,
       null,
       null,
@@ -151,15 +171,26 @@ export function createMapReaction(
   reactionConstructors: (new (
     data: object,
     user: User,
+    id: string,
     githubService: GithubService,
     usersService: UsersService,
     gDriveService: GDriveService,
     openAiService: OpenAIService,
+    areaService: AreaService,
   ) => ReactionInterface)[],
 ) {
   const reactionMap = {};
   reactionConstructors.forEach((element) => {
-    let tmp = new element({} as object, {} as User, null, null, null, null);
+    let tmp = new element(
+      {} as object,
+      {} as User,
+      '',
+      null,
+      null,
+      null,
+      null,
+      null,
+    );
     reactionMap[tmp.method] = element;
   });
   return reactionMap;
@@ -170,10 +201,12 @@ export function factoryArea(
   reactionDto: ReactionDto,
   user: User,
   token: object,
+  id: string,
   githubService: GithubService,
   usersService: UsersService,
   gDriveService: GDriveService,
   openAiService: OpenAIService,
+  areaService: AreaService,
 ): ActionInterface {
   const actionMap = createMapAction(actionConstructors);
   const action = actionMap[actionDto.type]
@@ -182,10 +215,12 @@ export function factoryArea(
         reactionDto,
         user,
         token,
+        id,
         githubService,
         usersService,
         gDriveService,
         openAiService,
+        areaService,
       )
     : null;
   return action;

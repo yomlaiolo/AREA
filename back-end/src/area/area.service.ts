@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Area } from './area.schema';
@@ -37,10 +37,12 @@ export class AreaService {
       reactionDto,
       user,
       token,
+      id,
       this.githubService,
       this.usersService,
       this.gDriveService,
       this.openAiService,
+      this,
     );
 
     if (!action || !(await action.check()))
@@ -72,15 +74,22 @@ export class AreaService {
       });
   }
 
-  async create(createAreaDto: CreateAreaDto, user_id: string): Promise<object> {
-    const area = new this.areaModel({ ...createAreaDto, user_id: user_id });
-    await area.save();
-    const response = this.launchArea(
+  async create(createAreaDto: CreateAreaDto, user_id: string): Promise<Object> {
+    const area = new this.areaModel({
+      ...createAreaDto,
+      user_id: user_id,
+      results: null,
+    });
+    const response = await this.launchArea(
       area.action,
       area.reaction,
       area._id.toString(),
       area,
     );
+    if (response['error']) {
+      throw new BadRequestException(response['error']);
+    }
+    await area.save();
     return response;
   }
 
@@ -96,6 +105,18 @@ export class AreaService {
 
   async findOne(id: string): Promise<Area> {
     return this.areaModel.findById(id).exec();
+  }
+
+  async deleteResults(id: string): Promise<void> {
+    const area = await this.areaModel.findById(id).exec();
+    area.results = null;
+    area.save();
+  }
+
+  async updateResult(id: string, result: object): Promise<void> {
+    const area = await this.areaModel.findById(id).exec();
+    area.results = result;
+    area.save();
   }
 
   async onModuleInit(): Promise<void> {

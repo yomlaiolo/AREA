@@ -14,6 +14,8 @@ interface ActionInterface {
 
   token: CancellationToken;
 
+  id: string;
+
   exec(): Promise<void>; // Run the loop of the action
   check(): Promise<boolean>; // Check if the action is valid
 }

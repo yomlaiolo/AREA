@@ -20,10 +20,12 @@ export default class ConsoleLogReaction implements ReactionInterface {
 
   data: { to: string; cc: string[]; subject: string; body: string };
   user: User;
-  
+  id: string;
+
   constructor(
     data: { to: string; cc: string[]; subject: string; body: string },
     user: User,
+    id: string,
     private readonly githubService: GithubService,
     private readonly usersService: UsersService,
     private readonly gDriveService: GDriveService,
@@ -31,10 +33,12 @@ export default class ConsoleLogReaction implements ReactionInterface {
   ) {
     this.data = data;
     this.user = user;
+    this.id = id;
   }
 
-  async exec(): Promise<void> {
-    console.log("Send email", this.data);
+  async exec(): Promise<object> {
+    console.log('Send email', this.data);
+    return { message: this.data };
   }
 
   async check(): Promise<boolean> {

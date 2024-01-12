@@ -11,7 +11,9 @@ interface ReactionInterface {
 
   user: User;
 
-  exec(): Promise<void>; // Run the Reaction
+  id: string;
+
+  exec(): Promise<object>; // Run the Reaction
   check(): Promise<boolean>; // Check if the reaction is valid
 }
 

@@ -26,7 +26,7 @@ export class CreateAreaDto {
   description: string;
 
   @ApiProperty({
-    example: { type: 'recurrent', value: { hour: 0, minute: 1 } },
+    example: { type: 'interval', value: { hour: 0, minute: 1 } },
   })
   action: ActionDto;
 
