@@ -10,9 +10,10 @@ interface TextBoxProps {
   disabled?: boolean;
   customwidth?: number;
   backgroundColor?: string;
+  textColor?: string;
 }
 
-const AreaTextBox: React.FC<TextBoxProps> = ({ placeholder, onChangeText, value, hideText, autocomplete, disabled, backgroundColor, customwidth }) => {
+const AreaTextBox: React.FC<TextBoxProps> = ({ placeholder, onChangeText, value, hideText, autocomplete, disabled, backgroundColor, customwidth, textColor }) => {
   const hide = require('../assets/hide.png');
   const show = require('../assets/show.png');
   const [ispassword, setIsPassword] = useState(hideText);
@@ -28,6 +29,7 @@ const AreaTextBox: React.FC<TextBoxProps> = ({ placeholder, onChangeText, value,
         placeholder={placeholder}
         value={value} onChange={(e) => onChangeText(e.target.value)}
         autoComplete={autocomplete}
+        style={{ color: textColor ? textColor : 'black' }}
       />
       {hideText &&
         <img src={ispassword ? show : hide} alt="show" onClick={toggleShow} />

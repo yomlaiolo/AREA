@@ -179,7 +179,6 @@ export async function modifyProfile(username: string, email: string, password: s
                 password: password,
             }),
         });
-        console.log(response.status);
         if (response.status === 200) {
             setVar('username', username);
             setVar('email', email);
@@ -212,7 +211,6 @@ export async function modifyPassword(oldPassword: string, newPassword: string) {
                 new_password: newPassword,
             }),
         });
-        console.log(response.status);
         if (response.status === 200) {
             return 0;
         } else if (response.status === 400) {
@@ -253,4 +251,29 @@ export async function getVar(key: string) {
 
 export async function removeVar(key: string) {
     localStorage.removeItem(key);
+}
+
+export async function createArea(area: any) {
+  const token = await getToken();
+
+  if (token === null)
+      return "Not connected";
+  try {
+    const response = await fetch(API + '/area/create', {
+      method: 'POST',
+      headers: new Headers({
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token,
+      }),
+      body: JSON.stringify(area),
+    });
+    if (response.status === 201) {
+      return 0;
+    } else if (response.status === 400) {
+      return "Invalid data";
+    }
+  } catch (error) {
+    console.log('Error:', error);
+  }
+  return "Unknown error, maybe the server is down";
 }

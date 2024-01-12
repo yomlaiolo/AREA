@@ -21,7 +21,7 @@ async function forge(name: string, repo: string, cronTime: string, reactionValue
       value = {
         repo: repo,
         fromBranch: "__fromBranch__",
-        toBranch: "__toBranch__",
+        headBranch: "__headBranch__",
       }
     } else if (action.name === 'Issue created') {
       value = {
