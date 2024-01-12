@@ -34,32 +34,73 @@ export async function login(email: string, password: string, navigate: Function)
 
 export async function sendGoogleLogin(navigation: any, infos: any) {
     fetch(API + '/auth/google-access-token', {
-      method: 'POST',
-      headers: new Headers({
-        'Content-Type': 'application/json',
-      }),
-      body: JSON.stringify({
-        "access_token": infos,
-      })
+        method: 'POST',
+        headers: new Headers({
+            'Content-Type': 'application/json',
+        }),
+        body: JSON.stringify({
+            "access_token": infos,
+        })
     })
-      .then(response => {
-        if (response.status === 200)
-          return response.json();
-        else if (response.status === 401)
-          return null;
-      })
-      .then(async data => {
-        if (data && data.access_token) {
-          let token = data.access_token;
-          await setVar('token', token);
-          navigation('/flows');
-        } else
-          window.alert("Error: Unauthorized - invalid credentials");
-      })
-      .catch((error) => {
-        console.log('Error:', error);
-      });
-  }
+        .then(response => {
+            if (response.status === 200)
+                return response.json();
+            else if (response.status === 401)
+                return null;
+        })
+        .then(async data => {
+            if (data && data.access_token) {
+                let token = data.access_token;
+                await setVar('token', token);
+                navigation('/flows');
+            } else
+                window.alert("Error: Unauthorized - invalid credentials");
+        })
+        .catch((error) => {
+            console.log('Error:', error);
+        });
+}
+
+const config = {
+    clientId: process.env.REACT_APP_GITHUB_CLIENT_ID,
+    clientSecret: process.env.REACT_APP_GITHUB_CLIENT_SECRET,
+    redirectUrl: 'myapp://',
+    scopes: ['user', 'repo'],
+    serviceConfiguration: {
+        authorizationEndpoint: 'https://github.com/login/oauth/authorize',
+        tokenEndpoint: 'https://github.com/login/oauth/access_token',
+        revocationEndpoint:
+            'https://github.com/settings/connections/applications/' +
+            process.env.REACT_APP_GITHUB_CLIENT_ID,
+    },
+};
+
+export async function signInWithGithub(accessToken_github: string) {
+    const token = await getToken();
+    fetch(API + '/github/token', {
+        method: 'POST',
+        headers: new Headers({
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + token,
+        }),
+        body: JSON.stringify({
+            token: accessToken_github,
+        }),
+    })
+        .then(response => {
+            if (response.status === 201) {
+                console.log(response);
+                return response.json();
+            } else if (response.status === 401) {
+                console.log("Unauthorized - invalid credentials");
+                console.log(response);
+                return null;
+            }
+        })
+        .catch(error => {
+            console.log('Error:', error);
+        });
+}
 
 export async function register(username: string, email: string, password: string, navigate: Function) {
     fetch(API + '/auth/register', {
