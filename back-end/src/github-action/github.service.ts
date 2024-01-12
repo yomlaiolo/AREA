@@ -2,10 +2,14 @@ import { Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { map } from 'rxjs/operators';
 import axios, { AxiosError } from 'axios';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class GithubService {
-  constructor(private http: HttpService) {}
+  constructor(
+    private http: HttpService,
+    private configService: ConfigService,
+  ) {}
 
   getGithubUser(token: string) {
     const headersRequest = {
@@ -22,8 +26,8 @@ export class GithubService {
     repoOwner: string,
     repoName: string,
     accessToken: string,
-    webhookUrl: string,
     eventsList: string[],
+    webhookId: string,
   ) {
     const url = `https://api.github.com/repos/${repoOwner}/${repoName}/hooks`;
     const headers = {
@@ -36,12 +40,17 @@ export class GithubService {
       active: true,
       events: eventsList,
       config: {
-        url: webhookUrl,
+        url: this.configService.get<string>('WEBHOOK_URL') + '/' + webhookId,
         content_type: 'json',
+        insecure_ssl: '0',
       },
     };
 
-    await axios.post(url, data, { headers });
+    try {
+      await axios.post(url, data, { headers });
+    } catch (error) {
+      console.log(error.response.data);
+    }
   }
 
   async unsubscribeToRepo(
@@ -71,8 +80,11 @@ export class GithubService {
       Authorization: `token ${accessToken}`,
       'User-Agent': 'ForgeFlow',
     };
-
-    await axios.post(url, data, { headers });
+    try {
+      await axios.post(url, data, { headers });
+    } catch (error) {
+      console.error(error.response.data);
+    }
   }
 
   async checkTokenValidity(accessToken: string): Promise<boolean> {

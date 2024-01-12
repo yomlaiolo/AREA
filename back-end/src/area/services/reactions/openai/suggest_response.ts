@@ -13,5 +13,6 @@ suggestResponseReaction.doc = 'Suggest a response to the message with openai.';
 suggestResponseReaction.dataExample = {
   message: '__message__',
 };
+suggestResponseReaction.type = 'function';
 
 export { suggestResponseReaction };

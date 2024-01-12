@@ -32,6 +32,7 @@
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/schedule": "^4.0.0",
     "@nestjs/swagger": "^7.1.16",
+    "@types/uuid": "^9.0.7",
     "axios": "^1.6.2",
     "bcrypt": "^5.1.1",
     "docxtemplater": "^3.42.7",
@@ -46,7 +47,8 @@
     "pdf-parse": "^1.1.1",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.1",
-    "swagger-ui-express": "^5.0.0"
+    "swagger-ui-express": "^5.0.0",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",

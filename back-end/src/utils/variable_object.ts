@@ -4,12 +4,12 @@ function createVariable(data: object, variables: object): { result: object, vali
   let result = {};
   let isValid = true;
   for (let key in data) {
-    if (variables[key]) {
-      if (typeof variables[key] == 'string')
-        if (variables[key].startsWith('__') && variables[key].endsWith('__')) {
-          result[variables[key]] = data[key];
+    if (variables['value'][key]) {
+      if (typeof variables['value'][key] == 'string')
+        if (variables['value'][key].startsWith('__') && variables['value'][key].endsWith('__')) {
+          result[variables['value'][key]] = data[key];
         } else {
-          if (variables[key] != data[key]) {
+          if (variables['value'][key] != data[key]) {
             isValid = false;
             break;
           }

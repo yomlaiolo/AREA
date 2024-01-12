@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
@@ -23,7 +23,7 @@ import { AreaModule } from './area/area.module';
       envFilePath: '.env',
       isGlobal: true,
     }),
-    UsersModule,
+    forwardRef(() => UsersModule),
     AboutModule,
     JwtModule,
     ConfigModule.forRoot({
@@ -36,10 +36,10 @@ import { AreaModule } from './area/area.module';
       }),
       inject: [ConfigService],
     }),
-    AuthModule,
-    GithubModule,
+    forwardRef(() => AuthModule),
+    forwardRef(() => GithubModule),
     OpenAIModule,
-    AreaModule
+    AreaModule,
   ],
   controllers: [AppController],
   providers: [
