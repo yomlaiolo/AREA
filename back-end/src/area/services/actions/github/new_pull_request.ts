@@ -9,11 +9,13 @@ import { OpenAIService } from 'src/openai/openai.service';
 import { ActionDto, ReactionDto } from 'src/area/dto/create-area.dto';
 import { factoryArea } from '../../services';
 import { ActionInterface } from '../action.interface';
+import { AreaService } from 'src/area/area.service';
 
 export default class PullRequestAction implements ActionInterface {
   method: string = 'new_pull_request';
   service: string = 'github';
-  description: string = 'Calls the reaction when a new pull request is created.';
+  description: string =
+    'Calls the reaction when a new pull request is created.';
   example: object = {
     repo: 'myRepository',
     title: 'pull request title',
@@ -26,6 +28,8 @@ export default class PullRequestAction implements ActionInterface {
   reactionDto: ReactionDto;
   user: User;
 
+  id: string;
+
   token: CancellationToken;
 
   constructor(
@@ -33,15 +37,18 @@ export default class PullRequestAction implements ActionInterface {
     reactionDto: ReactionDto,
     user: User,
     token: CancellationToken,
+    id: string,
     private readonly githubService: GithubService,
     private readonly usersService: UsersService,
     private readonly gDriveService: GDriveService,
     private readonly openAiService: OpenAIService,
+    private readonly areaService: AreaService,
   ) {
     this.actionDto = actionDto;
     this.reactionDto = reactionDto;
     this.user = user;
     this.token = token;
+    this.id = id;
   }
 
   async exec(): Promise<void> {

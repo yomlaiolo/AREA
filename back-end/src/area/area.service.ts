@@ -27,6 +27,7 @@ export class AreaService {
     reactionDto: ReactionDto,
     id: string,
     area: Area,
+    first_launch: boolean,
   ): Promise<object> {
     const token = new CancellationToken();
     this.cancellation_tokens.set(id, token);
@@ -48,9 +49,9 @@ export class AreaService {
     if (!action || !(await action.check()))
       return { error: 'Action or reaction not found' };
     else action.exec();
-    const tmp = await this.areaModel.findById(id).exec();
-    tmp.first_launch = false;
-    await tmp.save();
+    // const tmp = await this.areaModel.findById(id).exec();
+    // tmp.first_launch = false;
+    // await tmp.save();
     return { id: id };
   }
 
@@ -66,6 +67,7 @@ export class AreaService {
               area.reaction,
               area._id.toString(),
               area,
+              false,
             );
           } catch (e) {
             console.error('Error in launchArea:', e);
@@ -79,12 +81,14 @@ export class AreaService {
       ...createAreaDto,
       user_id: user_id,
       results: null,
+      first_launch: true,
     });
     const response = await this.launchArea(
       area.action,
       area.reaction,
       area._id.toString(),
       area,
+      true,
     );
     if (response['error']) {
       throw new BadRequestException(response['error']);

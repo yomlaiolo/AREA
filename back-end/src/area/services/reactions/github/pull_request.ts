@@ -5,6 +5,7 @@ import { GithubService } from 'src/github-action/github.service';
 import { UsersService } from 'src/users/users.service';
 import { GDriveService } from 'src/gdrive/gdrive.service';
 import { OpenAIService } from 'src/openai/openai.service';
+import { AreaService } from 'src/area/area.service';
 
 @Injectable()
 export default class PullRequestReaction implements ReactionInterface {
@@ -29,6 +30,7 @@ export default class PullRequestReaction implements ReactionInterface {
     baseBranch: string;
   };
   user: User;
+  id: string;
 
   constructor(
     data: {
@@ -40,16 +42,19 @@ export default class PullRequestReaction implements ReactionInterface {
       baseBranch: string;
     },
     user: User,
+    id: string,
     private readonly githubService: GithubService,
     private readonly usersService: UsersService,
     private readonly gDriveService: GDriveService,
     private readonly openAiService: OpenAIService,
+    private readonly areaService: AreaService,
   ) {
     this.data = data;
     this.user = user;
+    this.id = id;
   }
 
-  async exec(): Promise<void> {
+  async exec(): Promise<object> {
     this.githubService.createEvent(
       this.data['value'].repoOwner,
       this.data['value'].repoName,
@@ -64,6 +69,7 @@ export default class PullRequestReaction implements ReactionInterface {
         base: this.data['value'].baseBranch,
       },
     );
+    return { message: 'Pull request created' };
   }
 
   async check(): Promise<boolean> {

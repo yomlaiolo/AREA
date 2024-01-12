@@ -34,6 +34,7 @@ export const actionConstructors: (new (
   usersService: UsersService,
   gDriveService: GDriveService,
   openAiService: OpenAIService,
+  areaService: AreaService,
 ) => ActionInterface)[] = [
   IntervalAction,
   IssueAction,
@@ -50,6 +51,7 @@ export const reactionConstructors: (new (
   usersService: UsersService,
   gDriveService: GDriveService,
   openAiService: OpenAIService,
+  areaService: AreaService,
 ) => ReactionInterface)[] = [
   ConsoleLogReaction,
   IssueReaction,
