@@ -66,6 +66,8 @@ export default function SetGithub({ navigation, idx, name }: any) {
           </Picker>
           {type === 'Create a pull request' ? (
             <>
+              <TextBox backgroundColor="white" borderColor="#E2E2E2" onChangeText={setTitle} value={title} placeholder="Title" hideText={false} autocomplete="off" />
+              <TextBox backgroundColor="white" borderColor="#E2E2E2" onChangeText={setBody} value={body} placeholder="Body" hideText={false} autocomplete="off" />
               <TextBox backgroundColor="white" borderColor="#E2E2E2" onChangeText={setFromBranch} value={fromBranch} placeholder="From branch" hideText={false} autocomplete="off" />
               <TextBox backgroundColor="white" borderColor="#E2E2E2" onChangeText={setheadBranch} value={headBranch} placeholder="To branch" hideText={false} autocomplete="off" />
             </>
@@ -78,13 +80,15 @@ export default function SetGithub({ navigation, idx, name }: any) {
           <AreaButton backgroundColor="#1F1F1F" activeOpacity={0.5} textColor="white" title="Add this reaction" onPress={async () => {
             var value = {};
             if (type === 'Create a pull request') {
-              if (fromBranch === '' || headBranch === '' || repo === '') {
+              if (fromBranch === '' || headBranch === '' || repo === '' || title === '' || body === '') {
                 showToast('Please fill all fields');
                 return;
               }
               value = {
-                repo: repo,
-                fromBranch: fromBranch,
+                repoName: repo,
+                title: title,
+                body: body,
+                baseBranch: fromBranch,
                 headBranch: headBranch,
               };
             } else {

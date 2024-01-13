@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './AreaConfig.css';
-import {getVar, setVar} from '../api';
+import { getVar, setVar } from '../api';
 import Button from './Button';
 import TextBox from './TextBox';
 import { format } from 'date-fns';
@@ -88,6 +88,8 @@ async function setValue(name: string, map: any) {
     case 'Create a Pull Request':
       reaction_value = {
         repo: map['repo'],
+        title: map['title'],
+        body: map['body'],
         fromBranch: "__fromBranch__",
         headBranch: "__headBranch__",
       };
@@ -115,8 +117,8 @@ async function setValue(name: string, map: any) {
         text: "__text__",
       };
       break;
-      default:
-        break;
+    default:
+      break;
   };
   if (Object.keys(action_value).length !== 0)
     setVar('actionValue', JSON.stringify(action_value));
@@ -124,7 +126,7 @@ async function setValue(name: string, map: any) {
     setVar('reactionValue', JSON.stringify(reaction_value));
 }
 
-const AreaAreaConfig: React.FC<FlowProps> = ({title, icon, description, type, fields, display}) => {
+const AreaAreaConfig: React.FC<FlowProps> = ({ title, icon, description, type, fields, display }) => {
   const [infos, setInfos] = useState<{ [key: string]: string | null | Date | null }>({});
   const [timeHour, setTimeHour] = useState('');
   const [timeMinute, setTimeMinute] = useState('');
@@ -151,15 +153,15 @@ const AreaAreaConfig: React.FC<FlowProps> = ({title, icon, description, type, fi
     <div className="area-config">
       <h1>{title}</h1>
       <div className="area-logo">
-        <img src={icon} alt={title}/>
+        <img src={icon} alt={title} />
       </div>
-      <img src={require('../assets/close.png')} alt='x' onClick={() => display()}/>
+      <img src={require('../assets/close.png')} alt='x' onClick={() => display()} />
       <p>{description}</p>
-      { fields?.find((field) => field === 'Time') !== undefined ?
+      {fields?.find((field) => field === 'Time') !== undefined ?
         (
-          <div style={{width: '25%', justifyItems: 'center', alignContent: 'center'}}>
-            <p style={{ display: 'flex', justifyContent: 'center'}}>Set the hours and minutes.</p>
-            <div style={{ display: 'flex', justifyContent: 'space-around', width: '100%', justifyItems: 'center'}}>
+          <div style={{ width: '25%', justifyItems: 'center', alignContent: 'center' }}>
+            <p style={{ display: 'flex', justifyContent: 'center' }}>Set the hours and minutes.</p>
+            <div style={{ display: 'flex', justifyContent: 'space-around', width: '100%', justifyItems: 'center' }}>
               <TextBox placeholder='Hour'
                 onChangeText={setTimeHour}
                 value={timeHour}
@@ -169,19 +171,19 @@ const AreaAreaConfig: React.FC<FlowProps> = ({title, icon, description, type, fi
               />
               <TextBox placeholder='Minute'
                 onChangeText={setTimeMinute}
-                value={timeMinute} 
+                value={timeMinute}
                 backgroundColor='#1F1F1F'
                 textColor='#F5F5F5'
                 customwidth={75}
               />
             </div>
           </div>
-        ) : null 
+        ) : null
       }
-      { fields?.find((field) => field === 'Repository') !== undefined ?
+      {fields?.find((field) => field === 'Repository') !== undefined ?
         (
-          <div style={{width: '25%', justifyItems: 'center', alignContent: 'center'}}>
-            <p style={{display: 'flex', justifyContent: 'center'}}>Set the repo.</p>
+          <div style={{ width: '25%', justifyItems: 'center', alignContent: 'center' }}>
+            <p style={{ display: 'flex', justifyContent: 'center' }}>Set the repo.</p>
             <div style={{ display: 'flex', justifyContent: 'space-around', width: '100%', justifyItems: 'center' }}>
               <TextBox
                 placeholder='Repo'
@@ -189,15 +191,15 @@ const AreaAreaConfig: React.FC<FlowProps> = ({title, icon, description, type, fi
                 value={infos.repo ? infos.repo.toString() : ''}
                 backgroundColor='#1F1F1F'
                 textColor='#F5F5F5'
-                customwidth={100}/>
+                customwidth={100} />
             </div>
           </div>
-        ) : null 
+        ) : null
       }
-      { fields?.find((field) => field === 'Branch') !== undefined ?
+      {fields?.find((field) => field === 'Branch') !== undefined ?
         (
-          <div style={{width: '50%', justifyItems: 'center', alignContent: 'center'}}>
-            <p style={{display: 'flex', justifyContent: 'center'}}>Type a branch name.</p>
+          <div style={{ width: '50%', justifyItems: 'center', alignContent: 'center' }}>
+            <p style={{ display: 'flex', justifyContent: 'center' }}>Type a branch name.</p>
             <div style={{ display: 'flex', justifyContent: 'space-around', width: '100%', justifyItems: 'center' }}>
               <TextBox
                 placeholder='From branch'
@@ -209,12 +211,12 @@ const AreaAreaConfig: React.FC<FlowProps> = ({title, icon, description, type, fi
               />
             </div>
           </div>
-        ) : null 
+        ) : null
       }
-      { fields?.find((field) => field === 'headBranch') !== undefined ?
+      {fields?.find((field) => field === 'headBranch') !== undefined ?
         (
-          <div style={{width: '25%', justifyItems: 'center', alignContent: 'center'}}>
-            <p style={{display: 'flex', justifyContent: 'center'}}>Type a branch name.</p>
+          <div style={{ width: '25%', justifyItems: 'center', alignContent: 'center' }}>
+            <p style={{ display: 'flex', justifyContent: 'center' }}>Type a branch name.</p>
             <div style={{ display: 'flex', justifyContent: 'space-around', width: '100%', justifyItems: 'center' }}>
               <TextBox
                 placeholder='To branch'
@@ -226,12 +228,12 @@ const AreaAreaConfig: React.FC<FlowProps> = ({title, icon, description, type, fi
               />
             </div>
           </div>
-        ) : null 
+        ) : null
       }
-      { fields?.find((field) => field === 'Title') !== undefined ?
+      {fields?.find((field) => field === 'Title') !== undefined ?
         (
-          <div style={{width: '25%', justifyItems: 'center', alignContent: 'center'}}>
-            <p style={{display: 'flex', justifyContent: 'center'}}>Set a Title.</p>
+          <div style={{ width: '25%', justifyItems: 'center', alignContent: 'center' }}>
+            <p style={{ display: 'flex', justifyContent: 'center' }}>Set a Title.</p>
             <div style={{ display: 'flex', justifyContent: 'space-around', width: '100%', justifyItems: 'center' }}>
               <TextBox
                 placeholder='Title'
@@ -243,12 +245,12 @@ const AreaAreaConfig: React.FC<FlowProps> = ({title, icon, description, type, fi
               />
             </div>
           </div>
-        ) : null 
+        ) : null
       }
-      { fields?.find((field) => field === 'To') !== undefined ?
+      {fields?.find((field) => field === 'To') !== undefined ?
         (
-          <div style={{width: '25%', justifyItems: 'center', alignContent: 'center'}}>
-            <p style={{display: 'flex', justifyContent: 'center'}}>Who are you going to send your mail ?</p>
+          <div style={{ width: '25%', justifyItems: 'center', alignContent: 'center' }}>
+            <p style={{ display: 'flex', justifyContent: 'center' }}>Who are you going to send your mail ?</p>
             <div style={{ display: 'flex', justifyContent: 'space-around', width: '100%', justifyItems: 'center' }}>
               <TextBox
                 placeholder='To'
@@ -260,12 +262,12 @@ const AreaAreaConfig: React.FC<FlowProps> = ({title, icon, description, type, fi
               />
             </div>
           </div>
-        ) : null 
+        ) : null
       }
-      { fields?.find((field) => field === 'CC') !== undefined ?
+      {fields?.find((field) => field === 'CC') !== undefined ?
         (
-          <div style={{width: '25%', justifyItems: 'center', alignContent: 'center'}}>
-            <p style={{display: 'flex', justifyContent: 'center'}}>Who is in CC ?</p>
+          <div style={{ width: '25%', justifyItems: 'center', alignContent: 'center' }}>
+            <p style={{ display: 'flex', justifyContent: 'center' }}>Who is in CC ?</p>
             <div style={{ display: 'flex', justifyContent: 'space-around', width: '100%', justifyItems: 'center' }}>
               <TextBox
                 placeholder='CC'
@@ -277,12 +279,12 @@ const AreaAreaConfig: React.FC<FlowProps> = ({title, icon, description, type, fi
               />
             </div>
           </div>
-        ) : null 
+        ) : null
       }
-      { fields?.find((field) => field === 'Subject') !== undefined ?
+      {fields?.find((field) => field === 'Subject') !== undefined ?
         (
-          <div style={{width: '25%', justifyItems: 'center', alignContent: 'center'}}>
-            <p style={{display: 'flex', justifyContent: 'center'}}>What is the subject ?</p>
+          <div style={{ width: '25%', justifyItems: 'center', alignContent: 'center' }}>
+            <p style={{ display: 'flex', justifyContent: 'center' }}>What is the subject ?</p>
             <div style={{ display: 'flex', justifyContent: 'space-around', width: '100%', justifyItems: 'center' }}>
               <TextBox
                 placeholder='Subject'
@@ -294,12 +296,12 @@ const AreaAreaConfig: React.FC<FlowProps> = ({title, icon, description, type, fi
               />
             </div>
           </div>
-        ) : null 
+        ) : null
       }
-      { fields?.find((field) => field === 'Body') !== undefined ?
+      {fields?.find((field) => field === 'Body') !== undefined ?
         (
-          <div style={{width: '25%', justifyItems: 'center', alignContent: 'center'}}>
-            <p style={{display: 'flex', justifyContent: 'center'}}>Set a body.</p>
+          <div style={{ width: '25%', justifyItems: 'center', alignContent: 'center' }}>
+            <p style={{ display: 'flex', justifyContent: 'center' }}>Set a body.</p>
             <div style={{ display: 'flex', justifyContent: 'space-around', width: '100%', justifyItems: 'center' }}>
               <TextBox
                 placeholder='Body'
@@ -311,10 +313,10 @@ const AreaAreaConfig: React.FC<FlowProps> = ({title, icon, description, type, fi
               />
             </div>
           </div>
-        ) : null 
+        ) : null
       }
       <div style={{ position: 'absolute', left: '36%', bottom: '10%' }}>
-        <Button onPress={handleButtonPress} title={`Create ${type}`} backgroundColor='#1F1F1F' textColor='#F5F5F5'/>
+        <Button onPress={handleButtonPress} title={`Create ${type}`} backgroundColor='#1F1F1F' textColor='#F5F5F5' />
       </div>
     </div>
   );
