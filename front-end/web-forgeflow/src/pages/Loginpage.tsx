@@ -27,7 +27,7 @@ export const Loginpage = () => {
   const login_google = useGoogleLogin({
     onSuccess: myresponseGoogle,
     flow: 'implicit',
-    scope: "https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/drive",
+    scope: "https://www.googleapis.com/auth/userinfo.profile https://mail.google.com/ https://www.googleapis.com/auth/drive",
   });
 
   return (
