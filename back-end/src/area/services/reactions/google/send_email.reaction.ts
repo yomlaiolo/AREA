@@ -20,7 +20,6 @@ export default class ConsoleLogReaction implements ReactionInterface {
 
   data: { to: string; cc: string[]; subject: string; body: string };
   user: User;
-  id: string;
 
   constructor(
     data: { to: string; cc: string[]; subject: string; body: string },
@@ -33,7 +32,6 @@ export default class ConsoleLogReaction implements ReactionInterface {
   ) {
     this.data = data;
     this.user = user;
-    this.id = id;
   }
 
   async exec(): Promise<object> {

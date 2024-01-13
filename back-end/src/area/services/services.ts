@@ -30,6 +30,7 @@ export const actionConstructors: (new (
   user: object,
   token: object,
   id: string,
+  first_launch: boolean,
   githubService: GithubService,
   usersService: UsersService,
   gDriveService: GDriveService,
@@ -46,12 +47,10 @@ export const actionConstructors: (new (
 export const reactionConstructors: (new (
   data: object,
   user: User,
-  id: string,
   githubService: GithubService,
   usersService: UsersService,
   gDriveService: GDriveService,
   openAiService: OpenAIService,
-  areaService: AreaService,
 ) => ReactionInterface)[] = [
   ConsoleLogReaction,
   IssueReaction,
@@ -69,6 +68,7 @@ export function createAbout(): object[] {
       {} as User,
       {} as CancellationToken,
       '',
+      true,
       null,
       null,
       null,
@@ -78,7 +78,7 @@ export function createAbout(): object[] {
     if (!allServices.includes(tmp.service)) allServices.push(tmp.service);
   });
   reactionConstructors.forEach((element) => {
-    let tmp = new element({}, {} as User, '', null, null, null, null, null);
+    let tmp = new element({}, {} as User, null, null, null, null);
     if (!allServices.includes(tmp.service)) allServices.push(tmp.service);
   });
 
@@ -92,6 +92,7 @@ export function createAbout(): object[] {
         {} as User,
         {} as CancellationToken,
         '',
+        true,
         null,
         null,
         null,
@@ -108,16 +109,7 @@ export function createAbout(): object[] {
     });
 
     reactionConstructors.forEach((element) => {
-      const tmpReaction = new element(
-        {},
-        {} as User,
-        '',
-        null,
-        null,
-        null,
-        null,
-        null,
-      );
+      const tmpReaction = new element({}, {} as User, null, null, null, null);
       if (tmpReaction.service === serviceName) {
         reaction.push({
           method: tmpReaction.method,
@@ -143,6 +135,7 @@ export function createMapAction(
     user: object,
     token: object,
     id: string,
+    first_launch: boolean,
     githubService: GithubService,
     usersService: UsersService,
     gDriveService: GDriveService,
@@ -158,6 +151,7 @@ export function createMapAction(
       {} as User,
       {} as CancellationToken,
       '',
+      true,
       null,
       null,
       null,
@@ -173,26 +167,15 @@ export function createMapReaction(
   reactionConstructors: (new (
     data: object,
     user: User,
-    id: string,
     githubService: GithubService,
     usersService: UsersService,
     gDriveService: GDriveService,
     openAiService: OpenAIService,
-    areaService: AreaService,
   ) => ReactionInterface)[],
 ) {
   const reactionMap = {};
   reactionConstructors.forEach((element) => {
-    let tmp = new element(
-      {} as object,
-      {} as User,
-      '',
-      null,
-      null,
-      null,
-      null,
-      null,
-    );
+    let tmp = new element({} as object, {} as User, null, null, null, null);
     reactionMap[tmp.method] = element;
   });
   return reactionMap;
@@ -204,6 +187,7 @@ export function factoryArea(
   user: User,
   token: object,
   id: string,
+  first_launch: boolean,
   githubService: GithubService,
   usersService: UsersService,
   gDriveService: GDriveService,
@@ -218,6 +202,7 @@ export function factoryArea(
         user,
         token,
         id,
+        first_launch,
         githubService,
         usersService,
         gDriveService,

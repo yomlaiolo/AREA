@@ -32,12 +32,15 @@ export default class PullRequestAction implements ActionInterface {
 
   token: CancellationToken;
 
+  first_launch: boolean;
+
   constructor(
     actionDto: ActionDto,
     reactionDto: ReactionDto,
     user: User,
     token: CancellationToken,
     id: string,
+    first_launch: boolean,
     private readonly githubService: GithubService,
     private readonly usersService: UsersService,
     private readonly gDriveService: GDriveService,
@@ -49,6 +52,7 @@ export default class PullRequestAction implements ActionInterface {
     this.user = user;
     this.token = token;
     this.id = id;
+    this.first_launch = first_launch;
   }
 
   async exec(): Promise<void> {
@@ -62,13 +66,15 @@ export default class PullRequestAction implements ActionInterface {
 
     const webhookUUID = uuidv4();
 
-    this.githubService.subscribeToRepo(
-      this.user.github.username,
-      data.repo,
-      this.user.github.access_token,
-      ['pull_request'],
-      webhookUUID,
-    );
+    if (this.first_launch == true) {
+      this.githubService.subscribeToRepo(
+        this.user.github.username,
+        data.repo,
+        this.user.github.access_token,
+        ['pull_request'],
+        webhookUUID,
+      );
+    }
 
     this.usersService.addWebhookUUID(
       this.user.github.username,

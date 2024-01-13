@@ -5,7 +5,6 @@ import { GithubService } from 'src/github-action/github.service';
 import { UsersService } from 'src/users/users.service';
 import { GDriveService } from 'src/gdrive/gdrive.service';
 import { OpenAIService } from 'src/openai/openai.service';
-import { AreaService } from 'src/area/area.service';
 
 @Injectable()
 export default class PullRequestReaction implements ReactionInterface {
@@ -30,7 +29,6 @@ export default class PullRequestReaction implements ReactionInterface {
     baseBranch: string;
   };
   user: User;
-  id: string;
 
   constructor(
     data: {
@@ -42,31 +40,28 @@ export default class PullRequestReaction implements ReactionInterface {
       baseBranch: string;
     },
     user: User,
-    id: string,
     private readonly githubService: GithubService,
     private readonly usersService: UsersService,
     private readonly gDriveService: GDriveService,
     private readonly openAiService: OpenAIService,
-    private readonly areaService: AreaService,
   ) {
     this.data = data;
     this.user = user;
-    this.id = id;
   }
 
   async exec(): Promise<object> {
     this.githubService.createEvent(
-      this.data['value'].repoOwner,
-      this.data['value'].repoName,
+      this.data.repoOwner,
+      this.data.repoName,
       'pulls',
       this.user.github.access_token,
       {
-        owner: this.data['value'].repoOwner,
-        repo: this.data['value'].repoName,
-        title: this.data['value'].title,
-        body: this.data['value'].body,
-        head: this.data['value'].headBranch,
-        base: this.data['value'].baseBranch,
+        owner: this.data.repoOwner,
+        repo: this.data.repoName,
+        title: this.data.title,
+        body: this.data.body,
+        head: this.data.headBranch,
+        base: this.data.baseBranch,
       },
     );
     return { message: 'Pull request created' };
@@ -74,12 +69,12 @@ export default class PullRequestReaction implements ReactionInterface {
 
   async check(): Promise<boolean> {
     if (
-      this.data['value'].repoOwner == undefined ||
-      this.data['value'].repoName == undefined ||
-      this.data['value'].title == undefined ||
-      this.data['value'].body == undefined ||
-      this.data['value'].headBranch == undefined ||
-      this.data['value'].baseBranch == undefined
+      this.data.repoOwner == undefined ||
+      this.data.repoName == undefined ||
+      this.data.title == undefined ||
+      this.data.body == undefined ||
+      this.data.headBranch == undefined ||
+      this.data.baseBranch == undefined
     ) {
       return false;
     }

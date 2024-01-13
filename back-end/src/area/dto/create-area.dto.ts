@@ -26,12 +26,29 @@ export class CreateAreaDto {
   description: string;
 
   @ApiProperty({
-    example: { type: 'interval', value: { hour: 0, minute: 1 } },
+    example: {
+      type: 'new_pull_request',
+      value: {
+        repo: 'APITest',
+        title: '__title__',
+        body: '__body__',
+        fromBranch: '__fromBranch__',
+        headBranch: '__headBranch__',
+      },
+    },
   })
   action: ActionDto;
 
   @ApiProperty({
-    example: { type: 'console_log', value: { message: 'Hello World!' } },
+    example: {
+      type: 'issue',
+      value: {
+        repoOwner: 'TerryMazzoni',
+        repoName: 'APITest',
+        title: '__fromBranch__',
+        body: '__headBranch__',
+      },
+    },
   })
   reaction: ReactionDto;
 }

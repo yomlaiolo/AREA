@@ -5,7 +5,6 @@ import { Injectable } from '@nestjs/common';
 import { UsersService } from '../../../../users/users.service';
 import { GDriveService } from '../../../../gdrive/gdrive.service';
 import { OpenAIService } from '../../../../openai/openai.service';
-import { AreaService } from '../../../area.service';
 
 @Injectable()
 export default class ConsoleLogReaction implements ReactionInterface {
@@ -18,21 +17,17 @@ export default class ConsoleLogReaction implements ReactionInterface {
 
   data: { message: string };
   user: User;
-  id: string;
 
   constructor(
     data: { message: string },
     user: User,
-    id: string,
     private readonly githubService: GithubService,
     private readonly usersService: UsersService,
     private readonly gDriveService: GDriveService,
     private readonly openAiService: OpenAIService,
-    private readonly areaService: AreaService,
   ) {
     this.data = data;
     this.user = user;
-    this.id = id;
   }
 
   async exec(): Promise<object> {

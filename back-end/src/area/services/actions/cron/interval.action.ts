@@ -29,12 +29,15 @@ export default class IntervalAction implements ActionInterface {
 
   token: CancellationToken;
 
+  first_launch: boolean;
+
   constructor(
     actionDto: ActionDto,
     reactionDto: ReactionDto,
     user: User,
     token: CancellationToken,
     id: string,
+    first_launch: boolean,
     private readonly githubService: GithubService,
     private readonly usersService: UsersService,
     private readonly gDriveService: GDriveService,
@@ -46,6 +49,7 @@ export default class IntervalAction implements ActionInterface {
     this.user = user;
     this.token = token;
     this.id = id;
+    this.first_launch = first_launch;
   }
 
   async exec(): Promise<void> {

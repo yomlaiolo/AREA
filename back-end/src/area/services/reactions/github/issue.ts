@@ -5,7 +5,6 @@ import { GithubService } from 'src/github-action/github.service';
 import { UsersService } from 'src/users/users.service';
 import { GDriveService } from 'src/gdrive/gdrive.service';
 import { OpenAIService } from 'src/openai/openai.service';
-import { AreaService } from 'src/area/area.service';
 
 @Injectable()
 export default class IssueReaction implements ReactionInterface {
@@ -21,27 +20,23 @@ export default class IssueReaction implements ReactionInterface {
 
   data: { repoOwner: string; repoName: string; title: string; body: string };
   user: User;
-  id: string;
 
   constructor(
     data: { repoOwner: string; repoName: string; title: string; body: string },
     user: User,
-    id: string,
     private readonly githubService: GithubService,
     private readonly usersService: UsersService,
     private readonly gDriveService: GDriveService,
     private readonly openAiService: OpenAIService,
-    private readonly areaService: AreaService,
   ) {
     this.data = data;
     this.user = user;
-    this.id = id;
   }
 
   async exec(): Promise<object> {
     this.githubService.createEvent(
-      this.data['value'].repoOwner,
-      this.data['value'].repoName,
+      this.data.repoOwner,
+      this.data.repoName,
       'issues',
       this.user.github.access_token,
       {
@@ -54,10 +49,10 @@ export default class IssueReaction implements ReactionInterface {
 
   async check(): Promise<boolean> {
     if (
-      this.data['value'].repoOwner == undefined ||
-      this.data['value'].repoName == undefined ||
-      this.data['value'].title == undefined ||
-      this.data['value'].body == undefined
+      this.data.repoOwner == undefined ||
+      this.data.repoName == undefined ||
+      this.data.title == undefined ||
+      this.data.body == undefined
     ) {
       return false;
     }

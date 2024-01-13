@@ -39,6 +39,7 @@ export class AreaService {
       user,
       token,
       id,
+      area.first_launch,
       this.githubService,
       this.usersService,
       this.gDriveService,
@@ -49,9 +50,6 @@ export class AreaService {
     if (!action || !(await action.check()))
       return { error: 'Action or reaction not found' };
     else action.exec();
-    // const tmp = await this.areaModel.findById(id).exec();
-    // tmp.first_launch = false;
-    // await tmp.save();
     return { id: id };
   }
 
@@ -93,6 +91,7 @@ export class AreaService {
     if (response['error']) {
       throw new BadRequestException(response['error']);
     }
+    area.first_launch = false;
     await area.save();
     return response;
   }
