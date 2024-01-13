@@ -281,7 +281,6 @@ export async function signInWithGithub() {
   const token = await getVar('token');
   const githubToken = await authorize(config);
 
-  console.log(githubToken);
   if (!githubToken) {
     console.log('No token found');
     return;
@@ -299,7 +298,6 @@ export async function signInWithGithub() {
   })
     .then(response => {
       if (response.status === 200) {
-        console.log('Github token saved');
         return response.json();
       } else if (response.status === 401) {
         console.log('Unauthorized - invalid credentials');
@@ -344,6 +342,10 @@ export async function getRepo() {
 export async function createArea(area: any) {
   const token = await AsyncStorage.getItem('token');
 
+  if (!token) {
+    console.log('No token found');
+    return;
+  }
   try {
     const response = await fetch(API + '/area/create', {
       method: 'POST',
