@@ -76,14 +76,8 @@ export default class RecurrentAction implements ActionInterface {
         return;
       }
       const reactionResult = await reaction.exec();
-      const actionResult = {
-        time: new Date(),
-      };
 
-      const result = {
-        action: actionResult,
-        reaction: reactionResult,
-      };
+      const result = reactionResult.result;
       this.areaService.updateResult(this.id, result);
     });
   }

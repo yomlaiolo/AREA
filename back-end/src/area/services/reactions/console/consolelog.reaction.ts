@@ -32,7 +32,7 @@ export default class ConsoleLogReaction implements ReactionInterface {
 
   async exec(): Promise<object> {
     console.log(this.data.message);
-    return { message: this.data.message };
+    return { result: this.data.message };
   }
 
   async check(): Promise<boolean> {
