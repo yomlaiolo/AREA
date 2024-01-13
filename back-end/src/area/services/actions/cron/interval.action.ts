@@ -9,6 +9,7 @@ import { GDriveService } from 'src/gdrive/gdrive.service';
 import { OpenAIService } from 'src/openai/openai.service';
 import { createMapReaction, reactionConstructors } from '../../services';
 import { variableObject } from 'src/utils/variable_object';
+import { AreaService } from '../../../area.service';
 
 @Injectable()
 export default class IntervalAction implements ActionInterface {
@@ -24,22 +25,31 @@ export default class IntervalAction implements ActionInterface {
   reactionDto: ReactionDto;
   user: User;
 
+  id: string;
+
   token: CancellationToken;
+
+  first_launch: boolean;
 
   constructor(
     actionDto: ActionDto,
     reactionDto: ReactionDto,
     user: User,
     token: CancellationToken,
+    id: string,
+    first_launch: boolean,
     private readonly githubService: GithubService,
     private readonly usersService: UsersService,
     private readonly gDriveService: GDriveService,
     private readonly openAiService: OpenAIService,
+    private readonly areaService: AreaService,
   ) {
     this.actionDto = actionDto;
     this.reactionDto = reactionDto;
     this.user = user;
     this.token = token;
+    this.id = id;
+    this.first_launch = first_launch;
   }
 
   async exec(): Promise<void> {
@@ -48,7 +58,7 @@ export default class IntervalAction implements ActionInterface {
       hour: this.actionDto.value['hour'],
     };
     setInterval(
-      () => {
+      async () => {
         if (this.token.isCancelled) return;
         const reactionMap = createMapReaction(reactionConstructors);
         const reaction = reactionMap[this.reactionDto.type]
@@ -59,15 +69,21 @@ export default class IntervalAction implements ActionInterface {
                 this.reactionDto.value,
               ),
               this.user,
+              this.id,
               this.githubService,
               this.usersService,
               this.gDriveService,
               this.openAiService,
+              this.areaService,
             )
           : null;
         if (!reaction) throw new Error('Reaction not found');
-        if (reaction.check()) reaction.exec();
-        else console.log('Invalid reaction');
+        if (reaction.check()) {
+          const reactionResult = await reaction.exec();
+
+          const result = reactionResult.result;
+          this.areaService.updateResult(this.id, result);
+        } else console.log('Invalid reaction');
       },
       1000 * 60 * (60 * data.hour + data.minute),
     );

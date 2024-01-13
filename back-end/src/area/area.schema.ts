@@ -20,6 +20,9 @@ export class Area {
 
   @Prop({ default: true })
   first_launch: boolean;
+
+  @Prop({ type: Object })
+  results: object;
 }
 
 export const AreaSchema = SchemaFactory.createForClass(Area);

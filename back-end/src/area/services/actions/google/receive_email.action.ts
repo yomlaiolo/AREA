@@ -4,9 +4,9 @@ import { User } from '../../../../users/user.schema';
 import { CancellationToken } from '../../../../utils/cancellation_token';
 import { GithubService } from '../../../../github-action/github.service';
 import { Injectable } from '@nestjs/common';
-import { UsersService } from 'src/users/users.service';
-import { GDriveService } from 'src/gdrive/gdrive.service';
-import { OpenAIService } from 'src/openai/openai.service';
+import { UsersService } from '../../../../users/users.service';
+import { GDriveService } from '../../../../gdrive/gdrive.service';
+import { OpenAIService } from '../../../../openai/openai.service';
 
 @Injectable()
 export default class ReceiveEmailAction implements ActionInterface {
@@ -24,13 +24,19 @@ export default class ReceiveEmailAction implements ActionInterface {
   reactionDto: ReactionDto;
   user: User;
 
+  id: string;
+
   token: CancellationToken;
+
+  first_launch: boolean;
 
   constructor(
     actionDto: ActionDto,
     reactionDto: ReactionDto,
     user: User,
     token: CancellationToken,
+    id: string,
+    first_launch: boolean,
     private readonly githubService: GithubService,
     private readonly usersService: UsersService,
     private readonly gDriveService: GDriveService,
@@ -40,6 +46,8 @@ export default class ReceiveEmailAction implements ActionInterface {
     this.reactionDto = reactionDto;
     this.user = user;
     this.token = token;
+    this.id = id;
+    this.first_launch = first_launch;
   }
 
   async exec(): Promise<void> {
@@ -56,6 +64,7 @@ export default class ReceiveEmailAction implements ActionInterface {
     //   ? new reactionMap[this.reactionDto.type](
     //       variableObject(data, this.actionDto.value, this.reactionDto.value),
     //       this.user,
+    //       this.id,
     //       this.githubService,
     //       this.usersService,
     //       this.gDriveService,

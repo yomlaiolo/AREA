@@ -7,6 +7,7 @@ import { GithubService } from 'src/github-action/github.service';
 import { UsersService } from 'src/users/users.service';
 import { GDriveService } from 'src/gdrive/gdrive.service';
 import { OpenAIService } from 'src/openai/openai.service';
+import { AreaService } from '../area.service';
 
 // Actions ####################################################################
 // cron
@@ -28,10 +29,13 @@ export const actionConstructors: (new (
   reactionDto: ReactionDto,
   user: object,
   token: object,
+  id: string,
+  first_launch: boolean,
   githubService: GithubService,
   usersService: UsersService,
   gDriveService: GDriveService,
   openAiService: OpenAIService,
+  areaService: AreaService,
 ) => ActionInterface)[] = [
   IntervalAction,
   IssueAction,
@@ -63,6 +67,9 @@ export function createAbout(): object[] {
       {} as ReactionDto,
       {} as User,
       {} as CancellationToken,
+      '',
+      true,
+      null,
       null,
       null,
       null,
@@ -84,6 +91,9 @@ export function createAbout(): object[] {
         {} as ReactionDto,
         {} as User,
         {} as CancellationToken,
+        '',
+        true,
+        null,
         null,
         null,
         null,
@@ -124,10 +134,13 @@ export function createMapAction(
     reactionDto: ReactionDto,
     user: object,
     token: object,
+    id: string,
+    first_launch: boolean,
     githubService: GithubService,
     usersService: UsersService,
     gDriveService: GDriveService,
     openAiService: OpenAIService,
+    areaService: AreaService,
   ) => ActionInterface)[],
 ) {
   const actionMap = {};
@@ -137,6 +150,9 @@ export function createMapAction(
       {} as ReactionDto,
       {} as User,
       {} as CancellationToken,
+      '',
+      true,
+      null,
       null,
       null,
       null,
@@ -170,10 +186,13 @@ export function factoryArea(
   reactionDto: ReactionDto,
   user: User,
   token: object,
+  id: string,
+  first_launch: boolean,
   githubService: GithubService,
   usersService: UsersService,
   gDriveService: GDriveService,
   openAiService: OpenAIService,
+  areaService: AreaService,
 ): ActionInterface {
   const actionMap = createMapAction(actionConstructors);
   const action = actionMap[actionDto.type]
@@ -182,10 +201,13 @@ export function factoryArea(
         reactionDto,
         user,
         token,
+        id,
+        first_launch,
         githubService,
         usersService,
         gDriveService,
         openAiService,
+        areaService,
       )
     : null;
   return action;

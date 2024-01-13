@@ -57,6 +57,21 @@ export class AreaController {
   }
 
   @HttpCode(HttpStatus.OK)
+  @Delete('results/:id')
+  @ApiBearerAuth('access-token')
+  @ApiResponse({ status: 200, description: 'OK - Results deleted' })
+  @ApiResponse({ status: 404, description: 'Not Found - Area not found' })
+  async deleteResults(@Param('id') id: string, @Req() request: Request) {
+    const user = request['user'];
+    const user_id = user['user']['_id'];
+    const area = await this.areaService.findOne(id);
+    if (!area) throw new NotFoundException('Area not found');
+    if (area.user_id != user_id)
+      throw new BadRequestException('You are not the owner of this area');
+    return this.areaService.deleteResults(id);
+  }
+
+  @HttpCode(HttpStatus.OK)
   @Get()
   @ApiBearerAuth('access-token')
   @ApiResponse({ status: 200, description: 'OK - Get all areas' })
@@ -67,8 +82,6 @@ export class AreaController {
     const filtered_areas = all_areas.filter((area) => area.user_id == user_id);
     filtered_areas.forEach((area) => {
       delete area.user_id;
-      delete area.action.value;
-      delete area.reaction.value;
     });
     return filtered_areas;
   }

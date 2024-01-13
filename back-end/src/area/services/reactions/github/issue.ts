@@ -33,10 +33,10 @@ export default class IssueReaction implements ReactionInterface {
     this.user = user;
   }
 
-  async exec(): Promise<void> {
+  async exec(): Promise<object> {
     this.githubService.createEvent(
-      this.data['value'].repoOwner,
-      this.data['value'].repoName,
+      this.data.repoOwner,
+      this.data.repoName,
       'issues',
       this.user.github.access_token,
       {
@@ -44,14 +44,15 @@ export default class IssueReaction implements ReactionInterface {
         body: this.data.body,
       },
     );
+    return { message: 'Issue created' };
   }
 
   async check(): Promise<boolean> {
     if (
-      this.data['value'].repoOwner == undefined ||
-      this.data['value'].repoName == undefined ||
-      this.data['value'].title == undefined ||
-      this.data['value'].body == undefined
+      this.data.repoOwner == undefined ||
+      this.data.repoName == undefined ||
+      this.data.title == undefined ||
+      this.data.body == undefined
     ) {
       return false;
     }

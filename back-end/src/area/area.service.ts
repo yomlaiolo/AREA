@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Area } from './area.schema';
@@ -27,6 +27,7 @@ export class AreaService {
     reactionDto: ReactionDto,
     id: string,
     area: Area,
+    first_launch: boolean,
   ): Promise<object> {
     const token = new CancellationToken();
     this.cancellation_tokens.set(id, token);
@@ -37,18 +38,18 @@ export class AreaService {
       reactionDto,
       user,
       token,
+      id,
+      area.first_launch,
       this.githubService,
       this.usersService,
       this.gDriveService,
       this.openAiService,
+      this,
     );
 
     if (!action || !(await action.check()))
       return { error: 'Action or reaction not found' };
     else action.exec();
-    const tmp = await this.areaModel.findById(id).exec();
-    tmp.first_launch = false;
-    await tmp.save();
     return { id: id };
   }
 
@@ -64,6 +65,7 @@ export class AreaService {
               area.reaction,
               area._id.toString(),
               area,
+              false,
             );
           } catch (e) {
             console.error('Error in launchArea:', e);
@@ -72,15 +74,25 @@ export class AreaService {
       });
   }
 
-  async create(createAreaDto: CreateAreaDto, user_id: string): Promise<object> {
-    const area = new this.areaModel({ ...createAreaDto, user_id: user_id });
-    await area.save();
-    const response = this.launchArea(
+  async create(createAreaDto: CreateAreaDto, user_id: string): Promise<Object> {
+    const area = new this.areaModel({
+      ...createAreaDto,
+      user_id: user_id,
+      results: null,
+      first_launch: true,
+    });
+    const response = await this.launchArea(
       area.action,
       area.reaction,
       area._id.toString(),
       area,
+      true,
     );
+    if (response['error']) {
+      throw new BadRequestException(response['error']);
+    }
+    area.first_launch = false;
+    await area.save();
     return response;
   }
 
@@ -96,6 +108,18 @@ export class AreaService {
 
   async findOne(id: string): Promise<Area> {
     return this.areaModel.findById(id).exec();
+  }
+
+  async deleteResults(id: string): Promise<void> {
+    const area = await this.areaModel.findById(id).exec();
+    area.results = null;
+    area.save();
+  }
+
+  async updateResult(id: string, result: object): Promise<void> {
+    const area = await this.areaModel.findById(id).exec();
+    area.results = result;
+    area.save();
   }
 
   async onModuleInit(): Promise<void> {

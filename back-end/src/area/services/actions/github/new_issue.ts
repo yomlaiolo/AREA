@@ -9,6 +9,7 @@ import { OpenAIService } from 'src/openai/openai.service';
 import { ActionDto, ReactionDto } from 'src/area/dto/create-area.dto';
 import { factoryArea } from '../../services';
 import { ActionInterface } from '../action.interface';
+import { AreaService } from 'src/area/area.service';
 
 export default class IssueAction implements ActionInterface {
   method: string = 'new_issue';
@@ -24,22 +25,31 @@ export default class IssueAction implements ActionInterface {
   reactionDto: ReactionDto;
   user: User;
 
+  id: string;
+
   token: CancellationToken;
+
+  first_launch: boolean;
 
   constructor(
     actionDto: ActionDto,
     reactionDto: ReactionDto,
     user: User,
     token: CancellationToken,
+    id: string,
+    first_launch: boolean,
     private readonly githubService: GithubService,
     private readonly usersService: UsersService,
     private readonly gDriveService: GDriveService,
     private readonly openAiService: OpenAIService,
+    private readonly areaService: AreaService,
   ) {
     this.actionDto = actionDto;
     this.reactionDto = reactionDto;
     this.user = user;
     this.token = token;
+    this.id = id;
+    this.first_launch = first_launch;
   }
 
   async exec(): Promise<void> {
@@ -51,13 +61,15 @@ export default class IssueAction implements ActionInterface {
 
     const webhookUUID = uuidv4();
 
-    this.githubService.subscribeToRepo(
-      this.user.github.username,
-      data.repo,
-      this.user.github.access_token,
-      ['issues'],
-      webhookUUID,
-    );
+    if (this.first_launch == true) {
+      this.githubService.subscribeToRepo(
+        this.user.github.username,
+        data.repo,
+        this.user.github.access_token,
+        ['issues'],
+        webhookUUID,
+      );
+    }
 
     this.usersService.addWebhookUUID(
       this.user.github.username,

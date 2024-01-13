@@ -2,9 +2,9 @@ import { ReactionInterface } from '../reaction.interface';
 import { User } from '../../../../users/user.schema';
 import { GithubService } from '../../../../github-action/github.service';
 import { Injectable } from '@nestjs/common';
-import { UsersService } from 'src/users/users.service';
-import { GDriveService } from 'src/gdrive/gdrive.service';
-import { OpenAIService } from 'src/openai/openai.service';
+import { UsersService } from '../../../../users/users.service';
+import { GDriveService } from '../../../../gdrive/gdrive.service';
+import { OpenAIService } from '../../../../openai/openai.service';
 
 @Injectable()
 export default class ConsoleLogReaction implements ReactionInterface {
@@ -30,8 +30,9 @@ export default class ConsoleLogReaction implements ReactionInterface {
     this.user = user;
   }
 
-  async exec(): Promise<void> {
-    console.log(this.data['value'].message);
+  async exec(): Promise<object> {
+    console.log(this.data.message);
+    return { result: this.data.message };
   }
 
   async check(): Promise<boolean> {
