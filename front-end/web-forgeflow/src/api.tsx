@@ -226,6 +226,34 @@ export async function modifyPassword(oldPassword: string, newPassword: string) {
     return "Unknown error, maybe the server is down";
 }
 
+export async function getAreas() {
+    const token = await getToken();
+    var areas: any[] = [];
+  
+    if (!token) {
+      console.log('No token found');
+      return areas;
+    }
+    try {
+      const response = await fetch(API + '/area', {
+        method: 'GET',
+        headers: new Headers({
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + token,
+        }),
+      });
+      if (response.status === 200) {
+        const data = await response.json();
+        areas = data;
+      } else if (response.status === 401) {
+        console.log('Unauthorized - invalid credentials');
+      }
+    } catch (error) {
+      console.log('Error:', error);
+    }
+    return areas;
+  }
+
 export async function getToken() {
     const token = localStorage.getItem('token');
     return token;
