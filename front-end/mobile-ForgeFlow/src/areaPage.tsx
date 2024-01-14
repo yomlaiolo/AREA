@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { FlatList, StyleSheet, View } from "react-native";
+import { FlatList, Modal, ScrollView, StyleSheet, Text, TouchableOpacity, TouchableWithoutFeedback, View } from "react-native";
 import AreaButton from "@components//button";
 import Flow from "@components//flow";
-import { getAreas, getVar } from "./api";
+import { getAreas } from "./api";
 import { actions, reactions } from "./area";
 import { useFocusEffect } from "@react-navigation/native";
+import Clipboard from "@react-native-clipboard/clipboard";
+import { showToast } from "./utils";
 
 async function getData() {
   const areas = await getAreas();
@@ -13,6 +15,8 @@ async function getData() {
 
 export default function AreaPage({ navigation }: any) {
   const [areas, setAreas] = useState<any[]>([]);
+  const [modalVisible, setModalVisible] = useState<boolean>(false);
+  const [reactionValue, setReactionValue] = useState<string>('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -58,7 +62,7 @@ export default function AreaPage({ navigation }: any) {
 
         return (
           <Flow
-            onPress={() => { }}
+            onPress={() => { setReactionValue(areas.item.results); setModalVisible(true) }}
             title={areas.item.name}
             description={areas.item.description}
             icons={icons}
@@ -75,6 +79,38 @@ export default function AreaPage({ navigation }: any) {
           <AreaButton title="Refresh" onPress={refresh} backgroundColor='#1F1F1F' textColor='white' activeOpacity={0.5} />
         </View>
       </View>
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <TouchableOpacity style={{ width: '100%', height: '100%', justifyContent: "center", alignItems: "center" }} activeOpacity={1} onPressOut={() => setModalVisible(false)} >
+          <TouchableWithoutFeedback>
+            <View style={styles.modal} >
+              <Text style={{ fontSize: 26, fontWeight: "bold", marginTop: 20, color: 'black' }} >Result of the reaction</Text>
+              <Text style={{ fontSize: 16, fontWeight: "normal", color: 'black' }} >(if there is one)</Text>
+              <ScrollView style={{
+                width: '90%',
+                height: 'auto',
+                marginTop: 10,
+                marginBottom: 10,
+                paddingHorizontal: '1%',
+              }}
+                showsVerticalScrollIndicator={false}
+              >
+                <Text style={{ fontSize: 18, fontWeight: "normal", color: 'black', textAlign: 'justify' }} >{reactionValue}</Text>
+              </ScrollView>
+              <View style={styles.modalBottom}>
+                <AreaButton title="Copy to clipboard" onPress={() => { Clipboard.setString(reactionValue); showToast("Copied to clipboard") }} backgroundColor='#E88741' textColor='#1F1F1F' activeOpacity={0.5} />
+                <AreaButton title="Close" onPress={() => setModalVisible(false)} backgroundColor='#1F1F1F' textColor='white' activeOpacity={0.5} />
+              </View>
+            </View>
+          </TouchableWithoutFeedback>
+        </TouchableOpacity>
+      </Modal>
+
     </View >
   )
 };
@@ -109,5 +145,18 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5F5F5',
     flexDirection: "row",
     justifyContent: "space-between",
-  }
+  },
+  modal: {
+    width: '80%',
+    height: '75%',
+    backgroundColor: '#F5F5F5',
+    borderRadius: 20,
+    alignItems: "center",
+    elevation: 100,
+  },
+  modalBottom: {
+    width: '90%',
+    justifyContent: "center",
+    alignItems: "center",
+  },
 });

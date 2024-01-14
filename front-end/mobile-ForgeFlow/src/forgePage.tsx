@@ -20,6 +20,8 @@ async function forge(name: string, repo: string, cronTime: string, reactionValue
     if (action.name === 'Pull request created') {
       value = {
         repo: repo,
+        title: "__title__",
+        body: "__body__",
         fromBranch: "__fromBranch__",
         headBranch: "__headBranch__",
       }
