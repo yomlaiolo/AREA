@@ -1,4 +1,4 @@
-.flow-area {
+.miniflow-area {
     width: 150px;
     height: 150px;
     background-color: #1F1F1F;
@@ -6,20 +6,20 @@
     cursor: pointer;
 }
 
-.flow-icon {
-    width: 90%;
-    height: 90%;
-    margin: 8px;
+.miniflow-icon {
+    width: 75%;
+    height: 75%;
+    margin: 18px;
     border-radius: 30px;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.flow-title {
+.miniflow-title {
     background-color: #F5F5F5;
     color: #1F1F1F;
-    width: 40%;
+    width: 100%;
     height: 20%;
     border-radius: 10px;
     font-family: 'Rowdies', sans-serif;
@@ -28,6 +28,15 @@
     align-items: center;
     align-content: center;
     justify-content: center;
-    margin-left: 44px;
+    text-justify: auto;
     display: flex;
+    margin-top: -10%;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.25); /* horizontal offset, vertical offset, blur radius, color */
+
+}
+
+.miniflow-title > p {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

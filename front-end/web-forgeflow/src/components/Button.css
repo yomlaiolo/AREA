@@ -15,6 +15,7 @@
   background-color: #fff;
   cursor: pointer;
   display: flex;
+  justify-content: center;
 }
 
 .button-area>button:active {
@@ -24,8 +25,8 @@
 }
 
 .button-area>button>p {
-  margin-left: 95px;
-  margin-top: 12px;
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .image-area {

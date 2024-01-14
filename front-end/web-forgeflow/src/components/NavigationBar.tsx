@@ -65,7 +65,7 @@ const AreaNavigationBar: React.FC<NavigationProps> = ({ name, notifications }) =
               {notifications && <img src={notif} alt="notif"></img>}
             </div>
             <div className="nav-bar-profile">
-              <img src="" alt="profile" />
+              <img src='https://www.w3schools.com/howto/img_avatar.png' alt="profile" onClick={() => {navigate("/profile")}}/>
             </div>
         </div>
     </div>

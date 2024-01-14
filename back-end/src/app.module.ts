@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, forwardRef } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
@@ -14,10 +14,16 @@ import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './auth/auth.guard';
 import { JwtModule } from '@nestjs/jwt';
 import { GithubModule } from './github-action/github.module';
+import { OpenAIModule } from './openai/openai.module';
+import { AreaModule } from './area/area.module';
 
 @Module({
   imports: [
-    UsersModule,
+    ConfigModule.forRoot({
+      envFilePath: '.env',
+      isGlobal: true,
+    }),
+    forwardRef(() => UsersModule),
     AboutModule,
     JwtModule,
     ConfigModule.forRoot({
@@ -30,8 +36,10 @@ import { GithubModule } from './github-action/github.module';
       }),
       inject: [ConfigService],
     }),
-    AuthModule,
-    GithubModule,
+    forwardRef(() => AuthModule),
+    forwardRef(() => GithubModule),
+    OpenAIModule,
+    AreaModule,
   ],
   controllers: [AppController],
   providers: [
@@ -42,4 +50,4 @@ import { GithubModule } from './github-action/github.module';
     },
   ],
 })
-export class AppModule {}
+export class AppModule { }

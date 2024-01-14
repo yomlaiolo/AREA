@@ -2,50 +2,50 @@ import React, { useState } from 'react';
 import { View, StyleSheet, TouchableOpacity, Text, Image, Pressable } from 'react-native';
 
 interface MiniFlowProps {
-    onPress: () => void;
-    title: string;
-    icon: any;
-    disabled?: boolean;
-    backgroundColor?: string;
-    textColor?: string;
-    big_display?: boolean;
+  onPress: () => void;
+  title: string;
+  icon: any;
+  disabled?: boolean;
+  backgroundColor?: string;
+  textColor?: string;
+  big_display?: boolean;
 }
 
 const MiniFlow: React.FC<MiniFlowProps> = ({ onPress, title, icon, disabled, backgroundColor, textColor, big_display }) => {
   const [isClicked, setIsClicked] = useState(false);
   if (!backgroundColor) {
-      backgroundColor = '#1F1F1F';
+    backgroundColor = '#1F1F1F';
   }
   if (!textColor) {
-      textColor = '#1F1F1F';
+    textColor = '#1F1F1F';
   }
 
   return (
     <View>
-    {big_display && 
-      <View>
-        <TouchableOpacity onPress={onPress} activeOpacity={0.8} disabled={disabled} style={styles.big_touchable}>
-          <View style={[styles.container_big, { backgroundColor: backgroundColor }]}>
-            <Image source={icon} style={[styles.icon, { marginLeft: 190, marginTop: 30}]} />
-          </View>
-        </TouchableOpacity>
-        <Pressable style={styles.label_big}>
-          <Text style={[styles.text, { color: textColor }]}>{title}</Text>
-        </Pressable>
-      </View>
-    }
-    {!big_display &&
-      <View>
-        <TouchableOpacity  onPress={onPress} activeOpacity={0.8} disabled={disabled} style={styles.mini_touchable}>
-          <View style={[styles.container_mini, { backgroundColor: backgroundColor }]}>
-            <Image source={icon} style={styles.icon} />
-          </View>
-        </TouchableOpacity>
-        <Pressable style={styles.label_mini}>
-          <Text style={[styles.text, { color: textColor }]}>{title}</Text>
-        </Pressable>
-      </View>
-    }
+      {big_display &&
+        <View>
+          <TouchableOpacity onPress={onPress} activeOpacity={0.8} disabled={disabled} style={styles.big_touchable}>
+            <View style={[styles.container_big, { backgroundColor: backgroundColor }]}>
+              <Image source={icon} style={[styles.icon, { marginLeft: 190, marginTop: 30 }]} />
+            </View>
+          </TouchableOpacity>
+          <Pressable style={styles.label_big}>
+            <Text style={[styles.text, { color: textColor }]}>{title}</Text>
+          </Pressable>
+        </View>
+      }
+      {!big_display &&
+        <View>
+          <TouchableOpacity onPress={onPress} activeOpacity={0.8} disabled={disabled} style={styles.mini_touchable}>
+            <View style={[styles.container_mini, { backgroundColor: backgroundColor }]}>
+              <Image source={icon} style={styles.icon} />
+            </View>
+          </TouchableOpacity>
+          <Pressable style={styles.label_mini}>
+            <Text style={[styles.text, { color: textColor }]}>{title}</Text>
+          </Pressable>
+        </View>
+      }
     </View>
   );
 };

@@ -6,3 +6,13 @@ export class GithubTokenDto {
   @AutoMap()
   token: string;
 }
+
+export class RepoSettingsDto {
+  @ApiProperty()
+  @AutoMap()
+  repoName: string;
+
+  @ApiProperty()
+  @AutoMap()
+  eventsList: string[] | undefined;
+}

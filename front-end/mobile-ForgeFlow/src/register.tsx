@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { View, Image, StyleSheet, Text, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback, Alert } from 'react-native';
+import { View, Image, StyleSheet, Text, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import TextBox from '../app/shared/components/textbox';
 import AreaButton from '@components//button';
-import { register } from './api';
+import { googleSignInFunc, register, removeVar } from './api';
 
 export default function RegisterScreen({ navigation }: any) {
   const [username, setUsername] = useState('');
@@ -21,9 +21,19 @@ export default function RegisterScreen({ navigation }: any) {
               <TextBox placeholder="Username" onChangeText={setUsername} value={username} hideText={false} />
               <TextBox placeholder="E-mail" onChangeText={setEmail} value={email} hideText={false} autocomplete="email" />
               <TextBox placeholder="Password" onChangeText={setPassword} value={password} hideText={true} autocomplete="password" />
-              <AreaButton title="Register" onPress={() => { register(username, email, password, navigation) }} backgroundColor='#E88741' textColor='#1F1F1F' activeOpacity={0.5} />
+              <AreaButton title="Register" onPress={() => {
+                register(username, email, password, navigation);
+                removeVar('action');
+                removeVar('reaction');
+              }} backgroundColor='#E88741' textColor='#1F1F1F' activeOpacity={0.5} />
               <View style={styles.bar} />
-              <AreaButton title="Register with Google" onPress={() => { }} backgroundColor='#F5F5F5' textColor='#00000054' icon={require('@ressources/google.png')} activeOpacity={0.7} />
+              <AreaButton title="Register with Google" onPress={async () => {
+                if (await googleSignInFunc() === true) {
+                  navigation.reset({ index: 0, routes: [{ name: 'Home' }] });
+                }
+                removeVar('action');
+                removeVar('reaction');
+              }} backgroundColor='#F5F5F5' textColor='#00000054' icon={require('@ressources/google.png')} activeOpacity={0.7} />
               <Text onPress={() => { navigation.navigate('Login') }} style={{ color: '#1F1F1F', fontSize: 16, alignSelf: 'center', marginTop: '5%' }}>Already an account ? Login Here</Text>
             </View>
           </View>

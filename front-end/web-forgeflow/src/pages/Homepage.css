@@ -73,11 +73,11 @@
 .button-login {
     position: absolute;
     left: 1100px;
-    top: -50px;
+    top: 10px;
 }
 
 .button-register {
     position: absolute;
     left: 1400px;
-    top: -50px;
+    top: 10px;
 }

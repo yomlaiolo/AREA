@@ -54,7 +54,7 @@
 .Button-Signin_RP {
     position: absolute;
     left: 1400px;
-    top: -50px;
+    top: 0px;
 }
 
 .Text-Header {
@@ -100,7 +100,6 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin-top: 50px;
 }
 
 .mini_info {

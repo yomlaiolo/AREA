@@ -2,11 +2,11 @@ import { ApiProperty } from '@nestjs/swagger';
 import { AutoMap } from '@automapper/classes';
 
 export class LoginDto {
-  @ApiProperty()
+  @ApiProperty({ example: "email@gmail.com" })
   @AutoMap()
   email: string;
 
-  @ApiProperty()
+  @ApiProperty({ example: "Passw0rd" })
   @AutoMap()
   password: string;
 }
@@ -61,4 +61,34 @@ export class GoogleDto {
   @ApiProperty()
   @AutoMap()
   id_token: string;
+}
+
+export class AccessTokenDto {
+  @ApiProperty()
+  @AutoMap()
+  access_token: string;
+}
+
+export class ChangePasswordDto {
+  @ApiProperty()
+  @AutoMap()
+  old_password: string;
+
+  @ApiProperty()
+  @AutoMap()
+  new_password: string;
+}
+
+export class ChangeUsernameOrEmailDto {
+  @ApiProperty()
+  @AutoMap()
+  password: string;
+
+  @ApiProperty()
+  @AutoMap()
+  username: string;
+
+  @ApiProperty()
+  @AutoMap()
+  email: string;
 }

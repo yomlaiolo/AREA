@@ -1,66 +1,55 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { AutoMap } from "@automapper/classes";
+import { ApiProperty } from '@nestjs/swagger';
+import { AutoMap } from '@automapper/classes';
+import { GoogleUser } from './user.schema';
 
 export class CreateUserDto {
-    @ApiProperty()
-    @AutoMap()
-    username: string;
+  @ApiProperty({ example: 'username' })
+  @AutoMap()
+  username: string;
 
-    @ApiProperty()
-    @AutoMap()
-    firstname: string;
+  @ApiProperty({ example: 'email@gmail.com' })
+  @AutoMap()
+  email: string;
 
-    @ApiProperty()
-    @AutoMap()
-    lastname: string;
+  @ApiProperty({ example: 'Passw0rd' })
+  @AutoMap()
+  password: string;
 
-    @ApiProperty()
-    @AutoMap()
-    email: string;
+  @ApiProperty({ example: false })
+  @AutoMap()
+  is_google_oauth: boolean;
 
-    @ApiProperty()
-    @AutoMap()
-    password: string;
+  @ApiProperty({ example: null })
+  @AutoMap()
+  photo: string;
 
-    @ApiProperty()
-    @AutoMap()
-    is_google_oauth: boolean;
+  @ApiProperty({ example: null })
+  @AutoMap()
+  id_token: string;
 
-    @ApiProperty()
-    @AutoMap()
-    photo: string;
-
-    @ApiProperty()
-    @AutoMap()
-    id_token: string;
-
-    @ApiProperty()
-    @AutoMap()
-    access_token: string;
-
-    @ApiProperty()
-    @AutoMap()
-    refresh_token: string;
+  @ApiProperty({ example: null })
+  @AutoMap()
+  google: GoogleUser;
 }
 
 export class GetUserDto {
-    @ApiProperty()
-    @AutoMap()
-    username: string;
+  @ApiProperty()
+  @AutoMap()
+  username: string;
 
-    @ApiProperty()
-    @AutoMap()
-    firstname: string;
+  @ApiProperty()
+  @AutoMap()
+  email: string;
 
-    @ApiProperty()
-    @AutoMap()
-    lastname: string;
+  @ApiProperty()
+  @AutoMap()
+  id: string;
 
-    @ApiProperty()
-    @AutoMap()
-    email: string;
+  @ApiProperty()
+  @AutoMap()
+  google_connected: boolean;
 
-    @ApiProperty()
-    @AutoMap()
-    id: string;
+  @ApiProperty()
+  @AutoMap()
+  github_connected: boolean;
 }
