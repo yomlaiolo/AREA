@@ -5,7 +5,7 @@ import NavigationBar from '../components/NavigationBar';
 import TextBox from '../components/TextBox';
 import Flow from '../components/Flow';
 import { getAreas } from '../api';
-import { actions, reactions } from "../components/Area";
+import { actions, reactions } from "../area";
 
 async function getData() {
   const areas = await getAreas();
