@@ -124,7 +124,7 @@ export const Forger = () => {
         {action === true ? (
           <div className="ActionDisplayer">
             <h1>Choose an Action</h1>
-            <div className="flow-display-list">
+            <div className="flow-list">
               {actions.filter(item => item.id !== 0).map((action) => (
                 <MiniFlow
                   key={action.id}
@@ -140,7 +140,7 @@ export const Forger = () => {
         {reaction === true ? (
           <div className="ReactionDisplayer">
             <h1>Choose a Reaction</h1>
-            <div className="flow-display-list">
+            <div className="flow-list">
               {reactions.filter(item => item.id !== 0).map((reaction) => (
                 <MiniFlow
                   key={reaction.id}
