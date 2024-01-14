@@ -50,8 +50,8 @@
 
 .flow-display-list {
     position: absolute;
-    top: 350px;
-    left: 120px;
+    top: 300px;
+    left: 40px;
     justify-content: center;
     align-items: center;
     flex-direction: row;

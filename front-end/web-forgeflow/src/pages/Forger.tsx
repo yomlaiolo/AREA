@@ -10,6 +10,10 @@ import TextBox from '../components/TextBox';
 import Button from '../components/Button';
 import AreaConfig from '../components/AreaConfig';
 
+function refreshPage() {
+  window.location.reload();
+}
+
 async function forge(name: string, reactionValue: any) {
   const actionId = await getVar('action');
   const reactionId = await getVar('reaction');
@@ -120,7 +124,7 @@ export const Forger = () => {
         {action === true ? (
           <div className="ActionDisplayer">
             <h1>Choose an Action</h1>
-            <div className="flow-list">
+            <div className="flow-display-list">
               {actions.filter(item => item.id !== 0).map((action) => (
                 <MiniFlow
                   key={action.id}
@@ -136,7 +140,7 @@ export const Forger = () => {
         {reaction === true ? (
           <div className="ReactionDisplayer">
             <h1>Choose a Reaction</h1>
-            <div className="flow-list">
+            <div className="flow-display-list">
               {reactions.filter(item => item.id !== 0).map((reaction) => (
                 <MiniFlow
                   key={reaction.id}
@@ -180,7 +184,7 @@ export const Forger = () => {
           <TextBox placeholder="Name your flow" value={flowName} onChangeText={setFlowName} customwidth={300}/>
         </div>
         <div className="create">
-          <Button title="Create" onPress={async () => forge(flowName, await getVar('reactionValue'))} backgroundColor="black" textColor="#F5F5F5"/>
+          <Button title="Create" onPress={async () => {forge(flowName, await getVar('reactionValue')); refreshPage();}} backgroundColor="black" textColor="#F5F5F5"/>
         </div>
       </header>
     </div>

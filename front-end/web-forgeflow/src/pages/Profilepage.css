@@ -70,6 +70,10 @@
     border: none;
 }
 
+.profile-menu-item:hover {
+    cursor: pointer;
+}
+
 .selected_change>* {
     margin-top: 10px;
 }

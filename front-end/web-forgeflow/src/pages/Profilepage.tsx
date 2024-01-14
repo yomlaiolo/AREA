@@ -87,7 +87,7 @@ export const Profilepage = () => {
                         }
                     })
                     .catch((error) => {
-                        console.error('Error:', error);
+                        console.error('FetchGitHub Error:', error);
                     });
             }
         };
