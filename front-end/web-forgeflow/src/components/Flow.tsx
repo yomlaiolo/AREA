@@ -19,8 +19,9 @@ const AreaFlow: React.FC<FlowProps> = ({ onPress, title, icons, disabled, backgr
           icons.map((icon: any, index: number) => {
             return (
               <img key={index} src={icon} style={{ marginLeft: 12, marginTop: 15 }} className="flow-icon" alt="icon" />
-            )}
-        )}
+            )
+          }
+          )}
       </div>
       <p style={{ color: textColor }}>{description}</p>
       <div className='flow-title'>

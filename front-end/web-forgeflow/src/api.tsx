@@ -28,7 +28,7 @@ export async function login(email: string, password: string, navigate: Function)
                 window.alert("Error: Unauthorized - invalid credentials");
         })
         .catch((error) => {
-            console.error('Error:', error);
+            console.error('Login Error:', error);
         });
 }
 
@@ -128,7 +128,7 @@ export async function register(username: string, email: string, password: string
             }
         })
         .catch((error) => {
-            console.error('Error:', error);
+            console.error('Register Error:', error);
         });
 }
 
@@ -158,7 +158,7 @@ export async function userInfo() {
             console.log('Unauthorized - invalid credentials');
         }
     } catch (error) {
-        console.error('Error:', error);
+        console.error('UserInfo Error:', error);
     }
     return { username, email };
 }
@@ -191,7 +191,7 @@ export async function modifyProfile(username: string, email: string, password: s
             return "Email not valid";
         }
     } catch (error) {
-        console.error('Error:', error);
+        console.error('ModifyProfile Error:', error);
     }
     return "Unknown error, maybe the server is down, or the username or the email is already used";
 }
@@ -221,10 +221,38 @@ export async function modifyPassword(oldPassword: string, newPassword: string) {
             return "Password must contain at least 8 characters, 1 uppercase letter, 1 lowercase letter and 1 number";
         }
     } catch (error) {
-        console.error('Error:', error);
+        console.error('Password Error:', error);
     }
     return "Unknown error, maybe the server is down";
 }
+
+export async function getAreas() {
+    const token = await getToken();
+    var areas: any[] = [];
+  
+    if (!token) {
+      console.log('No token found');
+      return areas;
+    }
+    try {
+      const response = await fetch(API + '/area', {
+        method: 'GET',
+        headers: new Headers({
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + token,
+        }),
+      });
+      if (response.status === 200) {
+        const data = await response.json();
+        areas = data;
+      } else if (response.status === 401) {
+        console.log('Unauthorized - invalid credentials');
+      }
+    } catch (error) {
+      console.log('Error:', error);
+    }
+    return areas;
+  }
 
 export async function getToken() {
     const token = localStorage.getItem('token');

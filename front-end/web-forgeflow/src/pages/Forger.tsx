@@ -10,6 +10,10 @@ import TextBox from '../components/TextBox';
 import Button from '../components/Button';
 import AreaConfig from '../components/AreaConfig';
 
+function refreshPage() {
+  window.location.reload();
+}
+
 async function forge(name: string, reactionValue: any) {
   const actionId = await getVar('action');
   const reactionId = await getVar('reaction');
@@ -180,7 +184,7 @@ export const Forger = () => {
           <TextBox placeholder="Name your flow" value={flowName} onChangeText={setFlowName} customwidth={300}/>
         </div>
         <div className="create">
-          <Button title="Create" onPress={async () => forge(flowName, await getVar('reactionValue'))} backgroundColor="black" textColor="#F5F5F5"/>
+          <Button title="Create" onPress={async () => {forge(flowName, await getVar('reactionValue')); refreshPage();}} backgroundColor="black" textColor="#F5F5F5"/>
         </div>
       </header>
     </div>

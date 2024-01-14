@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from "react";
 import './Profilepage.css';
 import NavigationBar from '../components/NavigationBar';
 import profile_icon from '../assets/profile.svg';
@@ -42,7 +42,7 @@ export const Profilepage = () => {
 
     fetchData();
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (profile_menu_selected !== 'Change profile') {
             setNewEmail("");
             setNewUsername("");
@@ -87,7 +87,7 @@ export const Profilepage = () => {
                         }
                     })
                     .catch((error) => {
-                        console.error('Error:', error);
+                        console.error('FetchGitHub Error:', error);
                     });
             }
         };
