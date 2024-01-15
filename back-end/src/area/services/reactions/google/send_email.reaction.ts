@@ -36,7 +36,7 @@ export default class SendEmailReaction implements ReactionInterface {
 
   async exec(): Promise<object> {
     if (this.data['error']) {
-      return { result: this.data['error'] };
+      return null;
     }
     this.gmailService.sendEmail(
       this.data.to,
