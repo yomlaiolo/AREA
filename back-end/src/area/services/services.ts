@@ -7,6 +7,7 @@ import { GithubService } from 'src/github-action/github.service';
 import { UsersService } from 'src/users/users.service';
 import { GDriveService } from 'src/gdrive/gdrive.service';
 import { OpenAIService } from 'src/openai/openai.service';
+import { NasaService } from 'src/nasa/nasa.service';
 import { AreaService } from '../area.service';
 
 // Actions ####################################################################
@@ -15,18 +16,21 @@ import IntervalAction from './actions/cron/interval.action';
 import RecurrentAction from './actions/cron/recurrent.action';
 // google
 import ReceiveEmailAction from './actions/google/receive_email.action';
+// github
+import PullRequestAction from './actions/github/new_pull_request';
+import IssueAction from './actions/github/new_issue';
+// nasa
+import NasaAction from './actions/nasa/nasa.action';
 
 // Reactions ##################################################################
 // console
 import ConsoleLogReaction from './reactions/console/consolelog.reaction';
-import IssueAction from './actions/github/new_issue';
-import PullRequestAction from './actions/github/new_pull_request';
 import IssueReaction from './reactions/github/issue';
-import PullRequestReaction from './reactions/github/pull_request';
 import { GMailService } from 'src/gmail/gmail.service';
 import SendEmailReaction from './reactions/google/send_email.reaction';
 import ResumeTextReaction from './reactions/openai/resume_text';
 import SuggestResponseReaction from './reactions/openai/suggest_response';
+import PullRequestReaction from './reactions/github/pull_request';
 
 export const actionConstructors: (new (
   actionDto: ActionDto,
@@ -41,12 +45,14 @@ export const actionConstructors: (new (
   openAiService: OpenAIService,
   areaService: AreaService,
   gmailService: GMailService,
+  nasaService: NasaService,
 ) => ActionInterface)[] = [
   IntervalAction,
   IssueAction,
   PullRequestAction,
   RecurrentAction,
   ReceiveEmailAction,
+  NasaAction,
 ];
 
 export const reactionConstructors: (new (
@@ -57,6 +63,7 @@ export const reactionConstructors: (new (
   gDriveService: GDriveService,
   openAiService: OpenAIService,
   gmailService: GMailService,
+  nasaService: NasaService,
 ) => ReactionInterface)[] = [
   ConsoleLogReaction,
   IssueReaction,
@@ -84,11 +91,12 @@ export function createAbout(): object[] {
       null,
       null,
       null,
+      null,
     );
     if (!allServices.includes(tmp.service)) allServices.push(tmp.service);
   });
   reactionConstructors.forEach((element) => {
-    let tmp = new element({}, {} as User, null, null, null, null, null);
+    let tmp = new element({}, {} as User, null, null, null, null, null, null);
     if (!allServices.includes(tmp.service)) allServices.push(tmp.service);
   });
 
@@ -109,6 +117,7 @@ export function createAbout(): object[] {
         null,
         null,
         null,
+        null,
       );
       if (tmpAction.service === serviceName) {
         action.push({
@@ -123,6 +132,7 @@ export function createAbout(): object[] {
       const tmpReaction = new element(
         {},
         {} as User,
+        null,
         null,
         null,
         null,
@@ -161,6 +171,7 @@ export function createMapAction(
     openAiService: OpenAIService,
     areaService: AreaService,
     gmailService: GMailService,
+    nasaService: NasaService,
   ) => ActionInterface)[],
 ) {
   const actionMap = {};
@@ -172,6 +183,7 @@ export function createMapAction(
       {} as CancellationToken,
       '',
       true,
+      null,
       null,
       null,
       null,
@@ -193,6 +205,7 @@ export function createMapReaction(
     gDriveService: GDriveService,
     openAiService: OpenAIService,
     gmailService: GMailService,
+    nasaService: NasaService,
   ) => ReactionInterface)[],
 ) {
   const reactionMap = {};
@@ -200,6 +213,7 @@ export function createMapReaction(
     let tmp = new element(
       {} as object,
       {} as User,
+      null,
       null,
       null,
       null,
@@ -224,6 +238,7 @@ export function factoryArea(
   openAiService: OpenAIService,
   areaService: AreaService,
   gmailService: GMailService,
+  nasaService: NasaService,
 ): ActionInterface {
   const actionMap = createMapAction(actionConstructors);
   const action = actionMap[actionDto.type]
@@ -240,6 +255,7 @@ export function factoryArea(
         openAiService,
         areaService,
         gmailService,
+        nasaService,
       )
     : null;
   return action;

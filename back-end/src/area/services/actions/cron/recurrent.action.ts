@@ -11,6 +11,8 @@ import { createMapReaction, reactionConstructors } from '../../services';
 import { variableObject } from '../../../../utils/variable_object';
 import { AreaService } from '../../../area.service';
 import { GMailService } from 'src/gmail/gmail.service';
+import { NasaService } from 'src/nasa/nasa.service';
+
 @Injectable()
 export default class RecurrentAction implements ActionInterface {
   method: string = 'recurrent';
@@ -45,6 +47,7 @@ export default class RecurrentAction implements ActionInterface {
     private readonly openAiService: OpenAIService,
     private readonly areaService: AreaService,
     private readonly gmailService: GMailService,
+    private readonly nasaService: NasaService,
   ) {
     this.actionDto = actionDto;
     this.reactionDto = reactionDto;

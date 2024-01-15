@@ -6,6 +6,7 @@ import { UsersService } from 'src/users/users.service';
 import { GDriveService } from 'src/gdrive/gdrive.service';
 import { OpenAIService } from 'src/openai/openai.service';
 import { GMailService } from 'src/gmail/gmail.service';
+import { NasaService } from 'src/nasa/nasa.service';
 
 @Injectable()
 export default class SendEmailReaction implements ReactionInterface {
@@ -29,6 +30,7 @@ export default class SendEmailReaction implements ReactionInterface {
     private readonly gDriveService: GDriveService,
     private readonly openAiService: OpenAIService,
     private readonly gmailService: GMailService,
+    private readonly nasaService: NasaService,
   ) {
     this.data = data;
     this.user = user;
