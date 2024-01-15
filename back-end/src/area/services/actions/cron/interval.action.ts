@@ -83,7 +83,7 @@ export default class IntervalAction implements ActionInterface {
         if (!reaction) throw new Error('Reaction not found');
         if (reaction.check()) {
           const reactionResult = await reaction.exec();
-
+          if (reactionResult == null) return;
           const result = reactionResult.result;
           this.areaService.updateResult(this.id, result);
         } else console.log('Invalid reaction');

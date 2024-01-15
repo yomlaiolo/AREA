@@ -25,6 +25,8 @@ import IssueReaction from './reactions/github/issue';
 import PullRequestReaction from './reactions/github/pull_request';
 import { GMailService } from 'src/gmail/gmail.service';
 import SendEmailReaction from './reactions/google/send_email.reaction';
+import ResumeTextReaction from './reactions/openai/resume_text';
+import SuggestResponseReaction from './reactions/openai/suggest_response';
 
 export const actionConstructors: (new (
   actionDto: ActionDto,
@@ -60,6 +62,8 @@ export const reactionConstructors: (new (
   IssueReaction,
   PullRequestReaction,
   SendEmailReaction,
+  ResumeTextReaction,
+  SuggestResponseReaction,
 ];
 
 export function createAbout(): object[] {

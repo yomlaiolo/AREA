@@ -79,7 +79,7 @@ export default class RecurrentAction implements ActionInterface {
         return;
       }
       const reactionResult = await reaction.exec();
-
+      if (reactionResult == null) return;
       const result = reactionResult.result;
       this.areaService.updateResult(this.id, result);
     });
