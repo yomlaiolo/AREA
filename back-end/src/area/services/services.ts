@@ -31,6 +31,9 @@ import SendEmailReaction from './reactions/google/send_email.reaction';
 import ResumeTextReaction from './reactions/openai/resume_text';
 import SuggestResponseReaction from './reactions/openai/suggest_response';
 import PullRequestReaction from './reactions/github/pull_request';
+import DeleteFileReaction from './reactions/google/delete_file_drive.reaction';
+import CreateDocReaction from './reactions/google/create_doc_file.reaction';
+import CreateSheetReaction from './reactions/google/create_sheet_file.reaction';
 
 export const actionConstructors: (new (
   actionDto: ActionDto,
@@ -71,6 +74,9 @@ export const reactionConstructors: (new (
   SendEmailReaction,
   ResumeTextReaction,
   SuggestResponseReaction,
+  DeleteFileReaction,
+  CreateDocReaction,
+  CreateSheetReaction,
 ];
 
 export function createAbout(): object[] {

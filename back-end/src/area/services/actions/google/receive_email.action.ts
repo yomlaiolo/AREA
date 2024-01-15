@@ -81,7 +81,7 @@ export default class ReceiveEmailAction implements ActionInterface {
           from: from,
           to: mail.To,
           subject: mail.Subject,
-          body: mail.snippet,
+          body: mail.body,
         };
 
         const reactionMap = createMapReaction(reactionConstructors);
