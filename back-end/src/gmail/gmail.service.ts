@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { google } from 'googleapis';
+import { htmlToText } from 'html-to-text';
 
 @Injectable()
 export class GMailService {
@@ -43,6 +44,22 @@ export class GMailService {
       emailData['id'] = response.data.id;
       emailData['snippet'] = response.data.snippet;
 
+      const payload = response.data.payload;
+      let body = '';
+
+      if (payload.parts) {
+        payload.parts.forEach((part) => {
+          if (part.mimeType === 'text/html') {
+            body += emailData['body'] = Buffer.from(
+              part.body.data,
+              'base64',
+            ).toString('utf-8');
+          }
+        });
+      } else {
+        body = Buffer.from(payload.body.data, 'base64').toString('utf-8');
+      }
+      emailData['body'] = htmlToText(body);
       emails.push(emailData);
     }
 
