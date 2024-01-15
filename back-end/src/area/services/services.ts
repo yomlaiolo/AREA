@@ -23,6 +23,8 @@ import IssueAction from './actions/github/new_issue';
 import PullRequestAction from './actions/github/new_pull_request';
 import IssueReaction from './reactions/github/issue';
 import PullRequestReaction from './reactions/github/pull_request';
+import { GMailService } from 'src/gmail/gmail.service';
+import SendEmailReaction from './reactions/google/send_email.reaction';
 
 export const actionConstructors: (new (
   actionDto: ActionDto,
@@ -36,6 +38,7 @@ export const actionConstructors: (new (
   gDriveService: GDriveService,
   openAiService: OpenAIService,
   areaService: AreaService,
+  gmailService: GMailService,
 ) => ActionInterface)[] = [
   IntervalAction,
   IssueAction,
@@ -51,10 +54,12 @@ export const reactionConstructors: (new (
   usersService: UsersService,
   gDriveService: GDriveService,
   openAiService: OpenAIService,
+  gmailService: GMailService,
 ) => ReactionInterface)[] = [
   ConsoleLogReaction,
   IssueReaction,
   PullRequestReaction,
+  SendEmailReaction,
 ];
 
 export function createAbout(): object[] {
@@ -74,11 +79,12 @@ export function createAbout(): object[] {
       null,
       null,
       null,
+      null,
     );
     if (!allServices.includes(tmp.service)) allServices.push(tmp.service);
   });
   reactionConstructors.forEach((element) => {
-    let tmp = new element({}, {} as User, null, null, null, null);
+    let tmp = new element({}, {} as User, null, null, null, null, null);
     if (!allServices.includes(tmp.service)) allServices.push(tmp.service);
   });
 
@@ -98,6 +104,7 @@ export function createAbout(): object[] {
         null,
         null,
         null,
+        null,
       );
       if (tmpAction.service === serviceName) {
         action.push({
@@ -109,7 +116,15 @@ export function createAbout(): object[] {
     });
 
     reactionConstructors.forEach((element) => {
-      const tmpReaction = new element({}, {} as User, null, null, null, null);
+      const tmpReaction = new element(
+        {},
+        {} as User,
+        null,
+        null,
+        null,
+        null,
+        null,
+      );
       if (tmpReaction.service === serviceName) {
         reaction.push({
           method: tmpReaction.method,
@@ -141,6 +156,7 @@ export function createMapAction(
     gDriveService: GDriveService,
     openAiService: OpenAIService,
     areaService: AreaService,
+    gmailService: GMailService,
   ) => ActionInterface)[],
 ) {
   const actionMap = {};
@@ -152,6 +168,7 @@ export function createMapAction(
       {} as CancellationToken,
       '',
       true,
+      null,
       null,
       null,
       null,
@@ -171,11 +188,20 @@ export function createMapReaction(
     usersService: UsersService,
     gDriveService: GDriveService,
     openAiService: OpenAIService,
+    gmailService: GMailService,
   ) => ReactionInterface)[],
 ) {
   const reactionMap = {};
   reactionConstructors.forEach((element) => {
-    let tmp = new element({} as object, {} as User, null, null, null, null);
+    let tmp = new element(
+      {} as object,
+      {} as User,
+      null,
+      null,
+      null,
+      null,
+      null,
+    );
     reactionMap[tmp.method] = element;
   });
   return reactionMap;
@@ -193,6 +219,7 @@ export function factoryArea(
   gDriveService: GDriveService,
   openAiService: OpenAIService,
   areaService: AreaService,
+  gmailService: GMailService,
 ): ActionInterface {
   const actionMap = createMapAction(actionConstructors);
   const action = actionMap[actionDto.type]
@@ -208,6 +235,7 @@ export function factoryArea(
         gDriveService,
         openAiService,
         areaService,
+        gmailService,
       )
     : null;
   return action;

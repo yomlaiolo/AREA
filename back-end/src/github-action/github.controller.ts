@@ -20,6 +20,7 @@ import {
 } from 'src/area/services/services';
 import { GDriveService } from 'src/gdrive/gdrive.service';
 import { OpenAIService } from 'src/openai/openai.service';
+import { GMailService } from 'src/gmail/gmail.service';
 
 @Controller('github')
 export class GithubController {
@@ -28,6 +29,7 @@ export class GithubController {
     private usersService: UsersService,
     private readonly gDriveService: GDriveService,
     private readonly openAiService: OpenAIService,
+    private readonly gmailService: GMailService,
   ) {}
 
   @Post('token')
@@ -108,6 +110,7 @@ export class GithubController {
         this.usersService,
         this.gDriveService,
         this.openAiService,
+        this.gmailService,
       );
       if (!reaction) throw new Error('Reaction not found');
       if (reaction.check()) reaction.exec();
@@ -139,6 +142,7 @@ export class GithubController {
         this.usersService,
         this.gDriveService,
         this.openAiService,
+        this.gmailService,
       );
       if (!reaction) throw new Error('Reaction not found');
       if (reaction.check()) reaction.exec();

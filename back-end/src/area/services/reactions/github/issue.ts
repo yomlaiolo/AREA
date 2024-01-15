@@ -5,6 +5,7 @@ import { GithubService } from 'src/github-action/github.service';
 import { UsersService } from 'src/users/users.service';
 import { GDriveService } from 'src/gdrive/gdrive.service';
 import { OpenAIService } from 'src/openai/openai.service';
+import { GMailService } from 'src/gmail/gmail.service';
 
 @Injectable()
 export default class IssueReaction implements ReactionInterface {
@@ -28,6 +29,7 @@ export default class IssueReaction implements ReactionInterface {
     private readonly usersService: UsersService,
     private readonly gDriveService: GDriveService,
     private readonly openAiService: OpenAIService,
+    private readonly gmailService: GMailService,
   ) {
     this.data = data;
     this.user = user;

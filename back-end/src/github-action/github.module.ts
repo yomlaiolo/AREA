@@ -6,6 +6,7 @@ import { UsersModule } from 'src/users/users.module';
 import { AreaModule } from 'src/area/area.module';
 import { GDriveModule } from 'src/gdrive/gdrive.module';
 import { OpenAIModule } from 'src/openai/openai.module';
+import { GMailModule } from 'src/gmail/gmail.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { OpenAIModule } from 'src/openai/openai.module';
     forwardRef(() => AreaModule),
     forwardRef(() => GDriveModule),
     forwardRef(() => OpenAIModule),
+    forwardRef(() => GMailModule),
   ],
   controllers: [GithubController],
   providers: [GithubService],

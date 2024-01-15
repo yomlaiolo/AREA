@@ -5,38 +5,48 @@ import { Injectable } from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
 import { GDriveService } from 'src/gdrive/gdrive.service';
 import { OpenAIService } from 'src/openai/openai.service';
+import { GMailService } from 'src/gmail/gmail.service';
 
 @Injectable()
-export default class ConsoleLogReaction implements ReactionInterface {
+export default class SendEmailReaction implements ReactionInterface {
   method: string = 'send_email';
   service: string = 'google';
   description: string = "Sends an email to the user's inbox.";
   example: object = {
     to: '__to__',
-    cc: '__cc__',
     subject: '__subject__',
     body: '__body__',
   };
 
-  data: { to: string; cc: string[]; subject: string; body: string };
+  data: { to: string; subject: string; body: string };
   user: User;
 
   constructor(
-    data: { to: string; cc: string[]; subject: string; body: string },
+    data: { to: string; subject: string; body: string },
     user: User,
-    id: string,
     private readonly githubService: GithubService,
     private readonly usersService: UsersService,
     private readonly gDriveService: GDriveService,
     private readonly openAiService: OpenAIService,
+    private readonly gmailService: GMailService,
   ) {
     this.data = data;
     this.user = user;
   }
 
   async exec(): Promise<object> {
-    console.log('Send email', this.data);
-    return { message: this.data };
+    if (this.data['error']) {
+      return { result: this.data['error'] };
+    }
+    this.gmailService.sendEmail(
+      this.data.to,
+      '',
+      this.data.subject,
+      this.data.body,
+      this.user.google.access_token,
+    );
+
+    return { result: this.data.body };
   }
 
   async check(): Promise<boolean> {

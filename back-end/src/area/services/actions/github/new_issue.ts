@@ -7,9 +7,9 @@ import { v4 as uuidv4 } from 'uuid';
 import { GDriveService } from 'src/gdrive/gdrive.service';
 import { OpenAIService } from 'src/openai/openai.service';
 import { ActionDto, ReactionDto } from 'src/area/dto/create-area.dto';
-import { factoryArea } from '../../services';
 import { ActionInterface } from '../action.interface';
 import { AreaService } from 'src/area/area.service';
+import { GMailService } from 'src/gmail/gmail.service';
 
 export default class IssueAction implements ActionInterface {
   method: string = 'new_issue';
@@ -43,6 +43,7 @@ export default class IssueAction implements ActionInterface {
     private readonly gDriveService: GDriveService,
     private readonly openAiService: OpenAIService,
     private readonly areaService: AreaService,
+    private readonly gmailService: GMailService,
   ) {
     this.actionDto = actionDto;
     this.reactionDto = reactionDto;
