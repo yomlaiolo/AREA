@@ -5,6 +5,7 @@ import { Injectable } from '@nestjs/common';
 import { UsersService } from '../../../../users/users.service';
 import { GDriveService } from '../../../../gdrive/gdrive.service';
 import { OpenAIService } from '../../../../openai/openai.service';
+import { GMailService } from 'src/gmail/gmail.service';
 
 @Injectable()
 export default class ConsoleLogReaction implements ReactionInterface {
@@ -25,6 +26,7 @@ export default class ConsoleLogReaction implements ReactionInterface {
     private readonly usersService: UsersService,
     private readonly gDriveService: GDriveService,
     private readonly openAiService: OpenAIService,
+    private readonly gmailService: GMailService,
   ) {
     this.data = data;
     this.user = user;
