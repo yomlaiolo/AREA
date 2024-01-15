@@ -68,12 +68,10 @@ export default class RecurrentAction implements ActionInterface {
         ? new reactionMap[this.reactionDto.type](
             variableObject(data, this.actionDto.value, this.reactionDto.value),
             this.user,
-            this.id,
             this.githubService,
             this.usersService,
             this.gDriveService,
             this.openAiService,
-            this.areaService,
             this.gmailService,
           )
         : null;

@@ -73,12 +73,10 @@ export default class IntervalAction implements ActionInterface {
                 this.reactionDto.value,
               ),
               this.user,
-              this.id,
               this.githubService,
               this.usersService,
               this.gDriveService,
               this.openAiService,
-              this.areaService,
               this.gmailService,
             )
           : null;
