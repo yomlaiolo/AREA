@@ -61,14 +61,10 @@ export const Profilepage = () => {
             const queryString = window.location.search;
             const urlParams = new URLSearchParams(queryString);
             const code = urlParams.get('code');
-            console.log("code for github: " + code);
             const storedCode = await getVar('code'); // Use await to handle the Promise
             if (code !== null && code !== storedCode) {
-                console.log("code for github: " + code);
                 setVar('code', code);
-                console.log("code for github on localstorage: " + await getVar('code'));
                 const param = "?client_id=" + process.env.REACT_APP_GITHUB_CLIENT_ID + "&client_secret=" + process.env.REACT_APP_GITHUB_CLIENT_SECRET + "&code=" + code;
-                console.log("param: " + param);
                 await fetch('https://github.com/login/oauth/access_token' + param, {
                     method: 'POST',
                     headers: {
@@ -76,10 +72,8 @@ export const Profilepage = () => {
                     },
                 }).then(response => response.text())
                     .then(data => {
-                        console.log('Success:', data);
                         const params = new URLSearchParams(data);
                         const accessToken = params.get('access_token');
-                        console.log('Access Token:', accessToken);
                         if (accessToken !== null) {
                             setVar('access_token_github', accessToken);
                             setAccessTokenGithub(accessToken);

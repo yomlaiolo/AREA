@@ -41,7 +41,6 @@ async function setValue(name: string, map: any) {
   var action_value = {};
   var reaction_value = {};
 
-  console.log("NAME : ", name);
   switch (name) {
     case 'Email received':
       action_value = {
@@ -153,7 +152,6 @@ const AreaAreaConfig: React.FC<FlowProps> = ({ title, icon, description, type, f
 
   useEffect(() => {
     if (infos.cron) {
-      console.log("CRON : ", infos.cron);
       setValue(title, infos);
       display();
     }
@@ -162,10 +160,8 @@ const AreaAreaConfig: React.FC<FlowProps> = ({ title, icon, description, type, f
   const handleButtonPress = () => {
     const date = new Date();
     if (timeHour !== '' && timeMinute !== '') {
-      console.log("TIME : ", timeHour, timeMinute);
       date.setHours(Number(timeHour));
       date.setMinutes(Number(timeMinute));
-      console.log("DATE : ", date);
       setInfos(prevInfos => ({ ...prevInfos, cron: date }));
     } else {
       setValue(title, infos);

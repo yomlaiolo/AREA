@@ -75,11 +75,9 @@ export async function signInWithGithub(accessToken_github: string) {
   })
     .then(response => {
       if (response.status === 201) {
-        console.log(response);
         return response.json();
       } else if (response.status === 401) {
         console.log("Unauthorized - invalid credentials");
-        console.log(response);
         return null;
       }
     })
@@ -216,8 +214,6 @@ export async function getAreas() {
   const token = await getToken();
   var areas: any[] = [];
 
-  console.log("TOKEN : ", token);
-
   if (!token) {
     console.log('No token found');
     return areas;
@@ -230,7 +226,6 @@ export async function getAreas() {
         Authorization: 'Bearer ' + token,
       }),
     });
-    console.log("RESPONSE : ", response);
     if (response.status === 200) {
       const data = await response.json();
       areas = data;
@@ -276,7 +271,6 @@ export async function createArea(area: any) {
   if (token === null)
     return "Not connected";
   try {
-    console.log("SEND AREA : ", area);
     const response = await fetch(API + '/area/create', {
       method: 'POST',
       headers: new Headers({
@@ -285,7 +279,6 @@ export async function createArea(area: any) {
       }),
       body: JSON.stringify(area),
     });
-    console.log("RESPONSE : ", response);
     if (response.status === 201) {
       return 0;
     } else if (response.status === 400) {
