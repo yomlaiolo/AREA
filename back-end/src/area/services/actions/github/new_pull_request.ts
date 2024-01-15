@@ -103,7 +103,9 @@ export default class PullRequestAction implements ActionInterface {
       this.actionDto.value['title'] == undefined ||
       this.actionDto.value['body'] == undefined ||
       this.actionDto.value['fromBranch'] == undefined ||
-      this.actionDto.value['headBranch'] == undefined
+      this.actionDto.value['headBranch'] == undefined ||
+      this.user.github.username == undefined ||
+      this.user.github.access_token == undefined
     ) {
       return false;
     }

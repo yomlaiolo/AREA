@@ -26,13 +26,17 @@ export class GMailService {
         id: mailId,
       });
 
-      await gmail.users.messages.modify({
-        userId: clientEmail,
-        id: mailId,
-        requestBody: {
-          removeLabelIds: ['UNREAD'],
-        },
-      });
+      try {
+        await gmail.users.messages.modify({
+          userId: clientEmail,
+          id: mailId,
+          requestBody: {
+            removeLabelIds: ['UNREAD'],
+          },
+        });
+      } catch (e) {
+        console.error(e);
+      }
 
       const emailData = response.data.payload.headers.reduce((acc, current) => {
         if (['From', 'To', 'Subject', 'Date'].includes(current.name)) {
