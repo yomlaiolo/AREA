@@ -8,42 +8,42 @@ services:
       - "27017:27017"
     networks:
       - area-network
-  # server:
-  #   build:
-  #     context: ./back-end
-  #     dockerfile: Dockerfile
-  #   restart: always
-  #   container_name: back-area
-  #   ports:
-  #     - "8080:8080"
-  #   depends_on:
-  #     - mongodb
-  #   networks:
-  #     - area-network
-  # client_mobile:
-  #   build:
-  #     context: ./front-end
-  #     dockerfile: Mobile-Dockerfile
-  #   volumes:
-  #     - front-data:/app/apk
-  #   # deploy:
-  #   #   mode: replicated
-  #   #   replicas: 0
-  # client_web:
-  #   build:
-  #     context: ./front-end
-  #     dockerfile: Web-Dockerfile
-  #   volumes:
-  #     - front-data:/app/public/apk
-  #   restart: always
-  #   container_name: front-area
-  #   ports:
-  #     - "8081:3000"
-  #   networks:
-  #     - area-network
-  #   depends_on:
-  #     - server
-  #     - client_mobile
+  server:
+    build:
+      context: ./back-end
+      dockerfile: Dockerfile
+    restart: always
+    container_name: back-area
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mongodb
+    networks:
+      - area-network
+  client_mobile:
+    build:
+      context: ./front-end
+      dockerfile: Mobile-Dockerfile
+    volumes:
+      - front-data:/app/apk
+    # deploy:
+    #   mode: replicated
+    #   replicas: 0
+  client_web:
+    build:
+      context: ./front-end
+      dockerfile: Web-Dockerfile
+    volumes:
+      - front-data:/app/public/apk
+    restart: always
+    container_name: front-area
+    ports:
+      - "8081:3000"
+    networks:
+      - area-network
+    depends_on:
+      - server
+      - client_mobile
 
 volumes:
   front-data:
