@@ -12,17 +12,16 @@ export default class IssueReaction implements ReactionInterface {
   service: string = 'github';
   description: string = 'create an issue on github';
   example: object = {
-    repoOwner: 'myUsername',
     repoName: 'myRepository',
     title: 'awesome title',
     body: 'basic body',
   };
 
-  data: { repoOwner: string; repoName: string; title: string; body: string };
+  data: { repoName: string; title: string; body: string };
   user: User;
 
   constructor(
-    data: { repoOwner: string; repoName: string; title: string; body: string },
+    data: { repoName: string; title: string; body: string },
     user: User,
     private readonly githubService: GithubService,
     private readonly usersService: UsersService,
@@ -35,7 +34,7 @@ export default class IssueReaction implements ReactionInterface {
 
   async exec(): Promise<object> {
     this.githubService.createEvent(
-      this.data.repoOwner,
+      this.user.github.username,
       this.data.repoName,
       'issues',
       this.user.github.access_token,
@@ -49,7 +48,6 @@ export default class IssueReaction implements ReactionInterface {
 
   async check(): Promise<boolean> {
     if (
-      this.data.repoOwner == undefined ||
       this.data.repoName == undefined ||
       this.data.title == undefined ||
       this.data.body == undefined
