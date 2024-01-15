@@ -11,6 +11,7 @@ import { createMapReaction, reactionConstructors } from '../../services';
 import { variableObject } from 'src/utils/variable_object';
 import { AreaService } from 'src/area/area.service';
 import { GMailService } from 'src/gmail/gmail.service';
+import { NasaService } from 'src/nasa/nasa.service';
 
 @Injectable()
 export default class ReceiveEmailAction implements ActionInterface {
@@ -47,6 +48,7 @@ export default class ReceiveEmailAction implements ActionInterface {
     private readonly openAiService: OpenAIService,
     private readonly areaService: AreaService,
     private readonly gmailService: GMailService,
+    private readonly nasaService: NasaService,
   ) {
     this.actionDto = actionDto;
     this.reactionDto = reactionDto;

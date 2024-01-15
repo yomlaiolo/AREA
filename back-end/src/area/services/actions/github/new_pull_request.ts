@@ -11,6 +11,7 @@ import { factoryArea } from '../../services';
 import { ActionInterface } from '../action.interface';
 import { AreaService } from 'src/area/area.service';
 import { GMailService } from 'src/gmail/gmail.service';
+import { NasaService } from 'src/nasa/nasa.service';
 
 export default class PullRequestAction implements ActionInterface {
   method: string = 'new_pull_request';
@@ -48,6 +49,7 @@ export default class PullRequestAction implements ActionInterface {
     private readonly openAiService: OpenAIService,
     private readonly areaService: AreaService,
     private readonly gmailService: GMailService,
+    private readonly nasaService: NasaService,
   ) {
     this.actionDto = actionDto;
     this.reactionDto = reactionDto;

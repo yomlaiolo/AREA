@@ -11,6 +11,7 @@ import { GithubService } from 'src/github-action/github.service';
 import { GDriveService } from 'src/gdrive/gdrive.service';
 import { OpenAIService } from 'src/openai/openai.service';
 import { GMailService } from 'src/gmail/gmail.service';
+import { NasaService } from 'src/nasa/nasa.service';
 
 @Injectable()
 export class AreaService {
@@ -21,6 +22,7 @@ export class AreaService {
     private readonly gDriveService: GDriveService,
     private readonly openAiService: OpenAIService,
     private readonly gmailService: GMailService,
+    private readonly nasaService: NasaService,
   ) {}
   private cancellation_tokens: Map<string, CancellationToken> = new Map();
 
@@ -48,6 +50,7 @@ export class AreaService {
       this.openAiService,
       this,
       this.gmailService,
+      this.nasaService,
     );
 
     if (!action || !(await action.check()))
