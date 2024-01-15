@@ -174,4 +174,42 @@ export const reactions = [
       message: "__text__",
     }
   },
+  {
+    id: 6,
+    name: "Delete a file",
+    type: "delete_file",
+    icon: require('@ressources/drive.png'),
+    backgroundColor: "#4A4863",
+    textColor: "white",
+    redirection: "google",
+    value: {
+      fileName: "__fileName__",
+    }
+  },
+  {
+    id: 7,
+    name: "Create a doc",
+    type: "create_doc",
+    icon: require('@ressources/docs.png'),
+    backgroundColor: "#4A4863",
+    textColor: "white",
+    redirection: "google",
+    value: {
+      fileName: "__fileName__",
+      fileContent: "__fileContent__",
+    }
+  },
+  {
+    id: 8,
+    name: "Create a sheet",
+    type: "create_sheet",
+    icon: require('@ressources/sheets.png'),
+    backgroundColor: "#4A4863",
+    textColor: "white",
+    redirection: "google",
+    value: {
+      fileName: "__fileName__",
+      fileContent: "__fileContent__",
+    }
+  }
 ];
