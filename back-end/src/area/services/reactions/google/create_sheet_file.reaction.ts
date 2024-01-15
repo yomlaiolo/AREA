@@ -18,11 +18,11 @@ export default class CreateSheetReaction implements ReactionInterface {
     fileContent: '__file_content__',
   };
 
-  data: { fileName: string; fileCsv: string };
+  data: { fileName: string; fileContent: string };
   user: User;
 
   constructor(
-    data: { fileName: string; fileCsv: string },
+    data: { fileName: string; fileContent: string },
     user: User,
     private readonly githubService: GithubService,
     private readonly usersService: UsersService,
@@ -42,7 +42,7 @@ export default class CreateSheetReaction implements ReactionInterface {
 
     const result = await this.gDriveService.createGoogleSheet(
       this.data.fileName,
-      this.data.fileCsv,
+      this.data.fileContent,
       this.user.google.access_token,
     );
 

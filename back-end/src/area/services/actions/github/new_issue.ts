@@ -95,7 +95,9 @@ export default class IssueAction implements ActionInterface {
     if (
       this.actionDto.value['repo'] == undefined ||
       this.actionDto.value['title'] == undefined ||
-      this.actionDto.value['body'] == undefined
+      this.actionDto.value['body'] == undefined ||
+      this.user.github.username == undefined ||
+      this.user.github.access_token == undefined
     ) {
       return false;
     }
