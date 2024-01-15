@@ -1,7 +1,5 @@
 import './Forger.css';
-import { useNavigate} from 'react-router-dom';
 import React, { useState } from 'react';
-import { getToken } from '../api';
 import { actions, reactions } from '../area';
 import { getVar, setVar, removeVar, createArea } from "../api";
 import NavigationBar from '../components/NavigationBar';
@@ -25,11 +23,15 @@ async function forge(name: string, reactionValue: any) {
   const act_var = await getVar('actionValue');
   const react_var = await getVar('reactionValue');
 
+  console.log("NAME : ", action.name);
+  console.log("ACTION VALUE : ", act_var);
   if (action.redirection === 'github' && obj.repo !== '') {
-    description = 'When ' + action.name + ' on ' + obj.repo + ' then ' + reaction.name;
-    if (action.name === 'Pull request created') {
+    if (action.name === 'Pull request created' && obj.repo !== '') {
+      description = 'When ' + action.name + ' on ' + obj.repo + ' then ' + reaction.name;
       value = {
         repo: obj.repo,
+        title: "__title__",
+        body: "__body__",
         fromBranch: "__fromBranch__",
         headBranch: "__headBranch__",
       }
@@ -41,6 +43,7 @@ async function forge(name: string, reactionValue: any) {
       }
     }
   } else if (action.redirection === 'cron') {
+    console.log("CRON : ", obj.cron)
     if (action.name === 'Each day at [x]' && obj.cron !== '') {
       description = 'Each day at ' + obj.cron + ' then ' + reaction.name;
       value = {
@@ -55,7 +58,6 @@ async function forge(name: string, reactionValue: any) {
   } else if (action.redirection === 'google') {
     value = {
       from: "__from__",
-      cc: "__cc__",
       to: "__to__",
       subject: "__subject__",
       body: "__body__",
@@ -78,7 +80,7 @@ async function forge(name: string, reactionValue: any) {
       value: react_var ? JSON.parse(react_var) : null
     },
   };
-
+  console.log(myArea);
   var response = await createArea(myArea);
   if (response !== 0) {
     alert("Error");
@@ -188,7 +190,7 @@ export const Forger = () => {
           <TextBox placeholder="Name your flow" value={flowName} onChangeText={setFlowName} customwidth={300}/>
         </div>
         <div className="create">
-          <Button title="Create" onPress={async () => {forge(flowName, await getVar('reactionValue')); refreshPage();}} backgroundColor="black" textColor="#F5F5F5"/>
+          <Button title="Create" onPress={async () => {forge(flowName, await getVar('reactionValue'));}} backgroundColor="black" textColor="#F5F5F5"/>
         </div>
       </header>
     </div>

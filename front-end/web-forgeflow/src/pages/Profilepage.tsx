@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import './Profilepage.css';
 import NavigationBar from '../components/NavigationBar';
 import profile_icon from '../assets/profile.svg';

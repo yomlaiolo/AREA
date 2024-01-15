@@ -29,7 +29,7 @@ export const actions = [
     redirection: "github",
     description: "You need to select the repository where Pull request will be Action.",
     fields: ["Repository"],
-    type: "new_pull_rrquest"
+    type: "new_pull_request"
   },
   {
     id: 3,
@@ -85,7 +85,7 @@ export const actions = [
     value: {
       url: "__url__",
     },
-    fields: ["URL"],
+    fields: [""],
     type: "nasa",
   }
 ];
@@ -117,7 +117,7 @@ export const reactions = [
     textColor: "black",
     redirection: "github",
     fields: ["Repository", "Title", "Body", "Branch", "headBranch"],
-    type: "create_pull_request"
+    type: "pull_request"
   },
   {
     id: 3,
@@ -127,7 +127,7 @@ export const reactions = [
     textColor: "black",
     redirection: "github",
     fields: ["Repository", "Title", "Body"],
-    type: "create_issue"
+    type: "issue"
   },
   {
     id: 4,
@@ -144,7 +144,7 @@ export const reactions = [
     icon: require('./assets/openai.png'),
     backgroundColor: "#10A37F",
     textColor: "black",
-    fields: ["SuggestFrom"],
+    fields: ["Text"],
     type: "resume_response"
   },
 ];

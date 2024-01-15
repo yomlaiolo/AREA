@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './AreaConfig.css';
-import { getVar, setVar } from '../api';
+import { setVar } from '../api';
 import Button from './Button';
 import TextBox from './TextBox';
 import { format } from 'date-fns';
@@ -20,11 +20,12 @@ function transformCronString(date: Date, type: string) {
   const day = format(date, 'd');
   const month = format(date, 'M');
   const year = format(date, 'y');
+  var cronString = '';
 
   if (type === 'time') {
-    var cronString = `${minute} ${hour} * * *`;
+    cronString = `${minute} ${hour} * * *`;
   } else if (type === 'day') {
-    var cronString = `0 ${minute} ${hour} ${day} ${month} * ${year}`;
+    cronString = `0 ${minute} ${hour} ${day} ${month} * ${year}`;
   } else {
     var value = {
       hour: hour,
@@ -40,6 +41,7 @@ async function setValue(name: string, map: any) {
   var action_value = {};
   var reaction_value = {};
 
+  console.log("NAME : ", name);
   switch (name) {
     case 'Email received':
       action_value = {
@@ -52,40 +54,44 @@ async function setValue(name: string, map: any) {
       break;
     case 'Pull request created':
       action_value = {
-        fromBranch: "__fromBranch__",
+        repo: map['repo'],
+        title: "__title__",
+        body: "__body__",
         headBranch: "__headBranch__",
+        fromBranch: "__fromBranch__",
       };
       break;
     case 'Issue created':
       action_value = {
+        repo: map['repo'],
         title: "__title__",
         body: "__body__",
       };
       break;
     case 'Each day at [x]':
       action_value = {
-        cron: transformCronString(map['cronTime'], 'time'),
+        cron: transformCronString(map['cron'], 'time'),
       };
       break;
     case 'At [hour] on [day]':
       action_value = {
-        cron: transformCronString(map['cronTime'], 'day'),
+        cron: transformCronString(map['cron'], 'day'),
       };
       break;
     case 'Every [x] time':
-      action_value = transformCronString(map['cronTime'], 'each');
+      action_value = transformCronString(map['cron'], 'each');
       break;
     case 'Send an email':
       reaction_value = {
-        from: "__from__",
-        to: "__to__",
-        subject: "__subject__",
-        body: "__body__",
+        from: map['from'],
+        to: map['to'],
+        subject: map['subject'],
+        body: map['body'],
       };
       break;
     case 'Create a Pull Request':
       reaction_value = {
-        repo: map['repo'],
+        repoName: map['repo'],
         title: map['title'],
         body: map['body'],
         fromBranch: "__fromBranch__",
@@ -94,25 +100,19 @@ async function setValue(name: string, map: any) {
       break;
     case 'Create an issue':
       reaction_value = {
-        repo: map['repo'],
+        repoName: map['repo'],
         title: map['title'],
         body: map['body'],
       };
       break;
-    case 'Send a notification':
-      reaction_value = {
-        title: "__title__",
-        body: "__body__",
-      };
-      break;
     case 'Resume a text':
       reaction_value = {
-        text: "__text__",
+        message: map['message'],
       };
       break;
     case 'Suggest a response':
       reaction_value = {
-        text: "__text__",
+        message: map['message'],
       };
       break;
     default:
@@ -130,21 +130,25 @@ const AreaAreaConfig: React.FC<FlowProps> = ({ title, icon, description, type, f
   const [timeMinute, setTimeMinute] = useState('');
 
   useEffect(() => {
-    if (infos.cronTime) {
+    if (infos.cron) {
+      console.log("CRON : ", infos.cron);
       setValue(title, infos);
+      display();
     }
-  }, [infos.cronTime]);
-
+  }, [infos.cron]);
+  
   const handleButtonPress = () => {
     const date = new Date();
     if (timeHour !== '' && timeMinute !== '') {
+      console.log("TIME : ", timeHour, timeMinute);
       date.setHours(Number(timeHour));
       date.setMinutes(Number(timeMinute));
-      setInfos(prevInfos => ({ ...prevInfos, cronTime: date }));
+      console.log("DATE : ", date);
+      setInfos(prevInfos => ({ ...prevInfos, cron: date }));
     } else {
       setValue(title, infos);
+      display();
     }
-    display();
   };
 
   return (
@@ -288,6 +292,23 @@ const AreaAreaConfig: React.FC<FlowProps> = ({ title, icon, description, type, f
                 placeholder='Body'
                 onChangeText={(text) => setInfos({ ...infos, body: text })}
                 value={infos.body ? infos.body.toString() : ''}
+                backgroundColor='#1F1F1F'
+                textColor='#F5F5F5'
+                customwidth={200}
+              />
+            </div>
+          </div>
+        ) : null
+      }
+      {fields?.find((field) => field === 'Text') !== undefined ?
+        (
+          <div style={{ width: '25%', justifyItems: 'center', alignContent: 'center' }}>
+            <p style={{ display: 'flex', justifyContent: 'center' }}>Set a text.</p>
+            <div style={{ display: 'flex', justifyContent: 'space-around', width: '100%', justifyItems: 'center' }}>
+              <TextBox
+                placeholder='Text'
+                onChangeText={(text) => setInfos({ ...infos, message: text })}
+                value={infos.message ? infos.message.toString() : ''}
                 backgroundColor='#1F1F1F'
                 textColor='#F5F5F5'
                 customwidth={200}
