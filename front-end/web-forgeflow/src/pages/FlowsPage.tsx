@@ -27,7 +27,7 @@ export const FlowsPage = () => {
     if (first_render) {
       fetchData();
     }
-  }, []);
+  });
 
   const handlePress = (area: any) => {
     setSelectedFlow(area);
