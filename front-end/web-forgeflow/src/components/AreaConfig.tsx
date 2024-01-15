@@ -115,6 +115,11 @@ async function setValue(name: string, map: any) {
         message: map['message'],
       };
       break;
+    case `On NASA's picture of the day change`:
+      action_value = {
+        url: "__url__",
+      };
+      break;
     default:
       break;
   };
