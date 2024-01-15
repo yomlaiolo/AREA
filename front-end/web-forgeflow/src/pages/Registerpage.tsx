@@ -14,13 +14,11 @@ export const Registerpage = () => {
   const navigate = useNavigate();
 
   const connect = () => {
-    console.log("email: " + email + " password: " + password + " username: " + username);
     register(username, email, password, navigate);
   }
 
   const myresponseGoogle = (response: any) => {
     if (response.access_token) {
-      console.log("access_token: " + response.access_token);
       sendGoogleLogin(navigate, response.access_token);
     }
   }
