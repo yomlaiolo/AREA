@@ -81,6 +81,11 @@ async function setValue(name: string, map: any) {
     case 'Every [x] time':
       action_value = transformCronString(map['cron'], 'each');
       break;
+    case `On NASA's picture of the day change`:
+      action_value = {
+        url: "__url__",
+      };
+      break;
     case 'Send an email':
       reaction_value = {
         from: map['from'],
@@ -115,10 +120,22 @@ async function setValue(name: string, map: any) {
         message: map['message'],
       };
       break;
-    case `On NASA's picture of the day change`:
-      action_value = {
-        url: "__url__",
-      };
+    case 'Delete a file':
+      reaction_value = {
+        fileName: map['title'],
+      }
+      break;
+    case 'Create a doc':
+      reaction_value = {
+        fileName: map['title'],
+        fileContent: map['body'],
+      }
+      break;
+    case 'Create a sheet':
+      reaction_value = {
+        fileName: map['title'],
+        fileContent: map['body'],
+      }
       break;
     default:
       break;

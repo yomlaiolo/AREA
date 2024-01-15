@@ -147,4 +147,31 @@ export const reactions = [
     fields: ["Text"],
     type: "resume_response"
   },
+  {
+    id: 6,
+    name: "Delete a file",
+    icon: require('./assets/gdrive.png'),
+    backgroundColor: "#4A4863",
+    textColor: "black",
+    fields: ["Title"],
+    type: "delete_file"
+  },
+  {
+    id: 7,
+    name: "Create a doc",
+    icon: require('./assets/gdoc.png'),
+    backgroundColor: "#4A4863",
+    textColor: "black",
+    fields: ["Title", "Body"],
+    type: "create_doc"
+  },
+  {
+    id: 8,
+    name: "Create a sheet",
+    icon: require('./assets/gsheet.png'),
+    backgroundColor: "#4A4863",
+    textColor: "black",
+    fields: ["Title", "Body"],
+    type: "create_sheet"
+  }
 ];
