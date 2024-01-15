@@ -46,7 +46,7 @@ export default function SetOpenAI({ navigation, idx, name }: any) {
               return;
             }
             var value = {
-              text: text,
+              message: text,
             };
             await setVar('reactionValue', JSON.stringify(value));
             navigation.goBack();

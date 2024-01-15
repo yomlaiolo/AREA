@@ -59,10 +59,15 @@ async function forge(name: string, repo: string, cronTime: string, reactionValue
     description = 'When ' + action.name + ' then ' + reaction.name;
     value = {
       from: "__from__",
-      cc: "__cc__",
       to: "__to__",
       subject: "__subject__",
       body: "__body__",
+    }
+    showToast(name + description);
+  } else if (action.redirection === 'nasa') {
+    description = 'When ' + action.name + ' then ' + reaction.name;
+    value = {
+      url: "__url__",
     }
     showToast(name + description);
   } else {
