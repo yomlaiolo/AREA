@@ -7,7 +7,7 @@ import { format } from 'date-fns';
 
 interface FlowProps {
   title: string;
-  description: string;
+  description?: string;
   icon: any;
   type: string;
   fields?: string[];

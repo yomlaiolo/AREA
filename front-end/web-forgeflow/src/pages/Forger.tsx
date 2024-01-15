@@ -1,5 +1,7 @@
 import './Forger.css';
+import { useNavigate} from 'react-router-dom';
 import React, { useState } from 'react';
+import { getToken } from '../api';
 import { actions, reactions } from '../area';
 import { getVar, setVar, removeVar, createArea } from "../api";
 import NavigationBar from '../components/NavigationBar';
@@ -53,9 +55,14 @@ async function forge(name: string, reactionValue: any) {
   } else if (action.redirection === 'google') {
     value = {
       from: "__from__",
+      cc: "__cc__",
       to: "__to__",
       subject: "__subject__",
       body: "__body__",
+    }
+  } else if (action.redirection === 'nasa') {
+    value = {
+      url: "__url__",
     }
   }
 

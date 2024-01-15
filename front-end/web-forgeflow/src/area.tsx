@@ -75,6 +75,19 @@ export const actions = [
     fields: ["Time"],
     type: "interval"
   },
+  {
+    id: 7,
+    name: "On NASA's picture of the day change",
+    icon: require('./assets/nasa.png'),
+    backgroundColor: "#000000",
+    redirection: "nasa",
+    textColor: "white",
+    value: {
+      url: "__url__",
+    },
+    fields: ["URL"],
+    type: "nasa",
+  }
 ];
 
 export const reactions = [
@@ -118,15 +131,6 @@ export const reactions = [
   },
   {
     id: 4,
-    name: "Send a notification",
-    icon: require('./assets/notification.png'),
-    backgroundColor: "#AABBDD",
-    textColor: "black",
-    fields: ["Title", "Body"],
-    type: "send_notification"
-  },
-  {
-    id: 5,
     name: "Resume a text",
     icon: require('./assets/openai.png'),
     backgroundColor: "#10A37F",
@@ -135,7 +139,7 @@ export const reactions = [
     type: "resume_text"
   },
   {
-    id: 6,
+    id: 5,
     name: "Suggest a response",
     icon: require('./assets/openai.png'),
     backgroundColor: "#10A37F",
