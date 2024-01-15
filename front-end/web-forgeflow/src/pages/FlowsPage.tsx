@@ -16,21 +16,18 @@ export const FlowsPage = () => {
   const [areas, setAreas] = useState<any[]>([]);
   const navigate = useNavigate();
   const [search, setSearch] = useState<string>("");
-  const [selectedFlow, setSelectedFlow] = useState({name: undefined, description: undefined, action: {type: undefined, value: undefined}, reaction: {type: undefined, value: undefined}});
+  const [selectedFlow, setSelectedFlow] = useState({name: undefined, description: undefined, action: {type: undefined, value: undefined}, reaction: {type: undefined, value: undefined}, results: undefined});
   const first_render = true; 
-  console.log("selectedFlow", selectedFlow);
 
   useEffect(() => {
-    console.log("useEffect");
     const fetchData = async () => {
       const areas2 = await getData();
       setAreas(areas2);
-      console.log("areas: ", areas2)
     };
     if (first_render) {
       fetchData();
     }
-  }, []);
+  });
 
   const handlePress = (area: any) => {
     setSelectedFlow(area);
@@ -80,6 +77,10 @@ export const FlowsPage = () => {
           <div className="add-flow">
             <h1>Viewing "{selectedFlow.name}" FLOW.</h1>
             <p>{selectedFlow.description}</p>
+            {selectedFlow?.results ?
+            <p>{selectedFlow.results}</p>
+            : null
+            }
           </div>
         )}
       </header>

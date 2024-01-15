@@ -44,7 +44,6 @@ async function setValue(name: string, map: any) {
     case 'Email received':
       action_value = {
         from: "__from__",
-        cc: "__cc__",
         to: "__to__",
         subject: "__subject__",
         body: "__body__",
@@ -79,7 +78,6 @@ async function setValue(name: string, map: any) {
     case 'Send an email':
       reaction_value = {
         from: "__from__",
-        cc: "__cc__",
         to: "__to__",
         subject: "__subject__",
         body: "__body__",
@@ -256,23 +254,6 @@ const AreaAreaConfig: React.FC<FlowProps> = ({ title, icon, description, type, f
                 placeholder='To'
                 onChangeText={(text) => setInfos({ ...infos, to: text })}
                 value={infos.to ? infos.to.toString() : ''}
-                backgroundColor='#1F1F1F'
-                textColor='#F5F5F5'
-                customwidth={200}
-              />
-            </div>
-          </div>
-        ) : null
-      }
-      {fields?.find((field) => field === 'CC') !== undefined ?
-        (
-          <div style={{ width: '25%', justifyItems: 'center', alignContent: 'center' }}>
-            <p style={{ display: 'flex', justifyContent: 'center' }}>Who is in CC ?</p>
-            <div style={{ display: 'flex', justifyContent: 'space-around', width: '100%', justifyItems: 'center' }}>
-              <TextBox
-                placeholder='CC'
-                onChangeText={(text) => setInfos({ ...infos, cc: text })}
-                value={infos.cc ? infos.cc.toString() : ''}
                 backgroundColor='#1F1F1F'
                 textColor='#F5F5F5'
                 customwidth={200}

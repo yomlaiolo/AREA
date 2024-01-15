@@ -93,7 +93,7 @@ export const reactions = [
     icon: require('./assets/mail.png'),
     backgroundColor: "#4A4863",
     textColor: "white",
-    fields: ["To", "CC", "Subject", "Body"],
+    fields: ["To", "Subject", "Body"],
     type: "send_email"
   },
   {

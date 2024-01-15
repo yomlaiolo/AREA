@@ -61,20 +61,6 @@ export async function sendGoogleLogin(navigation: any, infos: any) {
         });
 }
 
-const config = {
-    clientId: process.env.REACT_APP_GITHUB_CLIENT_ID,
-    clientSecret: process.env.REACT_APP_GITHUB_CLIENT_SECRET,
-    redirectUrl: 'myapp://',
-    scopes: ['user', 'repo'],
-    serviceConfiguration: {
-        authorizationEndpoint: 'https://github.com/login/oauth/authorize',
-        tokenEndpoint: 'https://github.com/login/oauth/access_token',
-        revocationEndpoint:
-            'https://github.com/settings/connections/applications/' +
-            process.env.REACT_APP_GITHUB_CLIENT_ID,
-    },
-};
-
 export async function signInWithGithub(accessToken_github: string) {
     const token = await getToken();
     fetch(API + '/github/token', {
