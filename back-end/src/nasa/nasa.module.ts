@@ -1,6 +1,5 @@
 import { Module, forwardRef } from '@nestjs/common';
-import { GithubService } from './github.service';
-import { GithubController } from './github.controller';
+import { NasaService } from './nasa.service';
 import { HttpModule } from '@nestjs/axios';
 import { UsersModule } from 'src/users/users.module';
 import { AreaModule } from 'src/area/area.module';
@@ -17,8 +16,7 @@ import { GMailModule } from 'src/gmail/gmail.module';
     forwardRef(() => OpenAIModule),
     forwardRef(() => GMailModule),
   ],
-  controllers: [GithubController],
-  providers: [GithubService],
-  exports: [GithubService],
+  providers: [NasaService],
+  exports: [NasaService],
 })
-export class GithubModule {}
+export class NasaModule {}

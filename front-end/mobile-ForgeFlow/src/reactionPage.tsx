@@ -16,7 +16,10 @@ async function press(navigation: any, item: any) {
       console.log('not logged in');
       return;
     }
-    navigation.navigate('SetEmail', { idx: await getVar('action') });
+    if (item.name === 'Send an email')
+      navigation.navigate('SetEmail', { idx: await getVar('action') });
+    else
+      navigation.navigate('SetDrive', { idx: await getVar('action'), name: item.name });
   } else if (item.redirection === 'notification') {
     navigation.navigate('SetNotification', { idx: await getVar('action') });
   } else if (item.redirection === 'openai') {

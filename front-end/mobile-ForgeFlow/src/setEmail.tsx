@@ -15,7 +15,6 @@ export default function SetEmail({ navigation, idx }: any) {
   const index = parseInt(indexStr);
   const [text, setText] = useState('');
   const [to, setTo] = useState('');
-  const [cc, setCc] = useState('');
   const [subject, setSubject] = useState('');
   const [body, setBody] = useState('');
 
@@ -44,7 +43,6 @@ export default function SetEmail({ navigation, idx }: any) {
           <Image style={{ width: 150, height: 150, }} source={require('@ressources/mail.png')} />
           <Text style={{ fontSize: 20, color: '#1F1F1F', marginTop: 20, marginHorizontal: 30, textAlign: 'center', width: '90%' }} >{text}</Text>
           <TextBox backgroundColor="white" borderColor="#E2E2E2" onChangeText={setTo} value={to} placeholder="To" hideText={false} autocomplete="off" />
-          <TextBox backgroundColor="white" borderColor="#E2E2E2" onChangeText={setCc} value={cc} placeholder="Cc" hideText={false} autocomplete="off" />
           <TextBox backgroundColor="white" borderColor="#E2E2E2" onChangeText={setSubject} value={subject} placeholder="Subject" hideText={false} autocomplete="off" />
           <TextBox backgroundColor="white" borderColor="#E2E2E2" onChangeText={setBody} value={body} placeholder="Body" hideText={false} autocomplete="off" />
           <AreaButton backgroundColor="#1F1F1F" activeOpacity={0.5} textColor="white" title="Add this reaction" onPress={async () => {
@@ -54,7 +52,6 @@ export default function SetEmail({ navigation, idx }: any) {
             }
             var value = {
               to: to,
-              cc: cc,
               subject: subject,
               body: body,
             };

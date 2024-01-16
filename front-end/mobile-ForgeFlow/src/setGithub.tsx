@@ -88,8 +88,8 @@ export default function SetGithub({ navigation, idx, name }: any) {
                 repoName: repo,
                 title: title,
                 body: body,
-                baseBranch: fromBranch,
-                headBranch: headBranch,
+                baseBranch: headBranch,
+                headBranch: fromBranch,
               };
             } else {
               if (title === '' || body === '' || repo === '') {
@@ -97,7 +97,7 @@ export default function SetGithub({ navigation, idx, name }: any) {
                 return;
               }
               value = {
-                repo: repo,
+                repoName: repo,
                 title: title,
                 body: body,
               };

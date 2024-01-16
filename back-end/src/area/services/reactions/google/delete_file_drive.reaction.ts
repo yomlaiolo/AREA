@@ -9,19 +9,19 @@ import { GMailService } from 'src/gmail/gmail.service';
 import { NasaService } from 'src/nasa/nasa.service';
 
 @Injectable()
-export default class ResumeTextReaction implements ReactionInterface {
-  method: string = 'resume_text';
-  service: string = 'openai';
-  description: string = 'Resume the message with openai.';
+export default class DeleteFileReaction implements ReactionInterface {
+  method: string = 'delete_file';
+  service: string = 'google';
+  description: string = 'Delete a file from Google Drive.';
   example: object = {
-    message: '__message__',
+    fileName: '__file__',
   };
 
-  data: { message: string };
+  data: { fileName: string };
   user: User;
 
   constructor(
-    data: { message: string },
+    data: { fileName: string },
     user: User,
     private readonly githubService: GithubService,
     private readonly usersService: UsersService,
@@ -39,12 +39,12 @@ export default class ResumeTextReaction implements ReactionInterface {
       return null;
     }
 
-    const resume = await this.openAiService.ResumeEmail(
-      this.data.message,
-      process.env.OPENAI_KEY,
-      'french',
+    const result = await this.gDriveService.deleteFile(
+      this.data.fileName,
+      this.user.google.access_token,
     );
-    return { result: resume };
+
+    return { result: result };
   }
 
   async check(): Promise<boolean> {

@@ -7,6 +7,11 @@ import { Injectable } from '@nestjs/common';
 import { UsersService } from '../../../../users/users.service';
 import { GDriveService } from '../../../../gdrive/gdrive.service';
 import { OpenAIService } from '../../../../openai/openai.service';
+import { createMapReaction, reactionConstructors } from '../../services';
+import { variableObject } from 'src/utils/variable_object';
+import { AreaService } from 'src/area/area.service';
+import { GMailService } from 'src/gmail/gmail.service';
+import { NasaService } from 'src/nasa/nasa.service';
 
 @Injectable()
 export default class ReceiveEmailAction implements ActionInterface {
@@ -15,9 +20,9 @@ export default class ReceiveEmailAction implements ActionInterface {
   description: string = "Receives an email from the user's inbox.";
   example: object = {
     from: '__from__',
-    cc: '__cc__',
     to: '__to__',
     subject: '__subject__',
+    body: '__body__',
   };
 
   actionDto: ActionDto;
@@ -41,6 +46,9 @@ export default class ReceiveEmailAction implements ActionInterface {
     private readonly usersService: UsersService,
     private readonly gDriveService: GDriveService,
     private readonly openAiService: OpenAIService,
+    private readonly areaService: AreaService,
+    private readonly gmailService: GMailService,
+    private readonly nasaService: NasaService,
   ) {
     this.actionDto = actionDto;
     this.reactionDto = reactionDto;
@@ -51,31 +59,56 @@ export default class ReceiveEmailAction implements ActionInterface {
   }
 
   async exec(): Promise<void> {
-    const data = {
-      from: '',
-      cc: [],
-      to: '',
-      subject: '',
-    };
+    if (this.token.isCancelled) return;
 
-    // if (this.token.isCancelled) return;
-    // const reactionMap = createMapReaction(reactionConstructors);
-    // const reaction = reactionMap[this.reactionDto.type]
-    //   ? new reactionMap[this.reactionDto.type](
-    //       variableObject(data, this.actionDto.value, this.reactionDto.value),
-    //       this.user,
-    //       this.id,
-    //       this.githubService,
-    //       this.usersService,
-    //       this.gDriveService,
-    //       this.openAiService,
-    //     )
-    //   : null;
-    // if (!reaction || !reaction.check()) {
-    //   console.log('Invalid reaction');
-    //   return;
-    // }
-    // reaction.exec();
+    setInterval(async () => {
+      if (this.token.isCancelled) return;
+      if (!this.user.google || !this.user.google.access_token) return;
+      const mails = await this.gmailService.receiveMail(
+        this.user.google.access_token,
+        this.user.email,
+      );
+
+      mails.forEach(async (mail) => {
+        let from = mail.From;
+        if (mail.From.includes('<')) {
+          from = mail.From.substring(
+            mail.From.indexOf('<') + 1,
+            mail.From.indexOf('>'),
+          );
+        }
+        const data = {
+          from: from,
+          to: mail.To,
+          subject: mail.Subject,
+          body: mail.body,
+        };
+
+        const reactionMap = createMapReaction(reactionConstructors);
+        const reaction = reactionMap[this.reactionDto.type]
+          ? new reactionMap[this.reactionDto.type](
+              variableObject(
+                data,
+                this.actionDto.value,
+                this.reactionDto.value,
+              ),
+              this.user,
+              this.githubService,
+              this.usersService,
+              this.gDriveService,
+              this.openAiService,
+              this.gmailService,
+            )
+          : null;
+        if (!reaction) throw new Error('Reaction not found');
+        if (reaction.check()) {
+          const reactionResult = await reaction.exec();
+          if (reactionResult == null) return;
+          const result = reactionResult.result;
+          this.areaService.updateResult(this.id, result);
+        } else console.log('Invalid reaction');
+      });
+    }, 1000);
   }
 
   async check(): Promise<boolean> {

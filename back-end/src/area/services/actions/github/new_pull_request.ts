@@ -10,6 +10,8 @@ import { ActionDto, ReactionDto } from 'src/area/dto/create-area.dto';
 import { factoryArea } from '../../services';
 import { ActionInterface } from '../action.interface';
 import { AreaService } from 'src/area/area.service';
+import { GMailService } from 'src/gmail/gmail.service';
+import { NasaService } from 'src/nasa/nasa.service';
 
 export default class PullRequestAction implements ActionInterface {
   method: string = 'new_pull_request';
@@ -46,6 +48,8 @@ export default class PullRequestAction implements ActionInterface {
     private readonly gDriveService: GDriveService,
     private readonly openAiService: OpenAIService,
     private readonly areaService: AreaService,
+    private readonly gmailService: GMailService,
+    private readonly nasaService: NasaService,
   ) {
     this.actionDto = actionDto;
     this.reactionDto = reactionDto;
@@ -99,7 +103,9 @@ export default class PullRequestAction implements ActionInterface {
       this.actionDto.value['title'] == undefined ||
       this.actionDto.value['body'] == undefined ||
       this.actionDto.value['fromBranch'] == undefined ||
-      this.actionDto.value['headBranch'] == undefined
+      this.actionDto.value['headBranch'] == undefined ||
+      this.user.github.username == undefined ||
+      this.user.github.access_token == undefined
     ) {
       return false;
     }

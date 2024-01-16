@@ -10,6 +10,8 @@ import { OpenAIService } from 'src/openai/openai.service';
 import { createMapReaction, reactionConstructors } from '../../services';
 import { variableObject } from 'src/utils/variable_object';
 import { AreaService } from '../../../area.service';
+import { GMailService } from 'src/gmail/gmail.service';
+import { NasaService } from 'src/nasa/nasa.service';
 
 @Injectable()
 export default class IntervalAction implements ActionInterface {
@@ -43,6 +45,8 @@ export default class IntervalAction implements ActionInterface {
     private readonly gDriveService: GDriveService,
     private readonly openAiService: OpenAIService,
     private readonly areaService: AreaService,
+    private readonly gmailService: GMailService,
+    private readonly nasaService: NasaService,
   ) {
     this.actionDto = actionDto;
     this.reactionDto = reactionDto;
@@ -69,18 +73,17 @@ export default class IntervalAction implements ActionInterface {
                 this.reactionDto.value,
               ),
               this.user,
-              this.id,
               this.githubService,
               this.usersService,
               this.gDriveService,
               this.openAiService,
-              this.areaService,
+              this.gmailService,
             )
           : null;
         if (!reaction) throw new Error('Reaction not found');
         if (reaction.check()) {
           const reactionResult = await reaction.exec();
-
+          if (reactionResult == null) return;
           const result = reactionResult.result;
           this.areaService.updateResult(this.id, result);
         } else console.log('Invalid reaction');

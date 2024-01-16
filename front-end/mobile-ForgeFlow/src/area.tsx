@@ -17,7 +17,6 @@ export const actions = [
     redirection: "google",
     value: {
       from: "__from__",
-      cc: "__cc__",
       to: "__to__",
       subject: "__subject__",
       body: "__body__",
@@ -32,6 +31,8 @@ export const actions = [
     textColor: "white",
     redirection: "github",
     value: {
+      title: "__title__",
+      body: "__body__",
       fromBranch: "__fromBranch__",
       headBranch: "__headBranch__",
     }
@@ -81,6 +82,18 @@ export const actions = [
     redirection: "cron",
     value: {
     }
+  },
+  {
+    id: 7,
+    name: "On NASA's picture of the day change",
+    type: "nasa",
+    icon: require('@ressources/nasa.png'),
+    backgroundColor: "#000000",
+    textColor: "white",
+    redirection: "nasa",
+    value: {
+      url: '__url__',
+    }
   }
 ];
 
@@ -103,7 +116,6 @@ export const reactions = [
     redirection: "google",
     value: {
       to: "__to__",
-      cc: "__cc__",
       subject: "__subject__",
       body: "__body__",
     }
@@ -111,13 +123,15 @@ export const reactions = [
   {
     id: 2,
     name: "Create a pull request",
-    type: "create_pull_request",
+    type: "pull_request",
     icon: require('@ressources/github_white.png'),
     backgroundColor: "#0D1117",
     textColor: "white",
     redirection: "github",
     value: {
-      repo: "__repo__",
+      repoName: "__repo__",
+      title: "__title__",
+      body: "__body__",
       fromBranch: "__fromBranch__",
       headBranch: "__headBranch__",
     }
@@ -125,32 +139,19 @@ export const reactions = [
   {
     id: 3,
     name: "Create an issue",
-    type: "create_issue",
+    type: "issue",
     icon: require('@ressources/github_white.png'),
     backgroundColor: "#0D1117",
     textColor: "white",
     redirection: "github",
     value: {
-      repo: "__repo__",
+      repoName: "__repo__",
       title: "__title__",
       body: "__body__",
     }
   },
   {
     id: 4,
-    name: "Send a notification",
-    type: "send_notification",
-    icon: require('@ressources/notification_white.png'),
-    backgroundColor: "#AABBDD",
-    textColor: "white",
-    redirection: "notification",
-    value: {
-      title: "__title__",
-      body: "__body__",
-    }
-  },
-  {
-    id: 5,
     name: "Resume a text",
     type: "resume_text",
     icon: require('@ressources/openai_white.png'),
@@ -158,11 +159,11 @@ export const reactions = [
     textColor: "white",
     redirection: "openai",
     value: {
-      text: "__text__",
+      message: "__text__",
     }
   },
   {
-    id: 6,
+    id: 5,
     name: "Suggest a response",
     type: "suggest_response",
     icon: require('@ressources/openai_white.png'),
@@ -170,7 +171,45 @@ export const reactions = [
     textColor: "white",
     redirection: "openai",
     value: {
-      text: "__text__",
+      message: "__text__",
     }
   },
+  {
+    id: 6,
+    name: "Delete a file",
+    type: "delete_file",
+    icon: require('@ressources/drive.png'),
+    backgroundColor: "#4A4863",
+    textColor: "white",
+    redirection: "google",
+    value: {
+      fileName: "__fileName__",
+    }
+  },
+  {
+    id: 7,
+    name: "Create a doc",
+    type: "create_doc",
+    icon: require('@ressources/docs.png'),
+    backgroundColor: "#4A4863",
+    textColor: "white",
+    redirection: "google",
+    value: {
+      fileName: "__fileName__",
+      fileContent: "__fileContent__",
+    }
+  },
+  {
+    id: 8,
+    name: "Create a sheet",
+    type: "create_sheet",
+    icon: require('@ressources/sheets.png'),
+    backgroundColor: "#4A4863",
+    textColor: "white",
+    redirection: "google",
+    value: {
+      fileName: "__fileName__",
+      fileContent: "__fileContent__",
+    }
+  }
 ];

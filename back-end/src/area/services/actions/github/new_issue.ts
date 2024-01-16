@@ -7,9 +7,10 @@ import { v4 as uuidv4 } from 'uuid';
 import { GDriveService } from 'src/gdrive/gdrive.service';
 import { OpenAIService } from 'src/openai/openai.service';
 import { ActionDto, ReactionDto } from 'src/area/dto/create-area.dto';
-import { factoryArea } from '../../services';
 import { ActionInterface } from '../action.interface';
 import { AreaService } from 'src/area/area.service';
+import { GMailService } from 'src/gmail/gmail.service';
+import { NasaService } from 'src/nasa/nasa.service';
 
 export default class IssueAction implements ActionInterface {
   method: string = 'new_issue';
@@ -43,6 +44,8 @@ export default class IssueAction implements ActionInterface {
     private readonly gDriveService: GDriveService,
     private readonly openAiService: OpenAIService,
     private readonly areaService: AreaService,
+    private readonly gmailService: GMailService,
+    private readonly nasaService: NasaService,
   ) {
     this.actionDto = actionDto;
     this.reactionDto = reactionDto;
@@ -92,7 +95,9 @@ export default class IssueAction implements ActionInterface {
     if (
       this.actionDto.value['repo'] == undefined ||
       this.actionDto.value['title'] == undefined ||
-      this.actionDto.value['body'] == undefined
+      this.actionDto.value['body'] == undefined ||
+      this.user.github.username == undefined ||
+      this.user.github.access_token == undefined
     ) {
       return false;
     }

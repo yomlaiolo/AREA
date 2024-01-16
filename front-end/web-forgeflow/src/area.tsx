@@ -29,7 +29,7 @@ export const actions = [
     redirection: "github",
     description: "You need to select the repository where Pull request will be Action.",
     fields: ["Repository"],
-    type: "new_pull_rrquest"
+    type: "new_pull_request"
   },
   {
     id: 3,
@@ -75,6 +75,19 @@ export const actions = [
     fields: ["Time"],
     type: "interval"
   },
+  {
+    id: 7,
+    name: "On NASA's picture of the day change",
+    icon: require('./assets/nasa.png'),
+    backgroundColor: "#000000",
+    redirection: "nasa",
+    textColor: "white",
+    value: {
+      url: "__url__",
+    },
+    fields: [""],
+    type: "nasa",
+  }
 ];
 
 export const reactions = [
@@ -93,7 +106,7 @@ export const reactions = [
     icon: require('./assets/mail.png'),
     backgroundColor: "#4A4863",
     textColor: "white",
-    fields: ["To", "CC", "Subject", "Body"],
+    fields: ["To", "Subject", "Body"],
     type: "send_email"
   },
   {
@@ -104,7 +117,7 @@ export const reactions = [
     textColor: "black",
     redirection: "github",
     fields: ["Repository", "Title", "Body", "Branch", "headBranch"],
-    type: "create_pull_request"
+    type: "pull_request"
   },
   {
     id: 3,
@@ -114,19 +127,10 @@ export const reactions = [
     textColor: "black",
     redirection: "github",
     fields: ["Repository", "Title", "Body"],
-    type: "create_issue"
+    type: "issue"
   },
   {
     id: 4,
-    name: "Send a notification",
-    icon: require('./assets/notification.png'),
-    backgroundColor: "#AABBDD",
-    textColor: "black",
-    fields: ["Title", "Body"],
-    type: "send_notification"
-  },
-  {
-    id: 5,
     name: "Resume a text",
     icon: require('./assets/openai.png'),
     backgroundColor: "#10A37F",
@@ -135,12 +139,39 @@ export const reactions = [
     type: "resume_text"
   },
   {
-    id: 6,
+    id: 5,
     name: "Suggest a response",
     icon: require('./assets/openai.png'),
     backgroundColor: "#10A37F",
     textColor: "black",
-    fields: ["SuggestFrom"],
+    fields: ["Text"],
     type: "resume_response"
   },
+  {
+    id: 6,
+    name: "Delete a file",
+    icon: require('./assets/gdrive.png'),
+    backgroundColor: "#4A4863",
+    textColor: "black",
+    fields: ["Title"],
+    type: "delete_file"
+  },
+  {
+    id: 7,
+    name: "Create a doc",
+    icon: require('./assets/gdoc.png'),
+    backgroundColor: "#4A4863",
+    textColor: "black",
+    fields: ["Title", "Body"],
+    type: "create_doc"
+  },
+  {
+    id: 8,
+    name: "Create a sheet",
+    icon: require('./assets/gsheet.png'),
+    backgroundColor: "#4A4863",
+    textColor: "black",
+    fields: ["Title", "Body"],
+    type: "create_sheet"
+  }
 ];

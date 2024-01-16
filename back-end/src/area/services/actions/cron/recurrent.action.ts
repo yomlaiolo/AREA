@@ -10,6 +10,9 @@ import { OpenAIService } from '../../../../openai/openai.service';
 import { createMapReaction, reactionConstructors } from '../../services';
 import { variableObject } from '../../../../utils/variable_object';
 import { AreaService } from '../../../area.service';
+import { GMailService } from 'src/gmail/gmail.service';
+import { NasaService } from 'src/nasa/nasa.service';
+
 @Injectable()
 export default class RecurrentAction implements ActionInterface {
   method: string = 'recurrent';
@@ -43,6 +46,8 @@ export default class RecurrentAction implements ActionInterface {
     private readonly gDriveService: GDriveService,
     private readonly openAiService: OpenAIService,
     private readonly areaService: AreaService,
+    private readonly gmailService: GMailService,
+    private readonly nasaService: NasaService,
   ) {
     this.actionDto = actionDto;
     this.reactionDto = reactionDto;
@@ -63,12 +68,11 @@ export default class RecurrentAction implements ActionInterface {
         ? new reactionMap[this.reactionDto.type](
             variableObject(data, this.actionDto.value, this.reactionDto.value),
             this.user,
-            this.id,
             this.githubService,
             this.usersService,
             this.gDriveService,
             this.openAiService,
-            this.areaService,
+            this.gmailService,
           )
         : null;
       if (!reaction || !reaction.check()) {
@@ -76,7 +80,7 @@ export default class RecurrentAction implements ActionInterface {
         return;
       }
       const reactionResult = await reaction.exec();
-
+      if (reactionResult == null) return;
       const result = reactionResult.result;
       this.areaService.updateResult(this.id, result);
     });

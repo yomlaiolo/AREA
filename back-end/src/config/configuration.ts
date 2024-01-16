@@ -4,4 +4,5 @@ export default () => ({
   JWT_SECRET: process.env.JWT_SECRET || 'secret',
   OPENAI_KEY: process.env.OPENAI_KEY || 'secret',
   WEBHOOKURL: process.env.WEBHOOK_URL,
+  NASA_API: process.env.NASA_API,
 });

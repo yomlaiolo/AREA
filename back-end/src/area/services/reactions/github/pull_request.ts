@@ -5,6 +5,8 @@ import { GithubService } from 'src/github-action/github.service';
 import { UsersService } from 'src/users/users.service';
 import { GDriveService } from 'src/gdrive/gdrive.service';
 import { OpenAIService } from 'src/openai/openai.service';
+import { GMailService } from 'src/gmail/gmail.service';
+import { NasaService } from 'src/nasa/nasa.service';
 
 @Injectable()
 export default class PullRequestReaction implements ReactionInterface {
@@ -12,7 +14,6 @@ export default class PullRequestReaction implements ReactionInterface {
   service: string = 'github';
   description: string = 'create a pull request on github';
   example: object = {
-    repoOwner: 'myUsername',
     repoName: 'myRepository',
     title: 'awesome title',
     body: 'basic body',
@@ -21,7 +22,6 @@ export default class PullRequestReaction implements ReactionInterface {
   };
 
   data: {
-    repoOwner: string;
     repoName: string;
     title: string;
     body: string;
@@ -32,7 +32,6 @@ export default class PullRequestReaction implements ReactionInterface {
 
   constructor(
     data: {
-      repoOwner: string;
       repoName: string;
       title: string;
       body: string;
@@ -44,6 +43,8 @@ export default class PullRequestReaction implements ReactionInterface {
     private readonly usersService: UsersService,
     private readonly gDriveService: GDriveService,
     private readonly openAiService: OpenAIService,
+    private readonly gmailService: GMailService,
+    private readonly nasaService: NasaService,
   ) {
     this.data = data;
     this.user = user;
@@ -51,12 +52,12 @@ export default class PullRequestReaction implements ReactionInterface {
 
   async exec(): Promise<object> {
     this.githubService.createEvent(
-      this.data.repoOwner,
+      this.user.github.username,
       this.data.repoName,
       'pulls',
       this.user.github.access_token,
       {
-        owner: this.data.repoOwner,
+        owner: this.user.github.username,
         repo: this.data.repoName,
         title: this.data.title,
         body: this.data.body,
@@ -69,7 +70,6 @@ export default class PullRequestReaction implements ReactionInterface {
 
   async check(): Promise<boolean> {
     if (
-      this.data.repoOwner == undefined ||
       this.data.repoName == undefined ||
       this.data.title == undefined ||
       this.data.body == undefined ||
