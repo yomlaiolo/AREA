@@ -38,7 +38,7 @@ services:
     restart: always
     container_name: front-area
     ports:
-      - "8081:3000"
+      - "8081:8081"
     networks:
       - area-network
     depends_on:
